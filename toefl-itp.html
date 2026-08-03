@@ -1,0 +1,1868 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TOEFL ITP Focus Drill</title>
+<link rel="icon" type="image/svg+xml" href="logo.svg">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body style="margin:0;">
+<div id="itp-root"></div>
+<style>
+#itp-root {
+  --bg: #F0F7F0;
+  --bg-card: #FFFFFF;
+  --forest: #1B3A2B;
+  --forest-deep: #12281D;
+  --green: #2F9E52;
+  --green-dark: #1F7A3D;
+  --green-tint: #E6F5EA;
+  --ink: #16241C;
+  --ink-soft: #3A4A3E;
+  --muted: #64756A;
+  --red: #B33A2E;
+  --red-tint: #FBE3DF;
+  --line: #D6E6D9;
+  font-family: 'Nunito', 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+  font-size: 16px;
+  color: var(--ink);
+  background: var(--bg);
+}
+#itp-root * { box-sizing: border-box; }
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=IBM+Plex+Mono:wght@600;700&display=swap');
+
+#itp-root .wrap { position: relative; border-radius: 22px; overflow: hidden; box-shadow: 0 8px 24px rgba(18,40,29,0.14); }
+#itp-root .user-bar {
+  position: absolute; top: 18px; right: 20px; display: flex; align-items: center; gap: 10px;
+  font-size: 11px; color: #D8F5DF; z-index: 20;
+}
+#itp-root .user-bar button {
+  background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.25); color: #fff;
+  border-radius: 999px; padding: 4px 12px; font-size: 11px; font-weight: 700; cursor: pointer;
+}
+#itp-root .masthead {
+  background: linear-gradient(160deg, var(--forest) 0%, var(--forest-deep) 100%);
+  color: #FFFFFF;
+  padding: 24px 24px 20px;
+  position: relative;
+}
+#itp-root .masthead h1 { font-weight: 800; font-size: 24px; margin: 0 0 4px; letter-spacing: -0.3px; }
+#itp-root .masthead .sub { font-size: 13px; letter-spacing: 0.2px; color: #BFE3CB; font-weight: 600; }
+#itp-root .stamp {
+  position: absolute; top: 20px; right: 20px;
+  font-size: 11px; font-weight: 700;
+  padding: 6px 12px; border-radius: 999px;
+  background: rgba(255,255,255,0.14); color: #D8F5DF;
+  border: 1px solid rgba(255,255,255,0.25);
+}
+
+#itp-root .tabs {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  background: var(--bg-card);
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--line);
+}
+#itp-root .tab {
+  flex: 1 1 auto; min-width: 100px; text-align: center;
+  padding: 10px 10px; font-size: 12.5px; font-weight: 700;
+  letter-spacing: 0.2px; cursor: pointer; color: var(--muted);
+  border-radius: 999px; border: 1.5px solid transparent;
+}
+#itp-root .tab.active { background: var(--green); color: #FFFFFF; box-shadow: 0 3px 10px rgba(47,158,82,0.35); }
+#itp-root .tab:hover:not(.active) { background: var(--green-tint); color: var(--green-dark); }
+
+#itp-root .panel { display: none; padding: 20px 20px 26px; background: var(--bg); }
+#itp-root .panel.active { display: block; }
+#itp-root h2 { font-weight: 800; font-size: 20px; margin: 0 0 10px; color: var(--forest); }
+#itp-root .section-label {
+  display: inline-block; font-size: 11.5px; font-weight: 800; color: var(--green-dark);
+  letter-spacing: 0.6px; text-transform: uppercase; margin-bottom: 8px;
+  background: var(--green-tint); padding: 4px 10px; border-radius: 999px;
+}
+#itp-root .hint {
+  font-size: 14.5px; line-height: 1.55; color: var(--ink-soft);
+  background: var(--bg-card); border: 1.5px solid var(--line); border-left: 5px solid var(--green);
+  padding: 12px 14px; margin: 10px 0 18px; border-radius: 12px;
+}
+
+#itp-root .q {
+  margin-bottom: 16px; background: var(--bg-card); border: 1.5px solid var(--line);
+  border-radius: 16px; padding: 16px 16px 14px;
+}
+#itp-root .qtag {
+  display: inline-block; font-size: 11px; font-weight: 800; color: var(--green-dark);
+  text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 6px;
+  background: var(--green-tint); padding: 3px 9px; border-radius: 999px;
+}
+#itp-root .qtext { font-weight: 700; margin-bottom: 12px; font-size: 16.5px; line-height: 1.5; color: var(--forest); }
+#itp-root .qtext .blank { display: inline-block; min-width: 60px; border-bottom: 2px solid var(--ink); }
+#itp-root .opt {
+  display: block; padding: 13px 15px; border: 1.5px solid var(--line); border-radius: 12px;
+  margin-bottom: 8px; cursor: pointer; font-size: 15.5px; font-weight: 600; background: #FFFFFF;
+}
+#itp-root .opt:hover { border-color: var(--green); background: var(--green-tint); }
+#itp-root .opt.correct { border-color: var(--green); background: var(--green-tint); color: var(--green-dark); font-weight: 800; }
+#itp-root .opt.incorrect { border-color: var(--red); background: var(--red-tint); color: var(--red); }
+#itp-root .opt.disabled { cursor: default; }
+#itp-root .explain { font-size: 14px; line-height: 1.5; color: var(--ink-soft); margin-top: 8px; display: none; background: var(--bg); border-radius: 10px; padding: 10px 12px; }
+#itp-root .explain.show { display: block; }
+
+#itp-root .we-sentence { font-size: 16.5px; line-height: 2.3; margin-bottom: 4px; }
+#itp-root .seg { padding: 3px 5px; border-bottom: 2px dotted var(--muted); cursor: pointer; border-radius: 4px; }
+#itp-root .seg:hover { background: var(--green-tint); }
+#itp-root .seg.correct { border-bottom-color: var(--green); background: var(--green-tint); font-weight: 800; }
+#itp-root .seg.incorrect { border-bottom-color: var(--red); background: var(--red-tint); }
+#itp-root .seg.disabled { cursor: default; }
+
+#itp-root .btn {
+  font-size: 14.5px; letter-spacing: 0.2px; text-transform: none;
+  background: var(--green); color: #FFFFFF; border: none;
+  padding: 13px 22px; border-radius: 999px; cursor: pointer; font-weight: 800;
+  margin-top: 6px; box-shadow: 0 4px 12px rgba(47,158,82,0.3);
+}
+#itp-root .btn:hover { background: var(--green-dark); }
+#itp-root .btn:disabled { opacity: 0.45; cursor: not-allowed; box-shadow: none; }
+
+#itp-root .passage {
+  background: var(--bg-card); border: 1.5px solid var(--line); border-left: 5px solid var(--green);
+  border-radius: 14px; padding: 16px 18px; font-size: 16px; line-height: 1.7; margin-bottom: 16px;
+}
+#itp-root .passage p { margin: 0 0 10px; }
+#itp-root .passage p:last-child { margin-bottom: 0; }
+
+#itp-root .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-top: 16px; }
+#itp-root .summary-card { border: 1.5px solid var(--line); border-radius: 14px; padding: 14px 15px; background: var(--bg-card); }
+#itp-root .summary-card .k { font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--muted); letter-spacing: 0.5px; }
+#itp-root .summary-card .v { font-size: 23px; font-weight: 800; margin-top: 3px; color: var(--forest); }
+#itp-root .weak-list { margin-top: 16px; }
+#itp-root .weak-item {
+  display: flex; justify-content: space-between; align-items: center; padding: 11px 14px;
+  border: 1.5px solid var(--line); border-radius: 12px; margin-bottom: 8px; font-size: 14.5px;
+  font-weight: 600; background: var(--bg-card);
+}
+#itp-root .weak-item .bar-bg { flex: 1; margin: 0 12px; background: var(--green-tint); border-radius: 6px; height: 9px; align-self: center; overflow: hidden; }
+#itp-root .weak-item .bar-fill { height: 100%; background: var(--green); }
+#itp-root .weak-item.low .bar-fill { background: var(--red); }
+#itp-root .footnote { font-size: 12.5px; line-height: 1.5; color: var(--muted); margin-top: 16px; border-top: 1px solid var(--line); padding-top: 10px; }
+#itp-root .progress-bar-bg { height: 14px; border-radius: 8px; overflow: hidden; background: var(--green-tint); }
+#itp-root .progress-bar-fill { height: 100%; background: var(--green); transition: width 0.3s ease; }
+#itp-root .target-row { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+#itp-root .target-row input[type="number"] {
+  width: 68px; padding: 9px 10px; border: 1.5px solid var(--line); border-radius: 10px;
+  font-size: 15px; background: #FFFFFF; font-weight: 700; text-align: center;
+}
+#itp-root .btn.ghost { background: #FFFFFF; color: var(--green-dark); border: 1.5px solid var(--green); box-shadow: none; }
+#itp-root .btn.ghost:hover { background: var(--green-tint); }
+#itp-root .gen-status { font-size: 13.5px; color: var(--ink-soft); margin-top: 10px; }
+#itp-root .streak-badge {
+  display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 800;
+  color: #B85C1E; padding: 7px 14px; border-radius: 999px; margin-bottom: 16px;
+  background: #FDECD8; border: 1.5px solid #F3C892;
+}
+
+#itp-root .ring-wrap { display: flex; justify-content: center; margin-bottom: 6px; }
+#itp-root .ring-label { text-align: center; font-size: 13.5px; font-weight: 700; color: var(--ink-soft); margin-bottom: 16px; }
+#itp-root .ring-center-pct { font-size: 26px; font-weight: 800; fill: var(--forest); }
+#itp-root .ring-center-sub { font-size: 11px; font-weight: 700; fill: var(--muted); }
+
+#itp-root .chat-log { max-height: 340px; overflow-y: auto; margin-bottom: 14px; }
+#itp-root .chat-msg { margin-bottom: 10px; padding: 12px 15px; border-radius: 16px; font-size: 15px; line-height: 1.55; }
+#itp-root .chat-msg.user { background: var(--forest); color: #FFFFFF; margin-left: 18%; border-bottom-right-radius: 4px; }
+#itp-root .chat-msg.assistant { background: var(--bg-card); border: 1.5px solid var(--line); margin-right: 8%; border-bottom-left-radius: 4px; }
+#itp-root .chat-input-row { display: flex; gap: 8px; }
+#itp-root .chat-input-row textarea {
+  flex: 1; min-height: 54px; font-family: inherit; font-size: 15px; padding: 12px 14px;
+  border: 1.5px solid var(--line); border-radius: 16px; background: #FFFFFF; resize: vertical;
+}
+#itp-root .chat-suggestions { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+#itp-root .chat-suggestion {
+  font-size: 12.5px; font-weight: 700; border: 1.5px solid var(--line); border-radius: 999px;
+  padding: 7px 13px; cursor: pointer; color: var(--ink-soft); background: var(--bg-card);
+}
+#itp-root .chat-suggestion:hover { border-color: var(--green); color: var(--green-dark); background: var(--green-tint); }
+
+#itp-root .flashcard {
+  border: 1.5px solid var(--line); border-radius: 20px; background: var(--bg-card);
+  padding: 32px 24px; text-align: center; min-height: 140px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  cursor: pointer; margin-bottom: 16px; box-shadow: 0 6px 18px rgba(18,40,29,0.08);
+}
+#itp-root .flashcard .word { font-size: 25px; font-weight: 800; color: var(--forest); }
+#itp-root .flashcard .pos { font-size: 12px; font-weight: 700; color: var(--muted); text-transform: uppercase; margin-top: 4px; }
+#itp-root .flashcard .def { font-size: 15.5px; margin-top: 14px; color: var(--ink); display: none; line-height: 1.55; }
+#itp-root .flashcard .ex { font-size: 13.5px; margin-top: 8px; color: var(--muted); font-style: italic; display: none; }
+#itp-root .flashcard.flipped .def, #itp-root .flashcard.flipped .ex { display: block; }
+#itp-root .flashcard .tap-hint {
+  font-size: 11.5px; font-weight: 700; color: var(--green-dark); margin-top: 14px;
+  text-transform: uppercase; letter-spacing: 0.4px; background: var(--green-tint);
+  padding: 4px 10px; border-radius: 999px;
+}
+#itp-root .rating-row { display: flex; gap: 8px; justify-content: center; }
+#itp-root .rating-btn {
+  flex: 1; max-width: 130px; padding: 12px 8px; border-radius: 999px; border: 1.5px solid var(--line);
+  font-size: 12.5px; font-weight: 800; text-transform: uppercase; cursor: pointer; background: #FFFFFF;
+}
+#itp-root .rating-btn.again { border-color: var(--red); color: var(--red); }
+#itp-root .rating-btn.good { border-color: var(--green); color: var(--green-dark); }
+#itp-root .rating-btn.easy { border-color: #2E7D9E; color: #2E7D9E; }
+#itp-root .rating-btn:hover { opacity: 0.75; }
+#itp-root .vocab-progress { font-size: 13px; font-weight: 700; color: var(--muted); margin-bottom: 14px; text-align: center; }
+#itp-root .audio-btn {
+  display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 800;
+  letter-spacing: 0.2px; background: #FFFFFF; color: var(--green-dark); border: 1.5px solid var(--green);
+  padding: 9px 15px; border-radius: 999px; cursor: pointer; margin-bottom: 14px;
+}
+#itp-root .audio-btn:hover { background: var(--green); color: #FFFFFF; }
+#itp-root .audio-btn:disabled { opacity: 0.5; cursor: default; }
+#itp-root .audio-btn.playing { background: var(--red); border-color: var(--red); color: #FFFFFF; }
+
+#itp-root .fill-tag {
+  display: inline-flex; align-items: center; gap: 5px; font-size: 10.5px; font-weight: 800;
+  color: #8A4B12; text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 6px;
+  background: #FDECD8; padding: 3px 9px; border-radius: 999px;
+}
+#itp-root .fill-input {
+  width: 100%; font-family: inherit; font-size: 15.5px; padding: 12px 14px;
+  border: 1.5px solid var(--line); border-radius: 12px; background: #FFFFFF;
+  resize: vertical; min-height: 44px;
+}
+#itp-root .fill-input:focus { outline: none; border-color: var(--green); }
+#itp-root .fill-input:disabled { background: var(--bg); opacity: 0.85; }
+#itp-root .fill-input.correct { border-color: var(--green); background: var(--green-tint); }
+#itp-root .fill-input.incorrect { border-color: var(--red); background: var(--red-tint); }
+#itp-root .fill-feedback {
+  font-size: 13.5px; line-height: 1.5; margin-top: 8px; font-weight: 700; display: none;
+}
+#itp-root .fill-feedback.show { display: block; }
+#itp-root .fill-feedback.correct-fb { color: var(--green-dark); }
+#itp-root .fill-feedback.incorrect-fb { color: var(--red); }
+#itp-root .grading-banner {
+  font-size: 13.5px; font-weight: 700; color: var(--green-dark); background: var(--green-tint);
+  border-radius: 12px; padding: 10px 14px; margin-bottom: 14px; display: none;
+}
+#itp-root .grading-banner.show { display: block; }
+
+/* ---------- Mobile responsiveness ---------- */
+@media (max-width: 600px) {
+  #itp-root { font-size: 16px; }
+  #itp-root .wrap { border-radius: 18px; }
+  #itp-root .masthead { padding: 18px 16px 16px; }
+  #itp-root .masthead h1 { font-size: 20px; }
+  #itp-root .masthead .sub { font-size: 12px; }
+  #itp-root .stamp { top: 16px; right: 16px; font-size: 10px; padding: 5px 10px; }
+
+  #itp-root .tabs {
+    flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; padding: 8px 10px;
+  }
+  #itp-root .tabs::-webkit-scrollbar { display: none; }
+  #itp-root .tab { flex: 0 0 auto; min-width: auto; white-space: nowrap; padding: 10px 14px; font-size: 12px; }
+
+  #itp-root .panel { padding: 16px 14px 22px; }
+  #itp-root h2 { font-size: 18px; }
+  #itp-root .q { padding: 14px 14px 12px; border-radius: 14px; }
+  #itp-root .qtext { font-size: 16px; }
+  #itp-root .opt { padding: 13px 14px; font-size: 15.5px; border-radius: 12px; }
+  #itp-root .we-sentence { font-size: 16px; line-height: 2.35; }
+  #itp-root .seg { padding: 4px 3px; display: inline-block; }
+  #itp-root .passage { padding: 14px 15px; font-size: 15.5px; max-height: 240px; border-radius: 12px; }
+
+  #itp-root .btn { width: 100%; padding: 14px 16px; font-size: 15px; }
+  #itp-root .btn.ghost { width: auto; }
+  #itp-root .target-row .btn.ghost { width: auto; }
+
+  #itp-root .summary-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  #itp-root .summary-card { padding: 12px 13px; border-radius: 12px; }
+  #itp-root .summary-card .v { font-size: 20px; }
+
+  #itp-root .weak-item { flex-wrap: wrap; gap: 6px; border-radius: 12px; }
+  #itp-root .weak-item .bar-bg { flex-basis: 100%; margin: 4px 0 0; order: 3; }
+
+  #itp-root .target-row { gap: 8px; }
+  #itp-root .target-row input[type="number"] { flex: 0 0 60px; }
+
+  #itp-root .chat-msg.user { margin-left: 6%; }
+  #itp-root .chat-msg.assistant { margin-right: 4%; }
+  #itp-root .chat-input-row { flex-direction: column; }
+  #itp-root .chat-input-row .btn { margin-top: 0; }
+  #itp-root .chat-suggestions { gap: 6px; }
+  #itp-root .chat-suggestion { font-size: 11.5px; padding: 7px 12px; }
+
+  #itp-root .flashcard { padding: 26px 16px; min-height: 120px; border-radius: 18px; }
+  #itp-root .flashcard .word { font-size: 22px; }
+  #itp-root .rating-row { gap: 6px; }
+  #itp-root .rating-btn { padding: 13px 4px; font-size: 11.5px; max-width: none; }
+
+  #itp-root .audio-btn { width: 100%; justify-content: center; }
+}
+
+@media (max-width: 380px) {
+  #itp-root .masthead h1 { font-size: 18px; }
+  #itp-root .tab { padding: 9px 12px; font-size: 11.5px; }
+  #itp-root .summary-grid { grid-template-columns: 1fr 1fr; }
+}
+</style>
+
+<script>
+(function(){
+  const root = document.getElementById('itp-root');
+
+  // ==== KONFIGURASI BACKEND (Cloudflare Worker) ====
+  // Worker yang sama dipakai bersama oleh EduPractice (shell login),
+  // TKA SMP, dan UKom Guru.
+  const API_BASE = 'https://toefl-ai-proxy.edupractise.workers.dev';
+
+  // ==== AUTH: pakai sesi dari EduPractice (index.html) ====
+  // Login sudah ditangani di halaman utama EduPractice. Kalau belum ada
+  // sesi tersimpan sama sekali, lempar balik ke halaman login.
+  let sessionToken = localStorage.getItem('edu-session-token');
+  const isGuest = localStorage.getItem('edu-guest-mode') === '1';
+  if (!sessionToken && !isGuest) {
+    window.location.replace('index.html?redirect=toefl');
+    return;
+  }
+
+  function authHeaders() {
+    const h = { 'Content-Type': 'application/json' };
+    if (sessionToken) h['Authorization'] = 'Bearer ' + sessionToken;
+    return h;
+  }
+
+  // Helper terpusat untuk semua panggilan AI di app ini.
+  // Menggantikan pemanggilan langsung ke api.anthropic.com.
+  // opts: { prompt, system, maxTokens, history }
+  //   - prompt: string, dipakai kalau tidak ada history (single-turn)
+  //   - history: array [{role:'user'|'assistant', content:'...'}] untuk chat multi-turn
+  async function callAI(opts) {
+    if (!sessionToken) {
+      throw new Error('Fitur AI hanya tersedia untuk pengguna yang masuk dengan Google. Silakan Keluar lalu masuk dengan akun Google.');
+    }
+    let contents;
+    if (opts.history && opts.history.length) {
+      contents = opts.history.map(m => ({
+        role: m.role === 'assistant' ? 'model' : 'user',
+        parts: [{ text: m.content }]
+      }));
+    } else {
+      contents = [{ role: 'user', parts: [{ text: opts.prompt }] }];
+    }
+    const res = await fetch(API_BASE + '/ai', {
+      method: 'POST',
+      headers: authHeaders(),
+      body: JSON.stringify({
+        contents,
+        system: opts.system || undefined,
+        maxTokens: opts.maxTokens || 2000
+      })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error((data && data.error) || 'AI proxy error');
+    return data.text || '';
+  }
+
+  // ==== AUTH: pakai sesi dari EduPractice ====
+  function logout() {
+    localStorage.removeItem('edu-session-token');
+    localStorage.removeItem('edu-guest-mode');
+    localStorage.removeItem('edu-user-name');
+    localStorage.removeItem('edu-user-email');
+    window.location.href = 'index.html';
+  }
+
+  async function bootstrapAuth() {
+    const bar = root.querySelector('#user-bar');
+    const label = root.querySelector('#user-email-label');
+    if (isGuest) {
+      if (label) label.textContent = 'Tamu (progress tersimpan di perangkat ini)';
+      if (bar) bar.style.display = 'flex';
+    } else {
+      try {
+        const res = await fetch(API_BASE + '/auth/me', { headers: authHeaders() });
+        if (!res.ok) throw new Error('Sesi habis');
+        const data = await res.json();
+        if (label) label.textContent = (data.user && data.user.email) || '';
+        if (bar) bar.style.display = 'flex';
+      } catch (e) {
+        window.location.replace('index.html?redirect=toefl');
+        return;
+      }
+    }
+    // Muat semua data yang bergantung pada progress tersimpan.
+    await initDailyTarget();
+    await loadRecapData();
+    await loadStreak();
+    await initVocab();
+  }
+
+  root.innerHTML = `
+    <div class="wrap">
+      <div id="user-bar" class="user-bar" style="display:none;">
+        <a href="index.html" style="color:#D8F5DF; text-decoration:none; font-weight:700;">&larr; EduPractice</a>
+        <span id="user-email-label"></span>
+        <button id="logout-btn" type="button">Keluar</button>
+      </div>
+      <div class="masthead">
+        <div class="stamp">PRACTICE<br/>NOT OFFICIAL</div>
+        <h1>TOEFL ITP Focus Drill</h1>
+        <div class="sub">Structure &amp; Written Expression &middot; Listening</div>
+      </div>
+      <div class="tabs">
+        <div class="tab active" data-tab="structure">Structure</div>
+        <div class="tab" data-tab="written">Written Expr.</div>
+        <div class="tab" data-tab="listening">Listening</div>
+        <div class="tab" data-tab="target">Daily Target</div>
+        <div class="tab" data-tab="tutor">AI Tutor</div>
+        <div class="tab" data-tab="vocab">Vocabulary</div>
+        <div class="tab" data-tab="results">Recap &amp; Weak Areas</div>
+      </div>
+
+      <div class="panel active" id="panel-structure">
+        <div class="section-label">Section 2A</div>
+        <h2>Structure &mdash; Complete the Sentence</h2>
+        <div class="hint">Pick the choice that correctly completes the sentence. Every wrong choice targets one specific grammar trap &mdash; note the tag under each question so you know exactly which rule tripped you up.</div>
+
+        <div class="q" data-correct="2" data-topic="Subject-verb agreement" data-section="structure_written">
+          <div class="qtag">Subject-verb agreement</div>
+          <div class="qtext">1. The committee, along with the two department heads, ___ the proposal before it reaches the board.</div>
+          <div class="opt" data-i="0">are reviewing</div>
+          <div class="opt" data-i="1">have reviewed</div>
+          <div class="opt" data-i="2">is reviewing</div>
+          <div class="opt" data-i="3">were reviewing</div>
+          <div class="explain">The subject is the singular "committee" &mdash; the phrase "along with the two department heads" is a parenthetical and doesn't make the verb plural.</div>
+        </div>
+
+        <div class="q" data-correct="1" data-topic="Parallel structure" data-section="structure_written">
+          <div class="qtag">Parallel structure</div>
+          <div class="qtext">2. The new policy was designed to reduce costs, improve efficiency, and ___ employee satisfaction.</div>
+          <div class="opt" data-i="0">increasing</div>
+          <div class="opt" data-i="1">increase</div>
+          <div class="opt" data-i="2">it increases</div>
+          <div class="opt" data-i="3">has increased</div>
+          <div class="explain">A list joined by "and" must use the same grammatical form throughout: "reduce, improve, increase" &mdash; all base-form verbs.</div>
+        </div>
+
+        <div class="q" data-correct="0" data-topic="Word form" data-section="structure_written">
+          <div class="qtag">Word form</div>
+          <div class="qtext">3. Her ___ to detail is the main reason the report was approved without revisions.</div>
+          <div class="opt" data-i="0">attention</div>
+          <div class="opt" data-i="1">attentive</div>
+          <div class="opt" data-i="2">attentively</div>
+          <div class="opt" data-i="3">attend</div>
+          <div class="explain">The blank needs a noun to function as the subject complement/object of "Her ___" &mdash; "attention" is the noun form.</div>
+        </div>
+
+        <div class="q" data-correct="2" data-topic="Articles" data-section="structure_written">
+          <div class="qtag">Articles (countable/uncountable)</div>
+          <div class="qtext">4. ___ information you provided was extremely useful for our research.</div>
+          <div class="opt" data-i="0">An</div>
+          <div class="opt" data-i="1">A</div>
+          <div class="opt" data-i="2">The</div>
+          <div class="opt" data-i="3">(no article)</div>
+          <div class="explain">"Information" is uncountable, so "a/an" is impossible; "the" is correct because the sentence refers to specific information already identified ("you provided").</div>
+        </div>
+
+        <div class="q" data-correct="3" data-topic="Inversion after negatives" data-section="structure_written">
+          <div class="qtag">Inversion after negative adverbials</div>
+          <div class="qtext">5. Not only ___ the deadline, but she also improved the quality of the final draft.</div>
+          <div class="opt" data-i="0">she met</div>
+          <div class="opt" data-i="1">did she met</div>
+          <div class="opt" data-i="2">she did meet</div>
+          <div class="opt" data-i="3">did she meet</div>
+          <div class="explain">A negative expression like "Not only" at the start of a clause forces subject-auxiliary inversion: "did she meet," not normal word order.</div>
+        </div>
+
+        <div class="q" data-correct="1" data-topic="Comparatives" data-section="structure_written">
+          <div class="qtag">Comparative structures</div>
+          <div class="qtext">6. The new engine is far ___ than the previous model in terms of fuel consumption.</div>
+          <div class="opt" data-i="0">efficient</div>
+          <div class="opt" data-i="1">more efficient</div>
+          <div class="opt" data-i="2">most efficient</div>
+          <div class="opt" data-i="3">efficienter</div>
+          <div class="explain">"Than" signals a comparison between two things, which requires the comparative form "more efficient," not the base or superlative form.</div>
+        </div>
+
+        <div class="q" data-correct="3" data-topic="Relative clauses" data-section="structure_written">
+          <div class="qtag">Relative clauses</div>
+          <div class="qtext">7. The scientist ___ discovery changed the field was awarded a prize.</div>
+          <div class="opt" data-i="0">who</div>
+          <div class="opt" data-i="1">which</div>
+          <div class="opt" data-i="2">that</div>
+          <div class="opt" data-i="3">whose</div>
+          <div class="explain">"Whose" shows possession &mdash; the discovery belongs to the scientist, so a possessive relative pronoun is needed.</div>
+        </div>
+
+        <div class="q" data-correct="0" data-topic="Gerund/infinitive" data-section="structure_written">
+          <div class="qtag">Gerund vs. infinitive</div>
+          <div class="qtext">8. She avoided ___ the same mistake twice by double-checking her calculations.</div>
+          <div class="opt" data-i="0">making</div>
+          <div class="opt" data-i="1">to make</div>
+          <div class="opt" data-i="2">make</div>
+          <div class="opt" data-i="3">made</div>
+          <div class="explain">"Avoid" is always followed by a gerund (-ing form), never an infinitive.</div>
+        </div>
+
+        <div class="q" data-correct="2" data-topic="Conditionals" data-section="structure_written">
+          <div class="qtag">Conditionals (mixed/past)</div>
+          <div class="qtext">9. If the flight ___ delayed, we would have missed the connecting train.</div>
+          <div class="opt" data-i="0">is</div>
+          <div class="opt" data-i="1">was</div>
+          <div class="opt" data-i="2">had been</div>
+          <div class="opt" data-i="3">were</div>
+          <div class="explain">The main clause "would have missed" signals a third-conditional (past unreal) sentence, which requires "had been" in the if-clause.</div>
+        </div>
+
+        <div class="q" data-correct="1" data-topic="Tense consistency" data-section="structure_written">
+          <div class="qtag">Tense consistency</div>
+          <div class="qtext">10. By the time she arrived at the venue, the ceremony ___ already begun.</div>
+          <div class="opt" data-i="0">has</div>
+          <div class="opt" data-i="1">had</div>
+          <div class="opt" data-i="2">was</div>
+          <div class="opt" data-i="3">is</div>
+          <div class="explain">Two past events, one before the other, require the past perfect ("had begun") for the earlier action.</div>
+        </div>
+
+        <div class="q" data-correct="0" data-topic="Quantifiers" data-section="structure_written">
+          <div class="qtag">Quantifiers (countable/uncountable)</div>
+          <div class="qtext">11. ___ of the information in the report turned out to be relevant to the investigation.</div>
+          <div class="opt" data-i="0">Much</div>
+          <div class="opt" data-i="1">Many</div>
+          <div class="opt" data-i="2">A number</div>
+          <div class="opt" data-i="3">Few</div>
+          <div class="explain">"Information" is uncountable, so it pairs with "much," not "many" or "few," which are for countable nouns.</div>
+        </div>
+
+        <div class="q" data-correct="1" data-topic="Passive voice" data-section="structure_written">
+          <div class="qtag">Passive voice</div>
+          <div class="qtext">12. The new bridge ___ by a team of local engineers over an 18-month period.</div>
+          <div class="opt" data-i="0">designed</div>
+          <div class="opt" data-i="1">was designed</div>
+          <div class="opt" data-i="2">has design</div>
+          <div class="opt" data-i="3">designs</div>
+          <div class="explain">The bridge receives the action rather than performing it, and "by a team of engineers" signals the passive voice: "was designed."</div>
+        </div>
+
+        <button class="btn" id="structure-check">Check answers</button>
+      </div>
+
+      <div class="panel" id="panel-written">
+        <div class="section-label">Section 2B</div>
+        <h2>Written Expression &mdash; Find the Error</h2>
+        <div class="hint">Click the one underlined-style segment that is grammatically wrong. The other three segments are always correct as written.</div>
+
+
+
+        <div class="q" data-topic="Subject-verb agreement" data-section="structure_written">
+          <div class="qtag">Subject-verb agreement</div>
+          <div class="we-sentence" data-correct="1">
+            <span class="seg" data-i="0">The results of the survey</span>
+            <span class="seg" data-i="1">indicates</span>
+            <span class="seg" data-i="2">that most employees prefer</span>
+            <span class="seg" data-i="3">flexible working hours.</span>
+          </div>
+          <div class="explain">"Results" (plural) is the true subject, so the verb should be "indicate," not "indicates."</div>
+        </div>
+
+        <div class="q" data-topic="Parallel structure" data-section="structure_written">
+          <div class="qtag">Parallel structure</div>
+          <div class="we-sentence" data-correct="2">
+            <span class="seg" data-i="0">The manual explains how to install the software,</span>
+            <span class="seg" data-i="1">configure the settings,</span>
+            <span class="seg" data-i="2">and troubleshooting</span>
+            <span class="seg" data-i="3">common errors.</span>
+          </div>
+          <div class="explain">The list must stay parallel with "install... configure... troubleshoot," so "troubleshooting" should be "troubleshoot."</div>
+        </div>
+
+        <div class="q" data-topic="Word form" data-section="structure_written">
+          <div class="qtag">Word form</div>
+          <div class="we-sentence" data-correct="3">
+            <span class="seg" data-i="0">Despite the heavy rain,</span>
+            <span class="seg" data-i="1">the construction crew</span>
+            <span class="seg" data-i="2">finished the project</span>
+            <span class="seg" data-i="3">on a timely fashion.</span>
+          </div>
+          <div class="explain">The fixed expression is "in a timely fashion," not "on a timely fashion" &mdash; a preposition/word-choice error.</div>
+        </div>
+
+        <div class="q" data-topic="Articles" data-section="structure_written">
+          <div class="qtag">Articles</div>
+          <div class="we-sentence" data-correct="0">
+            <span class="seg" data-i="0">A equipment</span>
+            <span class="seg" data-i="1">used in the laboratory</span>
+            <span class="seg" data-i="2">must be inspected</span>
+            <span class="seg" data-i="3">every six months.</span>
+          </div>
+          <div class="explain">"Equipment" is uncountable, so it can't take "a/an"; it should simply be "Equipment" or "The equipment."</div>
+        </div>
+
+        <div class="q" data-topic="Comparatives" data-section="structure_written">
+          <div class="qtag">Comparative structures</div>
+          <div class="we-sentence" data-correct="1">
+            <span class="seg" data-i="0">Reviewers agreed that</span>
+            <span class="seg" data-i="1">this laptop is more faster</span>
+            <span class="seg" data-i="2">than the previous model,</span>
+            <span class="seg" data-i="3">especially when running heavy software.</span>
+          </div>
+          <div class="explain">"More faster" is a double comparative &mdash; "faster" already carries the comparative form, so "more" should be dropped.</div>
+        </div>
+
+        <div class="q" data-topic="Relative clauses" data-section="structure_written">
+          <div class="qtag">Relative clauses</div>
+          <div class="we-sentence" data-correct="1">
+            <span class="seg" data-i="0">The report,</span>
+            <span class="seg" data-i="1">who was published last month,</span>
+            <span class="seg" data-i="2">received significant attention</span>
+            <span class="seg" data-i="3">from policymakers.</span>
+          </div>
+          <div class="explain">"Who" refers to people, but "report" is a thing &mdash; it should be "which was published."</div>
+        </div>
+
+        <div class="q" data-topic="Gerund/infinitive" data-section="structure_written">
+          <div class="qtag">Gerund vs. infinitive</div>
+          <div class="we-sentence" data-correct="2">
+            <span class="seg" data-i="0">The manager suggested</span>
+            <span class="seg" data-i="1">that the team</span>
+            <span class="seg" data-i="2">to revise</span>
+            <span class="seg" data-i="3">the timeline before submitting it.</span>
+          </div>
+          <div class="explain">"Suggest that + subject + base verb" is the correct pattern &mdash; "to revise" should be "revise."</div>
+        </div>
+
+        <div class="q" data-topic="Tense consistency" data-section="structure_written">
+          <div class="qtag">Tense consistency</div>
+          <div class="we-sentence" data-correct="3">
+            <span class="seg" data-i="0">Researchers had already collected</span>
+            <span class="seg" data-i="1">the data</span>
+            <span class="seg" data-i="2">before the funding</span>
+            <span class="seg" data-i="3">runs out.</span>
+          </div>
+          <div class="explain">The earlier past-perfect action ("had already collected") needs a matching simple past in the time clause: "ran out," not "runs out."</div>
+        </div>
+
+        <div class="q" data-topic="Quantifiers" data-section="structure_written">
+          <div class="qtag">Quantifiers</div>
+          <div class="we-sentence" data-correct="0">
+            <span class="seg" data-i="0">A little students</span>
+            <span class="seg" data-i="1">attended the seminar</span>
+            <span class="seg" data-i="2">because it conflicted</span>
+            <span class="seg" data-i="3">with final exams.</span>
+          </div>
+          <div class="explain">"Students" is countable, so it should pair with "a few," not "a little," which is reserved for uncountable nouns.</div>
+        </div>
+
+        <div class="q" data-topic="Passive voice" data-section="structure_written">
+          <div class="qtag">Passive voice</div>
+          <div class="we-sentence" data-correct="1">
+            <span class="seg" data-i="0">The proposal</span>
+            <span class="seg" data-i="1">is currently reviewing</span>
+            <span class="seg" data-i="2">by the finance committee</span>
+            <span class="seg" data-i="3">before it goes to the board.</span>
+          </div>
+          <div class="explain">The proposal is receiving the action, so the passive is needed: "is currently being reviewed," not "is currently reviewing."</div>
+        </div>
+
+        <button class="btn" id="written-check">Check answers</button>
+      </div>
+
+      <div class="panel" id="panel-listening">
+        <div class="section-label">Section 1 &middot; text-based simulation</div>
+        <h2>Listening &mdash; Short Dialogue</h2>
+        <div class="hint">Click "Play audio" once, take notes as you listen, then answer &mdash; on the real test you only hear it once, so resist replaying more than the real exam would allow.</div>
+        <button class="audio-btn" id="audio-btn-1" data-target="passage-1">&#9658; Play audio</button>
+        <div class="passage" id="passage-1">
+          <p><b>Woman:</b> "I still haven't heard back about the internship I applied for. It's been almost three weeks."</p>
+          <p><b>Man:</b> "Three weeks isn't unusual for that department. Did you send a follow-up email?"</p>
+          <p><b>Woman:</b> "Not yet. I didn't want to seem impatient."</p>
+          <p><b>Man:</b> "Honestly, a polite follow-up after two weeks is expected. It shows you're still interested, not that you're impatient."</p>
+        </div>
+
+        <div class="q" data-correct="1" data-topic="Listening - implication" data-section="listening">
+          <div class="qtag">Implication</div>
+          <div class="qtext">1. What does the man imply the woman should do?</div>
+          <div class="opt" data-i="0">Withdraw her application</div>
+          <div class="opt" data-i="1">Send a follow-up email</div>
+          <div class="opt" data-i="2">Apply to a different department</div>
+          <div class="opt" data-i="3">Wait another three weeks without contacting anyone</div>
+          <div class="explain">The man says a follow-up "shows you're still interested," implying she should send one.</div>
+        </div>
+
+        <div class="q" data-correct="0" data-topic="Listening - detail" data-section="listening">
+          <div class="qtag">Detail</div>
+          <div class="qtext">2. Why hasn't the woman followed up yet?</div>
+          <div class="opt" data-i="0">She was worried it would seem impatient</div>
+          <div class="opt" data-i="1">She forgot the deadline</div>
+          <div class="opt" data-i="2">She was told not to contact them</div>
+          <div class="opt" data-i="3">She already withdrew her application</div>
+          <div class="explain">She states directly, "I didn't want to seem impatient."</div>
+        </div>
+
+        <div class="section-label" style="margin-top:26px;">Dialogue 2</div>
+        <button class="audio-btn" id="audio-btn-2" data-target="passage-2">&#9658; Play audio</button>
+        <div class="passage" id="passage-2">
+          <p><b>Man:</b> "I'm thinking of switching my major from biology to environmental science. I just don't feel as engaged with the pre-med track anymore."</p>
+          <p><b>Woman:</b> "That's a big decision. Have you talked to an academic advisor about how many credits would transfer?"</p>
+          <p><b>Man:</b> "Not yet. I'm worried it might delay my graduation by a semester or two."</p>
+          <p><b>Woman:</b> "It might, but most advisors would rather help you switch early than have you finish a degree you're not passionate about."</p>
+        </div>
+
+        <div class="q" data-correct="1" data-topic="Listening - main idea" data-section="listening">
+          <div class="qtag">Main idea</div>
+          <div class="qtext">3. What is the man mainly concerned about?</div>
+          <div class="opt" data-i="0">Failing his biology courses</div>
+          <div class="opt" data-i="1">Whether switching majors will delay his graduation</div>
+          <div class="opt" data-i="2">Finding a new academic advisor</div>
+          <div class="opt" data-i="3">Applying to a pre-med program</div>
+          <div class="explain">He directly states he's "worried it might delay my graduation by a semester or two."</div>
+        </div>
+
+        <div class="q" data-correct="2" data-topic="Listening - attitude" data-section="listening">
+          <div class="qtag">Speaker attitude</div>
+          <div class="qtext">4. What does the woman suggest about academic advisors?</div>
+          <div class="opt" data-i="0">They discourage students from switching majors</div>
+          <div class="opt" data-i="1">They are hard to schedule meetings with</div>
+          <div class="opt" data-i="2">They generally support an early switch over finishing an unwanted degree</div>
+          <div class="opt" data-i="3">They only handle credit transfers, not major changes</div>
+          <div class="explain">She says advisors "would rather help you switch early than have you finish a degree you're not passionate about."</div>
+        </div>
+
+        <div class="section-label" style="margin-top:26px;">Mini-Lecture</div>
+        <button class="audio-btn" id="audio-btn-3" data-target="passage-3">&#9658; Play audio</button>
+        <div class="passage" id="passage-3">
+          <p><i>Professor (Intro to Economics):</i> "Let's briefly cover opportunity cost. Every time you choose one option, you give up the next-best alternative you could have chosen instead. That forgone alternative &mdash; not the money you spent &mdash; is the real economic cost of your decision. For example, if you spend a Saturday studying instead of working a shift, the opportunity cost isn't just the textbook you bought; it's the wages you didn't earn that day.</p>
+          <p>Students often confuse opportunity cost with monetary cost, but they're not the same thing. You could make a decision that costs no money at all and still carry a high opportunity cost, simply because the time or resource used could have gone toward something more valuable."</p>
+        </div>
+
+        <div class="q" data-correct="0" data-topic="Listening - detail" data-section="listening">
+          <div class="qtag">Detail</div>
+          <div class="qtext">5. According to the professor, what is the "real economic cost" of a decision?</div>
+          <div class="opt" data-i="0">The next-best alternative that was given up</div>
+          <div class="opt" data-i="1">The total money spent on the chosen option</div>
+          <div class="opt" data-i="2">The time it takes to make the decision</div>
+          <div class="opt" data-i="3">The tax paid on the purchase</div>
+          <div class="explain">The professor defines the real cost as "the forgone alternative," not the money spent.</div>
+        </div>
+
+        <div class="q" data-correct="1" data-topic="Listening - example use" data-section="listening">
+          <div class="qtag">Purpose of example</div>
+          <div class="qtext">6. Why does the professor mention studying instead of working a shift?</div>
+          <div class="opt" data-i="0">To recommend that students prioritize work over school</div>
+          <div class="opt" data-i="1">To illustrate that opportunity cost is the forgone wages, not the cost of materials</div>
+          <div class="opt" data-i="2">To explain how to apply for a part-time job</div>
+          <div class="opt" data-i="3">To compare tuition costs at different schools</div>
+          <div class="explain">The example clarifies that the opportunity cost is the wages not earned, distinct from the money spent on the textbook.</div>
+        </div>
+
+        <div class="q" data-correct="2" data-topic="Listening - main idea" data-section="listening">
+          <div class="qtag">Main idea</div>
+          <div class="qtext">7. What common misunderstanding does the professor address?</div>
+          <div class="opt" data-i="0">That opportunity cost applies only to businesses</div>
+          <div class="opt" data-i="1">That opportunity cost changes every year</div>
+          <div class="opt" data-i="2">That opportunity cost is the same thing as monetary cost</div>
+          <div class="opt" data-i="3">That opportunity cost cannot be calculated</div>
+          <div class="explain">The professor explicitly says "students often confuse opportunity cost with monetary cost, but they're not the same thing."</div>
+        </div>
+
+        <button class="btn" id="listening-check">Check answers</button>
+      </div>
+
+      <div class="panel" id="panel-target">
+        <div class="section-label">Daily Practice</div>
+        <h2>Set a Daily Target</h2>
+        <div class="streak-badge" id="streak-badge" style="display:none;">🔥 <span id="streak-count">0</span>-day streak</div>
+        <div class="hint">Set how many correct answers you want to get today. Once you hit it, a fresh AI-generated bonus set unlocks &mdash; new sentences, same grammar points &mdash; so you're not just memorizing this app's answer key.</div>
+        <div class="target-row">
+          <label style="font-size:13px;font-weight:700;color:var(--ink-soft);">Target correct/day:</label>
+          <input type="number" id="target-input" min="1" max="50" value="10" />
+          <button class="btn ghost" id="target-save">Save target</button>
+        </div>
+        <div class="ring-wrap">
+          <svg width="150" height="150" viewBox="0 0 150 150">
+            <circle cx="75" cy="75" r="62" fill="none" stroke="#E6F5EA" stroke-width="14"/>
+            <circle id="ring-fill" cx="75" cy="75" r="62" fill="none" stroke="#2F9E52" stroke-width="14"
+              stroke-linecap="round" stroke-dasharray="389.6 389.6" stroke-dashoffset="389.6"
+              transform="rotate(-90 75 75)" style="transition: stroke-dashoffset 0.4s ease;"/>
+            <text x="75" y="70" text-anchor="middle" class="ring-center-pct" id="ring-pct">0%</text>
+            <text x="75" y="90" text-anchor="middle" class="ring-center-sub" id="ring-sub">0 / 10</text>
+          </svg>
+        </div>
+        <div class="ring-label" id="target-progress-text">0 / 10 correct today</div>
+        <button class="btn" id="generate-btn" style="display:none;margin-top:16px;">Generate today's bonus set</button>
+        <div class="gen-status" id="generate-status"></div>
+        <div class="footnote">Progress is saved on this device only, resets each new day. The bonus set is generated once per day and stays available on the "Bonus Set" tab once created.</div>
+      </div>
+
+      <div class="panel" id="panel-tutor">
+        <div class="section-label">Ask Anything</div>
+        <h2>AI Tutor</h2>
+        <div class="hint">Ask about any grammar rule, a question you got wrong, or a general strategy question. The tutor knows which grammar points you've been struggling with in this drill.</div>
+        <div class="chat-suggestions" id="chat-suggestions">
+          <div class="chat-suggestion" data-q="Explain the difference between &quot;a few&quot; and &quot;a little&quot; with examples.">a few vs a little?</div>
+          <div class="chat-suggestion" data-q="Why does &quot;not only&quot; at the start of a sentence require inversion? Give 2 more examples.">Why inversion after &quot;not only&quot;?</div>
+          <div class="chat-suggestion" data-q="Based on my weak areas, what should I review first before my next attempt?">What should I review first?</div>
+        </div>
+        <div class="chat-log" id="chat-log"></div>
+        <div class="chat-input-row">
+          <textarea id="chat-input" placeholder="Type your question about TOEFL ITP grammar or strategy..."></textarea>
+          <button class="btn" id="chat-send" style="margin-top:0;">Send</button>
+        </div>
+        <div class="gen-status" id="chat-status"></div>
+        <div class="footnote">Answers come from an AI model and may occasionally be imperfect &mdash; cross-check anything that changes how you approach a real test question.</div>
+      </div>
+
+      <div class="panel" id="panel-vocab">
+        <div class="section-label">Spaced Repetition</div>
+        <h2>Academic Vocabulary</h2>
+        <div class="hint">Common academic words that show up across TOEFL ITP Reading and Listening. Tap the card to flip it, then rate how well you knew it &mdash; cards you struggle with come back sooner.</div>
+        <div class="vocab-progress" id="vocab-progress">Loading deck...</div>
+        <div class="flashcard" id="vocab-card">
+          <div class="word" id="vocab-word">&nbsp;</div>
+          <div class="pos" id="vocab-pos"></div>
+          <div class="def" id="vocab-def"></div>
+          <div class="ex" id="vocab-ex"></div>
+          <div class="tap-hint" id="vocab-tap-hint">Tap to reveal meaning</div>
+        </div>
+        <div class="rating-row" id="vocab-rating" style="display:none;">
+          <button class="rating-btn again" data-rating="again">Again</button>
+          <button class="rating-btn good" data-rating="good">Good</button>
+          <button class="rating-btn easy" data-rating="easy">Easy</button>
+        </div>
+        <div class="footnote">Ratings adjust when each card resurfaces: "Again" brings it back today, "Good" in a few days, "Easy" further out. Progress saves on this device.</div>
+      </div>
+
+      <div class="panel" id="panel-results">
+        <div class="section-label">Score Recap</div>
+        <h2>Estimated ITP Score</h2>
+        <div id="recap-content">
+          <div style="font-size:13.5px;color:var(--ink-soft);">Complete at least one Structure/Written Expression and one Listening check to see an estimate.</div>
+        </div>
+
+        <div class="section-label" style="margin-top:28px;">Diagnostic</div>
+        <h2>Weak Grammar Areas</h2>
+        <div id="weak-summary" class="weak-list">
+          <div style="font-size:13.5px;color:var(--ink-soft);">Complete the Structure and Written Expression sections first to see your breakdown by grammar point.</div>
+        </div>
+        <div class="summary-grid">
+          <div class="summary-card"><div class="k">Structure</div><div class="v" id="score-structure">&ndash;</div></div>
+          <div class="summary-card"><div class="k">Written Expr.</div><div class="v" id="score-written">&ndash;</div></div>
+          <div class="summary-card"><div class="k">Listening</div><div class="v" id="score-listening">&ndash;</div></div>
+        </div>
+        <div class="footnote">This drill covers subject-verb agreement, parallel structure, word form, articles, inversion, comparatives, relative clauses, gerunds/infinitives, conditionals, tense consistency, quantifiers, and passive voice &mdash; the highest-frequency ITP Structure traps. It doesn't cover every grammar point ETS tests, and this isn't an official ETS score.</div>
+      </div>
+    </div>
+  `;
+
+  root.querySelectorAll('.tab').forEach(t => {
+    t.addEventListener('click', () => {
+      root.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+      root.querySelectorAll('.panel').forEach(x => x.classList.remove('active'));
+      t.classList.add('active');
+      root.querySelector('#panel-' + t.dataset.tab).classList.add('active');
+    });
+  });
+
+  const topicStats = {}; // topic -> {correct, total}
+
+  function recordTopic(topic, isCorrect) {
+    if (!topic) return;
+    if (!topicStats[topic]) topicStats[topic] = {correct: 0, total: 0};
+    topicStats[topic].total++;
+    if (isCorrect) topicStats[topic].correct++;
+  }
+
+  function renderWeakSummary() {
+    const container = root.querySelector('#weak-summary');
+    const topics = Object.keys(topicStats);
+    if (topics.length === 0) return;
+    container.innerHTML = topics.map(topic => {
+      const s = topicStats[topic];
+      const pct = Math.round((s.correct / s.total) * 100);
+      const low = pct < 60;
+      return `<div class="weak-item ${low ? 'low' : ''}">
+        <span>${topic}</span>
+        <div class="bar-bg"><div class="bar-fill" style="width:${pct}%"></div></div>
+        <span>${s.correct}/${s.total}</span>
+      </div>`;
+    }).join('');
+  }
+
+  root.querySelector('#structure-check').addEventListener('click', () => {
+    const panel = root.querySelector('#panel-structure');
+    let correct = 0, total = 0;
+    panel.querySelectorAll('.q').forEach(q => {
+      total++;
+      const answer = parseInt(q.dataset.correct, 10);
+      const selected = q.dataset.selected;
+      const topic = q.dataset.topic;
+      const isCorrect = selected !== undefined && parseInt(selected,10) === answer;
+      if (isCorrect) correct++;
+      recordTopic(topic, isCorrect);
+      q.querySelectorAll('.opt').forEach(o => {
+        o.classList.add('disabled');
+        const i = parseInt(o.dataset.i, 10);
+        if (i === answer) o.classList.add('correct');
+        else if (selected !== undefined && parseInt(selected,10) === i) o.classList.add('incorrect');
+      });
+      q.querySelector('.explain').classList.add('show');
+    });
+    root.querySelector('#score-structure').textContent = correct + ' / ' + total;
+    root.querySelector('#structure-check').disabled = true;
+    renderWeakSummary();
+    addDailyCorrect(correct);
+    recordSectionScore('structure_written', correct, total);
+  });
+
+  root.querySelectorAll('#panel-structure .opt').forEach(opt => {
+    opt.addEventListener('click', () => {
+      if (opt.classList.contains('disabled')) return;
+      const q = opt.closest('.q');
+      q.dataset.selected = opt.dataset.i;
+      q.querySelectorAll('.opt').forEach(o => o.style.background = '');
+      opt.style.background = '#E9E4D3';
+    });
+  });
+
+  root.querySelectorAll('#panel-listening .opt').forEach(opt => {
+    opt.addEventListener('click', () => {
+      if (opt.classList.contains('disabled')) return;
+      const q = opt.closest('.q');
+      q.dataset.selected = opt.dataset.i;
+      q.querySelectorAll('.opt').forEach(o => o.style.background = '');
+      opt.style.background = '#E9E4D3';
+    });
+  });
+
+  root.querySelector('#listening-check').addEventListener('click', () => {
+    const panel = root.querySelector('#panel-listening');
+    let correct = 0, total = 0;
+    panel.querySelectorAll('.q').forEach(q => {
+      total++;
+      const answer = parseInt(q.dataset.correct, 10);
+      const selected = q.dataset.selected;
+      const isCorrect = selected !== undefined && parseInt(selected,10) === answer;
+      if (isCorrect) correct++;
+      q.querySelectorAll('.opt').forEach(o => {
+        o.classList.add('disabled');
+        const i = parseInt(o.dataset.i, 10);
+        if (i === answer) o.classList.add('correct');
+        else if (selected !== undefined && parseInt(selected,10) === i) o.classList.add('incorrect');
+      });
+      q.querySelector('.explain').classList.add('show');
+    });
+    root.querySelector('#score-listening').textContent = correct + ' / ' + total;
+    root.querySelector('#listening-check').disabled = true;
+    addDailyCorrect(correct);
+    recordSectionScore('listening', correct, total);
+  });
+
+  root.querySelectorAll('#panel-written .seg').forEach(seg => {
+    seg.addEventListener('click', () => {
+      const sentence = seg.closest('.we-sentence');
+      if (sentence.dataset.done) return;
+      const answer = parseInt(sentence.dataset.correct, 10);
+      const clicked = parseInt(seg.dataset.i, 10);
+      const isCorrect = clicked === answer;
+      const q = seg.closest('.q');
+      const topic = q.dataset.topic;
+      recordTopic(topic, isCorrect);
+      sentence.dataset.done = '1';
+      sentence.querySelectorAll('.seg').forEach(s => {
+        s.classList.add('disabled');
+        const i = parseInt(s.dataset.i, 10);
+        if (i === answer) s.classList.add('correct');
+        else if (i === clicked) s.classList.add('incorrect');
+      });
+      q.querySelector('.explain').classList.add('show');
+      checkWrittenComplete();
+    });
+  });
+
+  function checkWrittenComplete() {
+    const panel = root.querySelector('#panel-written');
+    if (panel.dataset.scored) return;
+    const sentences = panel.querySelectorAll('.we-sentence');
+    let done = 0, correct = 0;
+    sentences.forEach(s => {
+      if (s.dataset.done) done++;
+    });
+    if (done === sentences.length) {
+      let c = 0;
+      sentences.forEach(s => {
+        if (!s.querySelector('.seg.incorrect')) c++;
+      });
+      root.querySelector('#score-written').textContent = c + ' / ' + sentences.length;
+      root.querySelector('#written-check').style.display = 'none';
+      panel.dataset.scored = '1';
+      renderWeakSummary();
+      addDailyCorrect(c);
+      recordSectionScore('structure_written', c, sentences.length);
+    }
+  }
+
+  root.querySelector('#written-check').addEventListener('click', () => {
+    // manual trigger in case someone wants explicit reveal; also just renders current state
+    renderWeakSummary();
+  });
+
+  // ---------- Daily target + persistent progress ----------
+  function todayStr() {
+    return new Date().toISOString().slice(0, 10);
+  }
+
+  function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+  // ==== PENYIMPANAN PROGRESS ====
+  // Login Google -> tersimpan di backend (Cloudflare D1), sinkron lintas device.
+  // Mode Tamu -> tersimpan di localStorage browser ini saja.
+  const GUEST_PREFIX = 'toefl-guest:';
+  window.storage = isGuest ? {
+    async get(key, shared) {
+      const raw = localStorage.getItem(GUEST_PREFIX + key);
+      if (raw === null) throw new Error('Key not found: ' + key);
+      return { key, value: raw, shared: !!shared };
+    },
+    async set(key, value, shared) {
+      localStorage.setItem(GUEST_PREFIX + key, value);
+      return { key, value, shared: !!shared };
+    },
+    async delete(key, shared) {
+      localStorage.removeItem(GUEST_PREFIX + key);
+      return { key, deleted: true, shared: !!shared };
+    },
+    async list(prefix, shared) {
+      const keys = [];
+      const p = GUEST_PREFIX + (prefix || '');
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        if (k && k.indexOf(p) === 0) keys.push(k.slice(GUEST_PREFIX.length));
+      }
+      return { keys, prefix, shared: !!shared };
+    }
+  } : {
+    async get(key, shared) {
+      const res = await fetch(API_BASE + '/storage/get', {
+        method: 'POST',
+        headers: authHeaders(),
+        body: JSON.stringify({ key, shared: !!shared })
+      });
+      if (res.status === 404) throw new Error('Key not found: ' + key);
+      if (!res.ok) throw new Error('Storage get failed');
+      return await res.json(); // { key, value, shared }
+    },
+    async set(key, value, shared) {
+      const res = await fetch(API_BASE + '/storage/set', {
+        method: 'POST',
+        headers: authHeaders(),
+        body: JSON.stringify({ key, value, shared: !!shared })
+      });
+      if (!res.ok) { const d = await res.json().catch(() => ({})); throw new Error(d.error || 'Storage set failed'); }
+      return await res.json();
+    },
+    async delete(key, shared) {
+      const res = await fetch(API_BASE + '/storage/delete', {
+        method: 'POST',
+        headers: authHeaders(),
+        body: JSON.stringify({ key, shared: !!shared })
+      });
+      if (!res.ok) throw new Error('Storage delete failed');
+      return await res.json();
+    },
+    async list(prefix, shared) {
+      const res = await fetch(API_BASE + '/storage/list', {
+        method: 'POST',
+        headers: authHeaders(),
+        body: JSON.stringify({ prefix: prefix || '', shared: !!shared })
+      });
+      if (!res.ok) throw new Error('Storage list failed');
+      return await res.json();
+    }
+  };
+
+  // Storage backend can occasionally return a transient server error.
+  // Retry a couple of times with a short backoff before giving up.
+  async function storageSetWithRetry(key, value, shared, attempts) {
+    attempts = attempts || 3;
+    let lastErr;
+    for (let i = 0; i < attempts; i++) {
+      try {
+        return await window.storage.set(key, value, shared || false);
+      } catch (e) {
+        lastErr = e;
+        if (i < attempts - 1) await sleep(400 * (i + 1));
+      }
+    }
+    throw lastErr;
+  }
+
+  window.__toeflProgress = { date: todayStr(), correctToday: 0, target: 10 };
+
+  function renderProgress() {
+    const p = window.__toeflProgress;
+    const pct = Math.min(100, Math.round((p.correctToday / p.target) * 100));
+    const circumference = 389.6;
+    const offset = circumference - (pct / 100) * circumference;
+    const ring = root.querySelector('#ring-fill');
+    if (ring) ring.setAttribute('stroke-dashoffset', offset.toFixed(1));
+    const ringPct = root.querySelector('#ring-pct');
+    if (ringPct) ringPct.textContent = pct + '%';
+    const ringSub = root.querySelector('#ring-sub');
+    if (ringSub) ringSub.textContent = p.correctToday + ' / ' + p.target;
+    root.querySelector('#target-progress-text').textContent = p.correctToday + ' / ' + p.target + ' correct today';
+    root.querySelector('#target-input').value = p.target;
+    root.querySelector('#generate-btn').style.display = (p.correctToday >= p.target) ? 'inline-block' : 'none';
+  }
+
+  async function saveProgress() {
+    try {
+      await storageSetWithRetry('toefl-daily-progress', JSON.stringify(window.__toeflProgress), false);
+    } catch (e) {
+      console.error('Could not save progress', e);
+    }
+  }
+
+  function addDailyCorrect(n) {
+    if (!n) return;
+    window.__toeflProgress.correctToday += n;
+    renderProgress();
+    saveProgress();
+    checkAndUpdateStreak();
+  }
+
+  async function initDailyTarget() {
+    try {
+      const res = await window.storage.get('toefl-daily-progress', false);
+      if (res && res.value) {
+        const parsed = JSON.parse(res.value);
+        if (parsed.date === todayStr()) {
+          window.__toeflProgress = parsed;
+        } else {
+          window.__toeflProgress = { date: todayStr(), correctToday: 0, target: parsed.target || 10 };
+        }
+      }
+    } catch (e) {
+      // no existing progress yet — keep defaults
+    }
+    renderProgress();
+
+    try {
+      const bonusRes = await window.storage.get('toefl-bonus-' + todayStr(), false);
+      if (bonusRes && bonusRes.value) {
+        renderBonusSet(JSON.parse(bonusRes.value), false);
+      }
+    } catch (e) {
+      // no bonus set generated yet today
+    }
+  }
+
+  root.querySelector('#target-save').addEventListener('click', async () => {
+    const val = parseInt(root.querySelector('#target-input').value, 10) || 10;
+    window.__toeflProgress.target = val;
+    renderProgress();
+    await saveProgress();
+  });
+
+  // ---------- Bonus set: AI-generated fresh questions ----------
+  function escapeHtml(str) {
+    const d = document.createElement('div');
+    d.textContent = str == null ? '' : String(str);
+    return d.innerHTML;
+  }
+
+  function buildMCQuestion(q, idx, section) {
+    const div = document.createElement('div');
+    div.className = 'q';
+    div.dataset.correct = q.correctIndex;
+    div.dataset.topic = q.topic || '';
+    div.dataset.section = section || 'other';
+    const opts = (q.options || []).map((o, i) => `<div class="opt" data-i="${i}">${escapeHtml(o)}</div>`).join('');
+    div.innerHTML = `<div class="qtag">${escapeHtml(q.topic || '')}</div>
+      <div class="qtext">${idx}. ${escapeHtml(q.question)}</div>
+      ${opts}
+      <div class="explain">${escapeHtml(q.explanation || '')}</div>`;
+    return div;
+  }
+
+  function buildWrittenQuestion(q, idx, section) {
+    const div = document.createElement('div');
+    div.className = 'q';
+    div.dataset.topic = q.topic || '';
+    div.dataset.section = section || 'other';
+    const segs = (q.segments || []).map((s, i) => `<span class="seg" data-i="${i}">${escapeHtml(s)}</span>`).join(' ');
+    div.innerHTML = `<div class="qtag">${escapeHtml(q.topic || '')}</div>
+      <div class="we-sentence" data-correct="${q.correctIndex}">${segs}</div>
+      <div class="explain">${escapeHtml(q.explanation || '')}</div>`;
+    return div;
+  }
+
+  function buildShortAnswerQuestion(q, idx, section, passageId) {
+    const div = document.createElement('div');
+    div.className = 'q fill-q';
+    div.dataset.topic = q.topic || '';
+    div.dataset.section = section || 'other';
+    div.dataset.accepted = q.acceptedAnswer || '';
+    div.dataset.prompt = q.prompt || q.question || '';
+    if (passageId) div.dataset.passage = passageId;
+    div.innerHTML = `<div class="fill-tag">\u270D\uFE0F Type your own answer</div>
+      <div class="qtag">${escapeHtml(q.topic || '')}</div>
+      <div class="qtext">${idx}. ${escapeHtml(q.prompt || q.question || '')}</div>
+      <textarea class="fill-input" rows="2" placeholder="Type your answer here..."></textarea>
+      <div class="fill-feedback"></div>
+      <div class="explain">${escapeHtml(q.explanation || '')}</div>`;
+    return div;
+  }
+
+  function wireOptionClicks(container) {
+    container.querySelectorAll('.opt').forEach(opt => {
+      opt.addEventListener('click', () => {
+        if (opt.classList.contains('disabled')) return;
+        const q = opt.closest('.q');
+        q.dataset.selected = opt.dataset.i;
+        q.querySelectorAll('.opt').forEach(o => o.style.background = '');
+        opt.style.background = '#E9E4D3';
+      });
+    });
+  }
+
+  function wireSegSelect(container) {
+    container.querySelectorAll('.seg').forEach(seg => {
+      seg.addEventListener('click', () => {
+        const sentence = seg.closest('.we-sentence');
+        if (sentence.classList.contains('disabled')) return;
+        sentence.dataset.selected = seg.dataset.i;
+        sentence.querySelectorAll('.seg').forEach(s => s.style.background = '');
+        seg.style.background = '#E9E4D3';
+      });
+    });
+  }
+
+  function gradeAnyContainer(container) {
+    let correct = 0, total = 0;
+    const bySection = {};
+    container.querySelectorAll('.q').forEach(q => {
+      const topic = q.dataset.topic;
+      const section = q.dataset.section || 'other';
+      if (!bySection[section]) bySection[section] = { correct: 0, total: 0 };
+      const optEls = q.querySelectorAll('.opt');
+      if (optEls.length) {
+        total++;
+        const answer = parseInt(q.dataset.correct, 10);
+        const selected = q.dataset.selected;
+        const isCorrect = selected !== undefined && parseInt(selected, 10) === answer;
+        if (isCorrect) correct++;
+        bySection[section].total++;
+        if (isCorrect) bySection[section].correct++;
+        recordTopic(topic, isCorrect);
+        optEls.forEach(o => {
+          o.classList.add('disabled');
+          const i = parseInt(o.dataset.i, 10);
+          if (i === answer) o.classList.add('correct');
+          else if (selected !== undefined && parseInt(selected, 10) === i) o.classList.add('incorrect');
+        });
+      } else {
+        const sentence = q.querySelector('.we-sentence');
+        if (sentence) {
+          total++;
+          const answer = parseInt(sentence.dataset.correct, 10);
+          const selected = sentence.dataset.selected;
+          const isCorrect = selected !== undefined && parseInt(selected, 10) === answer;
+          if (isCorrect) correct++;
+          bySection[section].total++;
+          if (isCorrect) bySection[section].correct++;
+          recordTopic(topic, isCorrect);
+          sentence.classList.add('disabled');
+          sentence.querySelectorAll('.seg').forEach(s => {
+            s.classList.add('disabled');
+            const i = parseInt(s.dataset.i, 10);
+            if (i === answer) s.classList.add('correct');
+            else if (selected !== undefined && parseInt(selected, 10) === i) s.classList.add('incorrect');
+          });
+        }
+      }
+      const exp = q.querySelector('.explain');
+      if (exp) exp.classList.add('show');
+    });
+    return { correct, total, bySection };
+  }
+
+  async function gradeShortAnswers(container, banner) {
+    const fillEls = Array.from(container.querySelectorAll('.fill-q'));
+    if (!fillEls.length) return { correct: 0, total: 0, bySection: {} };
+
+    const items = fillEls.map((el, i) => ({
+      index: i,
+      topic: el.dataset.topic,
+      prompt: el.dataset.prompt,
+      acceptedAnswer: el.dataset.accepted,
+      userAnswer: (el.querySelector('.fill-input').value || '').trim()
+    }));
+
+    if (banner) { banner.textContent = 'Grading your typed answers with AI...'; banner.classList.add('show'); }
+
+    let grades = null;
+    try {
+      const prompt = `You are grading short-answer responses for a TOEFL ITP practice app. For each item, decide if the student's answer is correct given the question and the reference accepted answer. Be reasonably lenient about minor spelling, capitalization, punctuation, or article/word-order variations, but the core grammar point being tested must be correctly demonstrated. Give brief, encouraging feedback (max 20 words) in each case, mentioning what's right or what to fix.
+
+Items (JSON): ${JSON.stringify(items)}
+
+Return ONLY valid JSON, no markdown fences, no commentary, in exactly this shape: {"grades":[{"index":0,"correct":true,"feedback":"..."}]}`;
+      const text = await callAI({ prompt, maxTokens: 1500 });
+      const clean = text.replace(/```json|```/g, '').trim();
+      grades = JSON.parse(clean).grades;
+    } catch (e) {
+      console.error('Short-answer grading failed', e);
+    }
+
+    if (banner) banner.classList.remove('show');
+
+    let correct = 0, total = fillEls.length;
+    const bySection = {};
+    fillEls.forEach((el, i) => {
+      const section = el.dataset.section || 'other';
+      if (!bySection[section]) bySection[section] = { correct: 0, total: 0 };
+      bySection[section].total++;
+      const g = grades && grades.find(x => x.index === i);
+      const input = el.querySelector('.fill-input');
+      const fb = el.querySelector('.fill-feedback');
+      input.disabled = true;
+      let isCorrect = false;
+      let feedbackText;
+      if (g) {
+        isCorrect = !!g.correct;
+        feedbackText = g.feedback || (isCorrect ? 'Correct!' : 'Not quite.');
+      } else {
+        feedbackText = 'Could not auto-grade this one — compare with the explanation below.';
+      }
+      if (isCorrect) { correct++; bySection[section].correct++; input.classList.add('correct'); }
+      else if (g) { input.classList.add('incorrect'); }
+      fb.textContent = feedbackText;
+      fb.classList.add('show', isCorrect ? 'correct-fb' : 'incorrect-fb');
+      recordTopic(el.dataset.topic, isCorrect);
+      const exp = el.querySelector('.explain');
+      if (exp) exp.classList.add('show');
+    });
+    return { correct, total, bySection };
+  }
+
+  function renderBonusSet(data, isNew) {
+    let tab = root.querySelector('.tab[data-tab="bonus"]');
+    let panel = root.querySelector('#panel-bonus');
+    if (!tab) {
+      tab = document.createElement('div');
+      tab.className = 'tab';
+      tab.dataset.tab = 'bonus';
+      tab.textContent = 'Bonus Set';
+      tab.addEventListener('click', () => {
+        root.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+        root.querySelectorAll('.panel').forEach(x => x.classList.remove('active'));
+        tab.classList.add('active');
+        panel.classList.add('active');
+      });
+      root.querySelector('.tabs').appendChild(tab);
+
+      panel = document.createElement('div');
+      panel.className = 'panel';
+      panel.id = 'panel-bonus';
+      root.querySelector('.wrap').appendChild(panel);
+    }
+
+    panel.innerHTML = `
+      <div class="section-label">Today's Bonus Set</div>
+      <h2>Freshly generated practice</h2>
+      <div class="hint">New sentences generated after you hit today's target &mdash; same grammar points, different wording, so it tests real understanding instead of memorized answers.</div>
+      <div id="bonus-questions"></div>
+      <div class="section-label" id="bonus-challenge-label" style="display:none;background:#FDECD8;color:#8A4B12;">Challenge Round</div>
+      <div class="hint" id="bonus-challenge-hint" style="display:none;">No options this time &mdash; type your own answer in full sentences or phrases. An AI grader checks it and gives feedback, which is harder (and more useful) than picking from four choices.</div>
+      <div id="bonus-shortanswer"></div>
+      <div class="grading-banner" id="bonus-grading-banner"></div>
+      <button class="btn" id="bonus-check">Check answers</button>
+      <div class="summary-grid" id="bonus-summary" style="display:none;">
+        <div class="summary-card"><div class="k">Bonus Set Score</div><div class="v" id="bonus-score">0/0</div></div>
+      </div>
+    `;
+
+    const qContainer = panel.querySelector('#bonus-questions');
+    const saContainer = panel.querySelector('#bonus-shortanswer');
+    let counter = 1;
+    let passageCounter = 0;
+    (data.structure || []).forEach(q => qContainer.appendChild(buildMCQuestion(q, counter++, 'structure_written')));
+    (data.written || []).forEach(q => qContainer.appendChild(buildWrittenQuestion(q, counter++, 'structure_written')));
+    (data.listening || []).forEach(group => {
+      if (group.transcript) {
+        passageCounter++;
+        const pid = 'bonus-passage-' + passageCounter;
+        const audioBtn = document.createElement('button');
+        audioBtn.className = 'audio-btn';
+        audioBtn.dataset.target = pid;
+        audioBtn.textContent = '\u25B6 Play audio';
+        qContainer.appendChild(audioBtn);
+        const p = document.createElement('div');
+        p.className = 'passage';
+        p.id = pid;
+        p.innerHTML = `<p>${escapeHtml(group.transcript)}</p>`;
+        qContainer.appendChild(p);
+        wireAudioButton(audioBtn);
+      }
+      (group.questions || []).forEach(q => qContainer.appendChild(buildMCQuestion(q, counter++, 'listening')));
+    });
+
+    if ((data.shortAnswer || []).length) {
+      panel.querySelector('#bonus-challenge-label').style.display = 'inline-block';
+      panel.querySelector('#bonus-challenge-hint').style.display = 'block';
+      (data.shortAnswer || []).forEach(q => {
+        let pid = null;
+        if (q.transcript) {
+          passageCounter++;
+          pid = 'bonus-passage-' + passageCounter;
+          const audioBtn = document.createElement('button');
+          audioBtn.className = 'audio-btn';
+          audioBtn.dataset.target = pid;
+          audioBtn.textContent = '\u25B6 Play audio';
+          saContainer.appendChild(audioBtn);
+          const p = document.createElement('div');
+          p.className = 'passage';
+          p.id = pid;
+          p.innerHTML = `<p>${escapeHtml(q.transcript)}</p>`;
+          saContainer.appendChild(p);
+          wireAudioButton(audioBtn);
+        }
+        const section = q.type === 'listening' ? 'listening' : 'structure_written';
+        saContainer.appendChild(buildShortAnswerQuestion(q, counter++, section, pid));
+      });
+    }
+
+    wireOptionClicks(qContainer);
+    wireSegSelect(qContainer);
+
+    const checkBtn = panel.querySelector('#bonus-check');
+    const banner = panel.querySelector('#bonus-grading-banner');
+    checkBtn.addEventListener('click', async () => {
+      checkBtn.disabled = true;
+      checkBtn.textContent = 'Checking...';
+      const mcResult = gradeAnyContainer(qContainer);
+      const saResult = await gradeShortAnswers(saContainer, banner);
+      checkBtn.textContent = 'Check answers';
+
+      const correct = mcResult.correct + saResult.correct;
+      const total = mcResult.total + saResult.total;
+      const bySection = {};
+      [mcResult.bySection, saResult.bySection].forEach(bs => {
+        Object.keys(bs).forEach(sec => {
+          if (!bySection[sec]) bySection[sec] = { correct: 0, total: 0 };
+          bySection[sec].correct += bs[sec].correct;
+          bySection[sec].total += bs[sec].total;
+        });
+      });
+
+      panel.querySelector('#bonus-summary').style.display = 'grid';
+      panel.querySelector('#bonus-score').textContent = correct + ' / ' + total;
+      renderWeakSummary();
+      if (isNew) {
+        addDailyCorrect(correct);
+        Object.keys(bySection).forEach(sec => {
+          recordSectionScore(sec, bySection[sec].correct, bySection[sec].total);
+        });
+      }
+    });
+  }
+
+  async function generateBonusSet() {
+    const btn = root.querySelector('#generate-btn');
+    const status = root.querySelector('#generate-status');
+    btn.disabled = true;
+    status.textContent = 'Generating your bonus set — this can take a few seconds...';
+    const prompt = `You are an experienced ETS-style TOEFL ITP item writer. Generate new TOEFL ITP practice questions for a study app, in two rounds:
+
+ROUND 1 — multiple choice (8 items): 3 Structure (fill-in-the-blank grammar, 4 options each), 3 Written Expression (a sentence split into exactly 4 segments, with exactly one segment containing a grammar error), and 2 Listening (a short 3-5 line dialogue or mini-lecture transcript, each followed by exactly 1 comprehension question).
+
+ROUND 2 — "Challenge Round", typed short-answer items (3 items), harder because there are no options to pick from — the student must produce the answer themselves:
+- 1 "structure" type: give a sentence with a blank and a bracketed hint of the words/concept to use (e.g. "By the time she arrived, the meeting ___ (already / start)."), and ask the student to type the fully correct completion. acceptedAnswer should be the single best canonical completion (grading will allow minor equivalent phrasing).
+- 1 "written" type: give a sentence containing one grammar error and ask the student to type out the corrected full sentence (not just the fixed word). acceptedAnswer is the fully corrected sentence.
+- 1 "listening" type: include a short transcript (3-5 lines) and ask an open-ended comprehension question (e.g. "In your own words, what is the main idea?" or "What does the man imply about...?") that requires a short written response, not a single word. acceptedAnswer is a concise model answer capturing the key point(s) a correct response must include.
+Each Challenge Round item needs: type, topic, prompt (the instruction/question the student sees; for "written" type embed the original sentence inside the prompt), acceptedAnswer, explanation, and — only for "listening" type — a transcript field.
+
+Cover a mix of these grammar points across the Structure and Written Expression items (both rounds combined): subject-verb agreement, parallel structure, word form, articles, inversion after negatives, comparatives, relative clauses, gerunds/infinitives, conditionals, tense consistency, quantifiers, passive voice.
+
+STRICT QUALITY RULES (a real ETS writer would enforce all of these):
+1. Every multiple-choice question must have EXACTLY ONE defensible correct answer under standard written English grammar rules. Before finalizing each item, mentally check the other three options and confirm each is clearly and unambiguously wrong for a specific, statable reason — not just "less natural" or a matter of style.
+2. Never use options that could both be argued as correct depending on context, regional variation, or informal usage. If you can't rule out an option with total confidence, discard the question and write a different one.
+3. Sentences must sound like authentic, neutral academic or workplace English (the actual register ETS uses) — not casual, not literary, not overly complex or contrived just to hide the answer.
+4. Written Expression items: the three non-error segments must be completely correct as written; do not introduce a second subtle error anywhere else in the sentence.
+5. Listening transcripts must be self-contained: the question must be answerable using ONLY the information in the transcript, with no outside knowledge required, and the correct answer must be traceable to a specific line.
+6. Explanations must cite the specific rule or line of text that makes the correct answer correct, in one concise sentence.
+7. Keep language at CEFR B1-B2 difficulty — appropriate for an ITP score in the 500-560 range (upper-intermediate), not beginner and not needlessly advanced/rare vocabulary.
+8. Challenge Round acceptedAnswer values must be precise enough for a grader to check against, but explanations should note what variations would also be acceptable.
+
+Return ONLY valid JSON with no markdown fences and no commentary, in exactly this shape: {"structure":[{"topic":"...","question":"...","options":["...","...","...","..."],"correctIndex":0,"explanation":"..."}],"written":[{"topic":"...","segments":["...","...","...","..."],"correctIndex":0,"explanation":"..."}],"listening":[{"transcript":"...","questions":[{"topic":"...","question":"...","options":["...","...","...","..."],"correctIndex":0,"explanation":"..."}]}],"shortAnswer":[{"type":"structure","topic":"...","prompt":"...","acceptedAnswer":"...","explanation":"..."},{"type":"written","topic":"...","prompt":"...","acceptedAnswer":"...","explanation":"..."},{"type":"listening","topic":"...","transcript":"...","prompt":"...","acceptedAnswer":"...","explanation":"..."}]}`;
+
+    try {
+      const text = await callAI({ prompt, maxTokens: 8000 });
+      const clean = text.replace(/```json|```/g, '').trim();
+      const parsed = JSON.parse(clean);
+      try {
+        await storageSetWithRetry('toefl-bonus-' + todayStr(), JSON.stringify(parsed), false);
+      } catch (e) {
+        console.error('Could not save bonus set', e);
+      }
+      renderBonusSet(parsed, true);
+      status.textContent = 'New set ready — check the "Bonus Set" tab.';
+    } catch (e) {
+      console.error(e);
+      status.textContent = 'Could not generate a new set right now — try again in a moment.';
+      btn.disabled = false;
+    }
+  }
+
+  // ---------- Audio playback (browser text-to-speech) ----------
+  let cachedVoice = null;
+  function pickVoice() {
+    if (cachedVoice) return cachedVoice;
+    if (!('speechSynthesis' in window)) return null;
+    const voices = window.speechSynthesis.getVoices();
+    cachedVoice = voices.find(v => v.lang === 'en-US') || voices.find(v => v.lang && v.lang.startsWith('en')) || null;
+    return cachedVoice;
+  }
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.onvoiceschanged = () => { cachedVoice = null; pickVoice(); };
+  }
+
+  function speakPassage(text, btn) {
+    if (!('speechSynthesis' in window)) {
+      btn.textContent = 'Audio not supported in this browser';
+      btn.disabled = true;
+      return;
+    }
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'en-US';
+    utterance.rate = 0.95;
+    const v = pickVoice();
+    if (v) utterance.voice = v;
+    btn.disabled = true;
+    btn.classList.add('playing');
+    btn.textContent = '\u25B6 Playing...';
+    const reset = () => {
+      btn.disabled = false;
+      btn.classList.remove('playing');
+      btn.textContent = '\u25B6 Play audio';
+    };
+    utterance.onend = reset;
+    utterance.onerror = reset;
+    window.speechSynthesis.speak(utterance);
+  }
+
+  function wireAudioButton(btn) {
+    btn.addEventListener('click', () => {
+      const targetId = btn.dataset.target;
+      const target = root.querySelector('#' + targetId);
+      if (!target) return;
+      speakPassage(target.textContent.trim(), btn);
+    });
+  }
+
+  root.querySelectorAll('.audio-btn[data-target]').forEach(wireAudioButton);
+
+  // ---------- Score recap + ITP estimate ----------
+  window.__toeflAgg = { listeningCorrect: 0, listeningTotal: 0, swCorrect: 0, swTotal: 0 };
+  window.__toeflLog = [];
+
+  async function loadRecapData() {
+    try {
+      const res = await window.storage.get('toefl-agg-scores', false);
+      if (res && res.value) window.__toeflAgg = JSON.parse(res.value);
+    } catch (e) { /* no aggregate saved yet */ }
+    try {
+      const res = await window.storage.get('toefl-history-log', false);
+      if (res && res.value) window.__toeflLog = JSON.parse(res.value);
+    } catch (e) { /* no history saved yet */ }
+    renderRecap();
+  }
+
+  async function recordSectionScore(section, correct, total) {
+    if (!total) return;
+    const key = (section === 'listening') ? 'listening' : 'sw';
+    window.__toeflAgg[key + 'Correct'] += correct;
+    window.__toeflAgg[key + 'Total'] += total;
+    window.__toeflLog.push({ date: todayStr(), section: section, correct: correct, total: total });
+    if (window.__toeflLog.length > 40) window.__toeflLog = window.__toeflLog.slice(window.__toeflLog.length - 40);
+    try {
+      await storageSetWithRetry('toefl-agg-scores', JSON.stringify(window.__toeflAgg), false);
+    } catch (e) { console.error('Could not save aggregate scores', e); }
+    try {
+      await storageSetWithRetry('toefl-history-log', JSON.stringify(window.__toeflLog), false);
+    } catch (e) { console.error('Could not save history log', e); }
+    renderRecap();
+  }
+
+  function estimateScaled(correct, total, min, max) {
+    if (!total) return null;
+    return Math.round(min + (correct / total) * (max - min));
+  }
+
+  function cefrForTotal(total) {
+    if (total >= 543) return 'B2';
+    if (total >= 433) return 'B1';
+    if (total >= 343) return 'A2';
+    return 'A1';
+  }
+
+  function renderRecap() {
+    const wrap = root.querySelector('#recap-content');
+    if (!wrap) return;
+    const agg = window.__toeflAgg;
+    const listeningScaled = estimateScaled(agg.listeningCorrect, agg.listeningTotal, 31, 68);
+    const swScaled = estimateScaled(agg.swCorrect, agg.swTotal, 31, 68);
+
+    let scoreBlock = '<div style="font-size:13.5px;color:var(--ink-soft);">Complete at least one Structure/Written Expression and one Listening check to see an estimate.</div>';
+    if (listeningScaled !== null && swScaled !== null) {
+      const partialAvg = (listeningScaled + swScaled) / 2;
+      const partialTotal = Math.round(partialAvg * 10);
+      const cefr = cefrForTotal(partialTotal);
+      scoreBlock = `
+        <div class="summary-grid">
+          <div class="summary-card"><div class="k">Listening (est.)</div><div class="v">${listeningScaled}</div></div>
+          <div class="summary-card"><div class="k">Structure &amp; Written Expr. (est.)</div><div class="v">${swScaled}</div></div>
+          <div class="summary-card"><div class="k">Rough total (2 of 3 sections)</div><div class="v">${partialTotal}</div></div>
+        </div>
+        <div class="cefr-tag" style="display:inline-block;margin-top:12px;font-family:'IBM Plex Mono',monospace;font-size:12px;border:1px solid var(--red);color:var(--red);padding:3px 10px;border-radius:12px;">~CEFR ${cefr} range</div>
+        <div class="footnote">This is an unofficial, rough estimate using a simple linear conversion (ETS doesn't publish its exact raw-to-scaled "equating" tables, and they vary slightly per test). It also excludes the Reading section, which isn't part of this drill, so treat this as a directional signal, not a predicted score.</div>`;
+    }
+
+    let historyBlock = '';
+    if (window.__toeflLog.length) {
+      const rows = window.__toeflLog.slice().reverse().slice(0, 10).map(entry => {
+        const label = entry.section === 'listening' ? 'Listening' : 'Structure &amp; Written Expr.';
+        const pct = Math.round((entry.correct / entry.total) * 100);
+        return `<div class="weak-item"><span>${entry.date} &middot; ${label}</span><div class="bar-bg"><div class="bar-fill" style="width:${pct}%"></div></div><span>${entry.correct}/${entry.total}</span></div>`;
+      }).join('');
+      historyBlock = `<div style="margin-top:22px;"><div class="section-label">Recent Attempts</div>${rows}</div>`;
+    }
+
+    wrap.innerHTML = scoreBlock + historyBlock;
+  }
+
+  root.querySelector('#generate-btn').addEventListener('click', generateBonusSet);
+
+  // ---------- Streak tracking ----------
+  async function loadStreak() {
+    try {
+      const res = await window.storage.get('toefl-streak', false);
+      if (res && res.value) renderStreak(JSON.parse(res.value));
+    } catch (e) {
+      // no streak yet
+    }
+  }
+
+  function renderStreak(streak) {
+    const badge = root.querySelector('#streak-badge');
+    const countEl = root.querySelector('#streak-count');
+    if (streak && streak.count > 0) {
+      badge.style.display = 'inline-flex';
+      countEl.textContent = streak.count;
+    }
+  }
+
+  async function checkAndUpdateStreak() {
+    const p = window.__toeflProgress;
+    if (p.correctToday < p.target) return;
+    const today = todayStr();
+    if (p.streakUpdatedFor === today) return;
+    let streak = { lastMetDate: null, count: 0 };
+    try {
+      const res = await window.storage.get('toefl-streak', false);
+      if (res && res.value) streak = JSON.parse(res.value);
+    } catch (e) {
+      // first time
+    }
+    if (streak.lastMetDate === today) {
+      p.streakUpdatedFor = today;
+      renderStreak(streak);
+      return;
+    }
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    const yStr = yesterday.toISOString().slice(0, 10);
+    streak.count = (streak.lastMetDate === yStr) ? (streak.count || 0) + 1 : 1;
+    streak.lastMetDate = today;
+    try {
+      await storageSetWithRetry('toefl-streak', JSON.stringify(streak), false);
+    } catch (e) {
+      console.error('Could not save streak', e);
+    }
+    p.streakUpdatedFor = today;
+    renderStreak(streak);
+  }
+
+  // ---------- AI Tutor ----------
+  let chatHistory = [];
+
+  function appendChatMessage(role, text) {
+    const log = root.querySelector('#chat-log');
+    const div = document.createElement('div');
+    div.className = 'chat-msg ' + role;
+    div.textContent = text;
+    log.appendChild(div);
+    log.scrollTop = log.scrollHeight;
+  }
+
+  async function sendChatMessage(question) {
+    if (!question || !question.trim()) return;
+    appendChatMessage('user', question);
+    chatHistory.push({ role: 'user', content: question });
+    const status = root.querySelector('#chat-status');
+    const sendBtn = root.querySelector('#chat-send');
+    sendBtn.disabled = true;
+    status.textContent = 'Thinking...';
+
+    const weakSummary = Object.keys(topicStats).map(t => {
+      const s = topicStats[t];
+      const pct = Math.round((s.correct / s.total) * 100);
+      return t + ': ' + pct + '% (' + s.correct + '/' + s.total + ')';
+    }).join(', ') || 'no data yet';
+
+    const systemContext = 'You are a friendly, concise TOEFL ITP tutor helping a student preparing for the Structure & Written Expression and Listening sections. Their current weak-area performance in this practice app: ' + weakSummary + '. Keep answers focused and under 150 words unless the student asks for more detail. Use concrete example sentences when explaining grammar rules.';
+
+    try {
+      const text = (await callAI({ system: systemContext, history: chatHistory.slice(-10), maxTokens: 1000 })).trim();
+      appendChatMessage('assistant', text || 'Sorry, I could not generate a response.');
+      chatHistory.push({ role: 'assistant', content: text });
+      status.textContent = '';
+    } catch (e) {
+      console.error(e);
+      appendChatMessage('assistant', 'Something went wrong reaching the tutor — please try again.');
+      status.textContent = '';
+    } finally {
+      sendBtn.disabled = false;
+    }
+  }
+
+  root.querySelector('#chat-send').addEventListener('click', () => {
+    const input = root.querySelector('#chat-input');
+    const q = input.value;
+    input.value = '';
+    sendChatMessage(q);
+  });
+
+  root.querySelector('#chat-input').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      root.querySelector('#chat-send').click();
+    }
+  });
+
+  root.querySelectorAll('.chat-suggestion').forEach(s => {
+    s.addEventListener('click', () => sendChatMessage(s.dataset.q));
+  });
+
+  // ---------- Vocabulary spaced repetition ----------
+  const VOCAB_DECK = [
+    { word: 'ambiguous', pos: 'adjective', def: 'open to more than one interpretation; not clearly defined.', example: 'The professor\'s instructions were ambiguous, so several students misunderstood the assignment.' },
+    { word: 'coincide', pos: 'verb', def: 'to happen at the same time as something else.', example: 'The construction schedule happened to coincide with final exam week.' },
+    { word: 'consequently', pos: 'adverb', def: 'as a result; therefore.', example: 'The lab lost funding; consequently, the research was delayed by a year.' },
+    { word: 'derive', pos: 'verb', def: 'to obtain or develop something from a source.', example: 'Many English words derive from Latin roots.' },
+    { word: 'discrepancy', pos: 'noun', def: 'a difference between two things that should be the same.', example: 'There was a discrepancy between the two reports\' final numbers.' },
+    { word: 'empirical', pos: 'adjective', def: 'based on observation or experiment rather than theory.', example: 'The claim lacked empirical support, so reviewers asked for more data.' },
+    { word: 'feasible', pos: 'adjective', def: 'possible to do easily or practically.', example: 'Completing the survey in one week is not feasible given the current staff.' },
+    { word: 'hypothesis', pos: 'noun', def: 'a proposed explanation made as a starting point for further investigation.', example: 'Her hypothesis was that warmer water slows coral growth.' },
+    { word: 'inherent', pos: 'adjective', def: 'existing as a natural or basic part of something.', example: 'Risk is inherent in any long-term investment.' },
+    { word: 'mitigate', pos: 'verb', def: 'to make something less severe or serious.', example: 'The new policy aims to mitigate the effects of the flooding.' },
+    { word: 'notion', pos: 'noun', def: 'a belief or idea about something.', example: 'The notion that the plan would fail turned out to be wrong.' },
+    { word: 'plausible', pos: 'adjective', def: 'seeming reasonable or probable.', example: 'The committee found the proposal plausible and approved further study.' },
+    { word: 'prevalent', pos: 'adjective', def: 'widespread; common in a particular area or at a particular time.', example: 'The disease was especially prevalent in coastal regions.' },
+    { word: 'subsequent', pos: 'adjective', def: 'coming after something in time.', example: 'The subsequent meeting addressed the concerns raised earlier.' },
+    { word: 'substantial', pos: 'adjective', def: 'of considerable importance, size, or worth.', example: 'The company reported a substantial increase in revenue.' }
+  ];
+
+  let vocabProgress = {};
+  let vocabQueue = [];
+  let vocabIndex = 0;
+
+  function buildVocabQueue() {
+    const today = todayStr();
+    vocabQueue = VOCAB_DECK.map((c, i) => i).filter(i => {
+      const prog = vocabProgress[VOCAB_DECK[i].word];
+      return !prog || prog.due <= today;
+    });
+    for (let i = vocabQueue.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [vocabQueue[i], vocabQueue[j]] = [vocabQueue[j], vocabQueue[i]];
+    }
+    vocabIndex = 0;
+  }
+
+  function renderVocabCard() {
+    const progressEl = root.querySelector('#vocab-progress');
+    const card = root.querySelector('#vocab-card');
+    const ratingRow = root.querySelector('#vocab-rating');
+    card.classList.remove('flipped');
+    ratingRow.style.display = 'none';
+    if (vocabIndex >= vocabQueue.length) {
+      progressEl.textContent = 'All due cards reviewed for now — nice work. Come back later or tomorrow for more.';
+      root.querySelector('#vocab-word').textContent = '✓';
+      root.querySelector('#vocab-pos').textContent = '';
+      root.querySelector('#vocab-def').textContent = '';
+      root.querySelector('#vocab-ex').textContent = '';
+      root.querySelector('#vocab-tap-hint').style.display = 'none';
+      return;
+    }
+    const c = VOCAB_DECK[vocabQueue[vocabIndex]];
+    progressEl.textContent = 'Card ' + (vocabIndex + 1) + ' of ' + vocabQueue.length + ' due today';
+    root.querySelector('#vocab-word').textContent = c.word;
+    root.querySelector('#vocab-pos').textContent = c.pos;
+    root.querySelector('#vocab-def').textContent = c.def;
+    root.querySelector('#vocab-ex').textContent = c.example;
+    root.querySelector('#vocab-tap-hint').style.display = '';
+  }
+
+  async function initVocab() {
+    try {
+      const res = await window.storage.get('toefl-vocab-progress', false);
+      if (res && res.value) vocabProgress = JSON.parse(res.value);
+    } catch (e) {
+      // no progress yet
+    }
+    buildVocabQueue();
+    renderVocabCard();
+  }
+
+  root.querySelector('#vocab-card').addEventListener('click', () => {
+    const card = root.querySelector('#vocab-card');
+    if (card.classList.contains('flipped') || vocabIndex >= vocabQueue.length) return;
+    card.classList.add('flipped');
+    root.querySelector('#vocab-tap-hint').style.display = 'none';
+    root.querySelector('#vocab-rating').style.display = 'flex';
+  });
+
+  root.querySelectorAll('.rating-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      if (vocabIndex >= vocabQueue.length) return;
+      const rating = btn.dataset.rating;
+      const idx = vocabQueue[vocabIndex];
+      const key = VOCAB_DECK[idx].word;
+      const prog = vocabProgress[key] || { interval: 0, reps: 0 };
+      let interval;
+      if (rating === 'again') interval = 0;
+      else if (rating === 'good') interval = prog.interval ? Math.round(prog.interval * 2) : 1;
+      else interval = prog.interval ? Math.round(prog.interval * 3) : 3;
+      const dueDate = new Date();
+      dueDate.setDate(dueDate.getDate() + interval);
+      vocabProgress[key] = { interval: interval, due: dueDate.toISOString().slice(0, 10), reps: (prog.reps || 0) + 1 };
+      try {
+        await storageSetWithRetry('toefl-vocab-progress', JSON.stringify(vocabProgress), false);
+      } catch (e) {
+        console.error('Could not save vocab progress', e);
+      }
+      if (rating === 'again') vocabQueue.push(idx);
+      vocabIndex++;
+      renderVocabCard();
+    });
+  });
+
+  const logoutBtn = root.querySelector('#logout-btn');
+  if (logoutBtn) logoutBtn.addEventListener('click', logout);
+
+  bootstrapAuth();
+
+})();
+</script>
+</body>
+</html>

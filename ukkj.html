@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Latihan UKKJ — Guru Ahli Muda ke Madya</title>
+<link rel="icon" type="image/svg+xml" href="logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#16233F;
+    --ink-soft:#2B3B5C;
+    --paper:#EFEEE3;
+    --paper-2:#E6E4D6;
+    --card:#FAF9F3;
+    --line:#D6D2BE;
+    --green:#2F6F4E;
+    --green-soft:#E4EEE7;
+    --red:#B23A2E;
+    --red-soft:#F5E4E0;
+    --gold:#C08A2E;
+    --gold-soft:#F3E7CD;
+    --shadow: 0 1px 0 rgba(22,35,63,0.06), 0 8px 24px -12px rgba(22,35,63,0.25);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(1200px 600px at 90% -10%, rgba(192,138,46,0.08), transparent 60%),
+      radial-gradient(1000px 500px at -10% 110%, rgba(47,111,78,0.08), transparent 60%),
+      var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', system-ui, sans-serif;
+    min-height:100vh;
+    line-height:1.5;
+  }
+  .app{max-width:980px;margin:0 auto;padding:28px 20px 80px;}
+  ::selection{background:var(--gold-soft);}
+
+  /* ---------- Header ---------- */
+  .masthead{
+    display:flex;align-items:flex-end;justify-content:space-between;
+    border-bottom:2px solid var(--ink);
+    padding-bottom:14px;margin-bottom:28px;
+    gap:16px;flex-wrap:wrap;
+  }
+  .masthead-title{display:flex;flex-direction:column;gap:2px;}
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--green);font-weight:600;
+  }
+  h1.brand{
+    font-family:'Fraunces',serif;font-weight:700;font-size:clamp(26px,4vw,34px);
+    margin:0;letter-spacing:-0.01em;
+  }
+  .masthead-meta{
+    font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink-soft);
+    text-align:right;
+  }
+
+  /* ---------- Screens ---------- */
+  .screen{display:none;}
+  .screen.active{display:block;animation:fadein .35s ease;}
+  @keyframes fadein{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
+  /* ---------- Start screen ---------- */
+  .intro{font-size:15px;color:var(--ink-soft);max-width:640px;margin:0 0 28px;}
+  .deck-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+  @media(max-width:680px){.deck-grid{grid-template-columns:1fr;}}
+  .deck-card{
+    background:var(--card);border:1px solid var(--line);border-radius:4px;
+    padding:22px 20px;cursor:pointer;position:relative;overflow:hidden;
+    transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    text-align:left;
+  }
+  .deck-card:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:var(--ink);}
+  .deck-card:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+  .deck-num{
+    font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--gold);
+    letter-spacing:.1em;text-transform:uppercase;font-weight:600;
+  }
+  .deck-name{font-family:'Fraunces',serif;font-weight:600;font-size:21px;margin:6px 0 8px;}
+  .deck-desc{font-size:13.5px;color:var(--ink-soft);margin:0 0 14px;}
+  .deck-foot{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--ink-soft);border-top:1px dashed var(--line);padding-top:12px;}
+  .deck-count{font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--ink);}
+
+  .mix-card{
+    background:var(--card);border:1px solid var(--line);border-radius:4px;
+    padding:22px 20px;margin-bottom:28px;
+  }
+  .mix-card .deck-name{margin-bottom:4px;}
+  .mix-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:14px;}
+  .mix-row label{font-size:13px;color:var(--ink-soft);font-family:'IBM Plex Mono',monospace;}
+  select{
+    font-family:'IBM Plex Sans',sans-serif;font-size:14px;padding:8px 10px;
+    border:1px solid var(--line);border-radius:3px;background:var(--paper);color:var(--ink);
+  }
+  .btn{
+    font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:13px;
+    letter-spacing:.04em;text-transform:uppercase;
+    background:var(--ink);color:var(--paper);border:none;border-radius:3px;
+    padding:11px 20px;cursor:pointer;transition:background .15s ease, transform .1s ease;
+  }
+  .btn:hover{background:var(--ink-soft);}
+  .btn:active{transform:scale(0.98);}
+  .btn.secondary{background:transparent;color:var(--ink);border:1px solid var(--ink);}
+  .btn.secondary:hover{background:var(--ink);color:var(--paper);}
+  .btn:disabled{opacity:.4;cursor:not-allowed;}
+  .btn.small{padding:8px 14px;font-size:11.5px;}
+
+  /* ---------- Quiz layout ---------- */
+  .quiz-wrap{display:grid;grid-template-columns:1fr 220px;gap:22px;align-items:start;}
+  @media(max-width:800px){.quiz-wrap{grid-template-columns:1fr;}}
+
+  .quiz-topbar{
+    display:flex;justify-content:space-between;align-items:center;
+    margin-bottom:16px;flex-wrap:wrap;gap:10px;
+  }
+  .quiz-set-label{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--green);font-weight:600;letter-spacing:.08em;text-transform:uppercase;}
+  .progress-track{
+    height:6px;background:var(--paper-2);border-radius:3px;overflow:hidden;margin:10px 0 22px;
+  }
+  .progress-fill{height:100%;background:var(--green);border-radius:3px;transition:width .3s ease;}
+
+  .qcard{
+    background:var(--card);border:1px solid var(--line);border-radius:4px;
+    padding:26px 24px;box-shadow:var(--shadow);
+  }
+  .qnum-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px;}
+  .qnum{font-family:'IBM Plex Mono',monospace;color:var(--gold);font-weight:700;font-size:14px;}
+  .qflag{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-soft);}
+  .qtext{font-family:'Fraunces',serif;font-size:19px;line-height:1.5;font-weight:500;margin:0 0 22px;}
+
+  .options{display:flex;flex-direction:column;gap:10px;}
+  .option{
+    display:flex;gap:12px;align-items:flex-start;
+    border:1px solid var(--line);border-radius:3px;padding:13px 14px;
+    cursor:pointer;background:var(--paper);transition:border-color .15s ease, background .15s ease;
+  }
+  .option:hover{border-color:var(--ink-soft);}
+  .option-letter{
+    font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:13px;
+    width:24px;height:24px;border-radius:50%;border:1.5px solid var(--ink);
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+  .option.selected{border-color:var(--green);background:var(--green-soft);}
+  .option.selected .option-letter{background:var(--green);border-color:var(--green);color:#fff;}
+  .option-text{font-size:14.5px;padding-top:2px;}
+
+  .qnav{display:flex;justify-content:space-between;margin-top:22px;gap:10px;}
+
+  /* Answer sheet / LJK grid */
+  .ljk{
+    background:var(--card);border:1px solid var(--line);border-radius:4px;
+    padding:16px;position:sticky;top:16px;
+  }
+  .ljk-title{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:10px;font-weight:600;}
+  .ljk-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;}
+  @media(max-width:800px){.ljk-grid{grid-template-columns:repeat(10,1fr);}}
+  .ljk-cell{
+    aspect-ratio:1;border:1.5px solid var(--line);border-radius:3px;
+    font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;
+    display:flex;align-items:center;justify-content:center;cursor:pointer;
+    background:var(--paper);color:var(--ink-soft);
+  }
+  .ljk-cell.current{border-color:var(--ink);border-width:2px;color:var(--ink);}
+  .ljk-cell.done{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+  .ljk-legend{margin-top:12px;font-size:11px;color:var(--ink-soft);display:flex;flex-direction:column;gap:5px;font-family:'IBM Plex Mono',monospace;}
+  .legend-dot{width:9px;height:9px;border-radius:2px;display:inline-block;margin-right:6px;vertical-align:-1px;}
+
+  .finish-bar{margin-top:16px;border-top:1px dashed var(--line);padding-top:14px;}
+  .finish-note{font-size:11.5px;color:var(--ink-soft);margin:8px 0 10px;}
+
+  /* ---------- Results ---------- */
+  .score-panel{
+    display:grid;grid-template-columns:180px 1fr;gap:28px;align-items:center;
+    background:var(--card);border:1px solid var(--line);border-radius:4px;
+    padding:26px;box-shadow:var(--shadow);margin-bottom:26px;
+  }
+  @media(max-width:600px){.score-panel{grid-template-columns:1fr;text-align:center;}}
+  .ring-wrap{position:relative;width:160px;height:160px;margin:0 auto;}
+  .ring-score{
+    position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  }
+  .ring-score .big{font-family:'Fraunces',serif;font-weight:700;font-size:34px;}
+  .ring-score .lil{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.08em;}
+  .score-stats{display:flex;gap:22px;flex-wrap:wrap;margin-top:14px;}
+  .stat{font-family:'IBM Plex Mono',monospace;}
+  .stat .n{font-size:22px;font-weight:700;}
+  .stat .l{font-size:11px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.06em;}
+  .stat.good .n{color:var(--green);}
+  .stat.bad .n{color:var(--red);}
+  .verdict{font-family:'Fraunces',serif;font-size:20px;font-weight:600;margin:0 0 6px;}
+  .verdict-sub{font-size:13.5px;color:var(--ink-soft);margin:0;}
+
+  .review-controls{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;align-items:center;justify-content:space-between;}
+  .filter-tabs{display:flex;gap:6px;}
+  .tab{
+    font-family:'IBM Plex Mono',monospace;font-size:12px;padding:7px 13px;border-radius:20px;
+    border:1px solid var(--line);background:var(--card);cursor:pointer;color:var(--ink-soft);
+  }
+  .tab.active{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+
+  .review-item{
+    background:var(--card);border:1px solid var(--line);border-radius:4px;
+    padding:18px 20px;margin-bottom:12px;
+  }
+  .review-item.correct{border-left:4px solid var(--green);}
+  .review-item.wrong{border-left:4px solid var(--red);}
+  .review-item.skipped{border-left:4px solid var(--gold);}
+  .review-head{display:flex;justify-content:space-between;gap:10px;align-items:baseline;margin-bottom:8px;}
+  .review-num{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:var(--gold);}
+  .review-tag{font-family:'IBM Plex Mono',monospace;font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;padding:2px 8px;border-radius:10px;}
+  .review-tag.correct{background:var(--green-soft);color:var(--green);}
+  .review-tag.wrong{background:var(--red-soft);color:var(--red);}
+  .review-tag.skipped{background:var(--gold-soft);color:var(--gold);}
+  .review-q{font-family:'Fraunces',serif;font-size:15.5px;margin:0 0 12px;line-height:1.5;}
+  .review-opt{font-size:13.5px;padding:9px 12px;border-radius:3px;margin-bottom:6px;border:1px solid var(--line);display:flex;gap:8px;}
+  .review-opt .letter{font-family:'IBM Plex Mono',monospace;font-weight:700;flex-shrink:0;}
+  .review-opt.your-wrong{background:var(--red-soft);border-color:var(--red);}
+  .review-opt.correct-answer{background:var(--green-soft);border-color:var(--green);}
+  .review-expl{
+    margin-top:10px;font-size:13px;color:var(--ink-soft);background:var(--paper);
+    border-left:3px solid var(--gold);padding:10px 12px;border-radius:0 3px 3px 0;
+  }
+  .review-expl b{color:var(--ink);}
+
+  .results-actions{display:flex;gap:10px;margin:26px 0 10px;flex-wrap:wrap;}
+
+  footer.tail{
+    text-align:center;font-family:'IBM Plex Mono',monospace;font-size:11px;
+    color:var(--ink-soft);margin-top:40px;
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="masthead">
+    <div class="masthead-title">
+      <a href="index.html" style="color:inherit; text-decoration:none; font-size:12px; opacity:0.75; display:block; margin-bottom:4px;">&larr; EduPractice</a>
+      <span class="eyebrow">Lembar Latihan Mandiri</span>
+      <h1 class="brand">Latihan UKKJ</h1>
+    </div>
+    <div class="masthead-meta">Guru Ahli Muda → Guru Ahli Madya<br>130 soal &middot; PG + Skenario SJT</div>
+  </div>
+
+  <!-- START SCREEN -->
+  <section class="screen active" id="screen-start">
+    <p class="intro">Pilih paket latihan di bawah. Jawab tiap soal, lalu lihat skor dan pembahasan lengkap di akhir sesi. Progres tersimpan di lembar jawaban model LJK di sisi kanan selama sesi berjalan.</p>
+
+    <div class="deck-grid">
+      <button class="deck-card" data-deck="A">
+        <span class="deck-num">Paket 01</span>
+        <div class="deck-name">Pilihan Ganda Umum</div>
+        <p class="deck-desc">Profesi guru, pedagogik, kurikulum, penilaian, hingga situasi manajerial &amp; sosiokultural.</p>
+        <div class="deck-foot"><span>100 soal</span><span class="deck-count">Mulai →</span></div>
+      </button>
+      <button class="deck-card" data-deck="B">
+        <span class="deck-num">Paket 02</span>
+        <div class="deck-name">Skenario SJT</div>
+        <p class="deck-desc">30 skenario situational judgement test format panjang, lengkap dengan keterangan jawaban.</p>
+        <div class="deck-foot"><span>30 soal</span><span class="deck-count">Mulai →</span></div>
+      </button>
+    </div>
+
+    <div class="mix-card">
+      <span class="deck-num">Paket 03</span>
+      <div class="deck-name">Campuran Acak</div>
+      <p class="deck-desc" style="margin-bottom:0;">Gabungkan kedua paket dan acak urutan soal — cocok untuk simulasi ujian singkat.</p>
+      <div class="mix-row">
+        <label for="mix-count">Jumlah soal</label>
+        <select id="mix-count">
+          <option value="20">20 soal</option>
+          <option value="40" selected>40 soal</option>
+          <option value="65">65 soal</option>
+          <option value="130">Semua (130 soal)</option>
+        </select>
+        <button class="btn" id="start-mix">Mulai Campuran</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUIZ SCREEN -->
+  <section class="screen" id="screen-quiz">
+    <div class="quiz-topbar">
+      <span class="quiz-set-label" id="quiz-set-label">Paket</span>
+      <span class="masthead-meta" id="quiz-progress-label">Soal 1 dari 100</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:1%"></div></div>
+
+    <div class="quiz-wrap">
+      <div>
+        <div class="qcard">
+          <div class="qnum-row">
+            <span class="qnum" id="q-num">No. 1</span>
+            <span class="qflag" id="q-flag"></span>
+          </div>
+          <p class="qtext" id="q-text"></p>
+          <div class="options" id="q-options"></div>
+        </div>
+        <div class="qnav">
+          <button class="btn secondary" id="btn-prev">← Sebelumnya</button>
+          <button class="btn" id="btn-next">Berikutnya →</button>
+        </div>
+      </div>
+
+      <aside class="ljk">
+        <div class="ljk-title">Lembar Jawaban</div>
+        <div class="ljk-grid" id="ljk-grid"></div>
+        <div class="ljk-legend">
+          <div><span class="legend-dot" style="background:var(--ink)"></span>Terjawab</div>
+          <div><span class="legend-dot" style="background:var(--paper);border:1.5px solid var(--ink)"></span>Sedang dilihat</div>
+          <div><span class="legend-dot" style="background:var(--paper);border:1.5px solid var(--line)"></span>Belum dijawab</div>
+        </div>
+        <div class="finish-bar">
+          <p class="finish-note" id="finish-note">0 dari 100 terjawab</p>
+          <button class="btn" id="btn-finish" style="width:100%;">Selesai &amp; Lihat Skor</button>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- RESULTS SCREEN -->
+  <section class="screen" id="screen-results">
+    <div class="score-panel">
+      <div class="ring-wrap">
+        <svg viewBox="0 0 160 160" width="160" height="160">
+          <circle cx="80" cy="80" r="70" fill="none" stroke="var(--paper-2)" stroke-width="14"/>
+          <circle id="score-ring" cx="80" cy="80" r="70" fill="none" stroke="var(--green)" stroke-width="14" stroke-linecap="round" transform="rotate(-90 80 80)"/>
+        </svg>
+        <div class="ring-score">
+          <span class="big" id="score-pct">0%</span>
+          <span class="lil">Skor</span>
+        </div>
+      </div>
+      <div>
+        <p class="verdict" id="verdict-text">Hasil Latihan</p>
+        <p class="verdict-sub" id="verdict-sub"></p>
+        <div class="score-stats">
+          <div class="stat good"><div class="n" id="stat-correct">0</div><div class="l">Benar</div></div>
+          <div class="stat bad"><div class="n" id="stat-wrong">0</div><div class="l">Salah</div></div>
+          <div class="stat"><div class="n" id="stat-skipped">0</div><div class="l">Kosong</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="review-controls">
+      <div class="filter-tabs">
+        <button class="tab active" data-filter="all">Semua</button>
+        <button class="tab" data-filter="wrong">Salah</button>
+        <button class="tab" data-filter="correct">Benar</button>
+        <button class="tab" data-filter="skipped">Kosong</button>
+      </div>
+    </div>
+
+    <div id="review-list"></div>
+
+    <div class="results-actions">
+      <button class="btn" id="btn-restart-same">Ulangi Paket Ini</button>
+      <button class="btn secondary" id="btn-back-home">Pilih Paket Lain</button>
+    </div>
+  </section>
+
+  <footer class="tail">Latihan mandiri &middot; bukan soal resmi UKKJ</footer>
+</div>
+
+<script>
+/* EduPractice: pastikan sudah login/tamu sebelum memakai app ini */
+if (!localStorage.getItem('edu-session-token') && localStorage.getItem('edu-guest-mode') !== '1') {
+  window.location.replace('index.html?redirect=ukkj');
+  throw new Error('redirect to login');
+}
+
+const DATA = {"A": [{"num": 1, "question": "Guru merupakan suatu profesi yang memerlukan keahlian khusus. Syarat suatu profesi, kecuali:", "options": {"A": "Menuntut keterampilan berbasis konsep dan teori", "B": "Memiliki tingkat pendidikan setingkat Doktor", "C": "Menekankan keahlian dalam bidang tertentu", "D": "Menuntut tingkat pendidikan yang memadai"}, "answer": "B", "explanation": ""}, {"num": 2, "question": "Menurut Djojonegoro, profesionalisme ditentukan oleh tiga faktor, kecuali:", "options": {"A": "Keahlian khusus dari program pendidikan", "B": "Kemampuan memperbaiki keterampilan", "C": "Tujuan karier yang jelas", "D": "Penghasilan yang memadai"}, "answer": "C", "explanation": ""}, {"num": 3, "question": "Profesi menuntut keahlian yang tidak bisa dilakukan sembarang orang. Termasuk kompetensi:", "options": {"A": "Pedagogik", "B": "Kepribadian", "C": "Profesional", "D": "Sosial"}, "answer": "C", "explanation": ""}, {"num": 4, "question": "Sifat jujur, berbudi luhur, dewasa, beriman, disiplin, tanggung jawab termasuk kompetensi:", "options": {"A": "Pedagogik", "B": "Kepribadian", "C": "Profesional", "D": "Sosial"}, "answer": "B", "explanation": ""}, {"num": 5, "question": "Pemahaman sifat peserta didik, metodologi mengajar, dan sistem evaluasi termasuk kompetensi:", "options": {"A": "Pedagogik", "B": "Kepribadian", "C": "Profesional", "D": "Sosial"}, "answer": "A", "explanation": ""}, {"num": 6, "question": "Guru harus memiliki jati diri baik, terbuka, dan mau belajar. Termasuk:", "options": {"A": "Pedagogik", "B": "Kepribadian", "C": "Profesional", "D": "Sosial"}, "answer": "B", "explanation": ""}, {"num": 7, "question": "Empati, toleransi, dan mampu bekerja sama termasuk:", "options": {"A": "Pedagogik", "B": "Kepribadian", "C": "Profesional", "D": "Sosial"}, "answer": "D", "explanation": ""}, {"num": 8, "question": "Tujuan evaluasi pembelajaran yang paling tepat:", "options": {"A": "Menentukan nilai siswa", "B": "Mengukur hafalan", "C": "Menilai efektivitas proses pembelajaran", "D": "Membandingkan antar siswa"}, "answer": "C", "explanation": ""}, {"num": 9, "question": "Kurikulum pendidikan adalah:", "options": {"A": "Rencana pembelajaran di sekolah", "B": "Daftar bahan ajar", "C": "Standar penilaian", "D": "Program yang mencakup tujuan, isi, dan metode pengajaran"}, "answer": "D", "explanation": ""}, {"num": 10, "question": "Komponen utama RPP Kurikulum 2013:", "options": {"A": "Kompetensi inti, KD, indikator, tujuan, materi, metode, sumber belajar, penilaian", "B": "Kompetensi dasar, tujuan, bahan ajar, penilaian", "C": "Tujuan, materi, kegiatan pembuka-inti-penutup", "D": "Kompetensi dasar + penilaian"}, "answer": "A", "explanation": ""}, {"num": 11, "question": "Penilaian berbasis proyek paling tepat menilai:", "options": {"A": "Penguasaan teori", "B": "Keterampilan praktis menyelesaikan masalah", "C": "Jawaban pilihan ganda", "D": "Kecepatan mengerjakan"}, "answer": "B", "explanation": ""}, {"num": 12, "question": "Pendekatan student-centered yang paling tepat:", "options": {"A": "Ceramah", "B": "Diskusi kelompok", "C": "Latihan soal", "D": "Ujian tertulis"}, "answer": "B", "explanation": ""}, {"num": 13, "question": "Langkah pertama Problem Based Learning:", "options": {"A": "Arahkan siswa mencari solusi", "B": "Jelaskan materi dulu", "C": "Sajikan masalah nyata", "D": "Evaluasi"}, "answer": "C", "explanation": ""}, {"num": 14, "question": "Media digital untuk pembelajaran kolaboratif:", "options": {"A": "PowerPoint", "B": "Microsoft Word", "C": "Google Classroom / Microsoft Teams", "D": "PDF Viewer"}, "answer": "C", "explanation": ""}, {"num": 15, "question": "80% siswa gagal soal berpikir kritis, pembelajaran didominasi ceramah. Langkah tepat:", "options": {"A": "Tambah soal HOTS", "B": "Ubah strategi ke inkuiri/PBL + asesmen formatif", "C": "Beri les tambahan", "D": "Ulang materi dengan ceramah"}, "answer": "B", "explanation": ""}, {"num": 16, "question": "Guru Madya menjadi mentor. Satu guru menolak saran. Tindakan tepat:", "options": {"A": "Laporkan ke kepala sekolah", "B": "Biarkan", "C": "Gunakan data hasil belajar + observasi untuk refleksi kolaboratif", "D": "Ambil alih pembelajaran"}, "answer": "C", "explanation": ""}, {"num": 17, "question": "Usulan MGMP agar semua kelas pakai soal sama, karakteristik siswa berbeda. Sikap profesional:", "options": {"A": "Tolak tanpa alasan", "B": "Setujui agar seragam", "C": "Usulkan kisi-kisi sama, tapi sesuaikan konteks soal", "D": "Biarkan setiap guru bebas"}, "answer": "C", "explanation": ""}, {"num": 18, "question": "Kelas memiliki siswa mahir, sedang, dan butuh pendampingan. Strategi terbaik:", "options": {"A": "Materi sama untuk semua", "B": "Pisahkan berdasarkan nilai", "C": "Aktivitas berbeda sesuai kesiapan, tujuan sama", "D": "Utamakan yang berkemampuan tinggi"}, "answer": "C", "explanation": ""}, {"num": 19, "question": "Project Based Learning nilai naik, tapi hanya sebagian siswa aktif. Refleksi tepat:", "options": {"A": "Model gagal", "B": "Nilai tinggi = berhasil", "C": "Evaluasi desain kolaborasi dan pembagian peran", "D": "Ganti ke ceramah"}, "answer": "C", "explanation": ""}, {"num": 20, "question": "Orang tua minta naikkan nilai anak, padahal belum memenuhi kriteria. Keputusan profesional:", "options": {"A": "Naikkan demi masa depan", "B": "Tolak tanpa penjelasan", "C": "Jelaskan dasar penilaian + tawarkan remedial", "D": "Serahkan ke kepala sekolah"}, "answer": "C", "explanation": ""}, {"num": 21, "question": "Strategi mengelola kelas yang beragam:", "options": {"A": "Aturan sama untuk semua", "B": "Adaptasi metode sesuai kebutuhan individu", "C": "Pembelajaran frontal", "D": "Hindari teknologi"}, "answer": "B", "explanation": ""}, {"num": 22, "question": "Merencanakan pembelajaran berbasis teknologi:", "options": {"A": "Hindari teknologi", "B": "Pakai tanpa mempertimbangkan tujuan", "C": "Pilih teknologi yang relevan dengan tujuan pembelajaran", "D": "Hanya untuk hiburan"}, "answer": "C", "explanation": ""}, {"num": 23, "question": "Yang diutamakan dalam menyusun rencana pelajaran:", "options": {"A": "Selesaikan silabus cepat", "B": "Sesuaikan dengan kebutuhan dan minat siswa", "C": "Banyak tugas", "D": "Satu metode saja"}, "answer": "B", "explanation": ""}, {"num": 24, "question": "Membangun hubungan positif dengan rekan kerja:", "options": {"A": "Mementingkan kepentingan pribadi", "B": "Hindari kerja sama", "C": "Komunikasi efektif dan saling mendukung", "D": "Batasi interaksi"}, "answer": "C", "explanation": ""}, {"num": 25, "question": "Meningkatkan keterampilan manajemen konflik:", "options": {"A": "Hindari konfrontasi", "B": "Abaikan", "C": "Terapkan strategi penyelesaian konflik yang efektif dan adil", "D": "Hukum tanpa solusi"}, "answer": "C", "explanation": ""}, {"num": 26, "question": "Membangun hubungan dengan siswa berkebutuhan khusus:", "options": {"A": "Abaikan", "B": "Pisahkan", "C": "Berikan dukungan dan penyesuaian sesuai kebutuhan", "D": "Biarkan sendiri"}, "answer": "C", "explanation": ""}, {"num": 27, "question": "Meningkatkan kualitas pengajaran:", "options": {"A": "Hindari umpan balik", "B": "Andalkan buku teks saja", "C": "Refleksi diri + cari umpan balik dari siswa dan rekan", "D": "Metode sama terus"}, "answer": "C", "explanation": ""}, {"num": 28, "question": "Pengajaran responsif terhadap keberagaman:", "options": {"A": "Abaikan perbedaan", "B": "Satu pendekatan untuk semua", "C": "Akui dan hargai latar belakang + kebutuhan siswa yang beragam", "D": "Pisahkan berdasarkan kemampuan"}, "answer": "C", "explanation": ""}, {"num": 29, "question": "Differentiated instruction adalah:", "options": {"A": "Pengajaran sama untuk semua", "B": "Modifikasi pengajaran sesuai kebutuhan individu", "C": "Satu metode untuk semua topik", "D": "Tanpa alat bantu"}, "answer": "B", "explanation": ""}, {"num": 30, "question": "Komunikasi efektif kepada siswa:", "options": {"A": "Bahasa teknis sulit", "B": "Abaikan pertanyaan siswa", "C": "Gunakan contoh dan ilustrasi relevan", "D": "Hindari media"}, "answer": "C", "explanation": ""}, {"num": 31, "question": "Peran teknologi informasi dalam pendidikan modern:", "options": {"A": "Pengganti guru", "B": "Memperkaya sumber belajar dan alat pengajaran", "C": "Membatasi interaksi", "D": "Mengurangi buku teks"}, "answer": "B", "explanation": ""}, {"num": 32, "question": "Integrasi dalam proyek kolaboratif:", "options": {"A": "Tugas terpisah tanpa koordinasi", "B": "Pimpin dan koordinasikan diskusi kelompok", "C": "Fokus pada kontribusi sendiri", "D": "Hindari kolaborasi"}, "answer": "B", "explanation": ""}, {"num": 33, "question": "Fungsi utama penilaian portofolio:", "options": {"A": "Kumpulkan hasil karya", "B": "Tingkatkan rasa percaya", "C": "Ketahui peningkatan kemampuan siswa", "D": "Nilai hasil belajar"}, "answer": "C", "explanation": ""}, {"num": 34, "question": "Ciri karya tulis ilmiah, kecuali:", "options": {"A": "Memaparkan bidang ilmu tertentu", "B": "Merupakan deskripsi suatu kejadian", "C": "Menggunakan gaya bahasa resmi", "D": "Disajikan secara sistematis"}, "answer": "B", "explanation": ""}, {"num": 35, "question": "Bagian penutup karya tulis ilmiah umumnya berisi:", "options": {"A": "Rangkuman dan tindak lanjut", "B": "Simpulan umum", "C": "Rekomendasi penulis", "D": "Simpulan dan saran"}, "answer": "D", "explanation": ""}, {"num": 36, "question": "Dalam karya tulis ilmiah, penulis harus netral. Sikap ini sesuai hakikat berdasarkan, kecuali:", "options": {"A": "Fakta atau kenyataan", "B": "Argumentasi", "C": "Teori yang diakui", "D": "Data empirik"}, "answer": "B", "explanation": ""}, {"num": 37, "question": "Siswa sering terlambat. Upaya terbaik:", "options": {"A": "Buat kesepakatan kelas bersama peserta didik", "B": "Terus mengingatkan", "C": "Minta ketua kelas mengatur", "D": "Beri konsekuensi"}, "answer": "A", "explanation": ""}, {"num": 38, "question": "Kelas tidak kondusif, siswa ngobrol sendiri. Langkah yang dapat diambil:", "options": {"A": "Tegur secara lisan", "B": "Buat kontrak pembelajaran", "C": "Cari metode yang tepat untuk kelas tersebut", "D": "Beri tugas tambahan"}, "answer": "C", "explanation": ""}, {"num": 39, "question": "Sekolah menerapkan asesmen berbasis proyek setelah studi banding. Upaya Anda:", "options": {"A": "Minta bantuan guru lain", "B": "Laksanakan dengan tanggung jawab", "C": "Minta penjelasan prosedur", "D": "Analisis kesesuaian dengan kebutuhan peserta didik"}, "answer": "D", "explanation": ""}, {"num": 40, "question": "Ada perundungan lintas kelas. Upaya Anda:", "options": {"A": "Bersama guru lain mencari fakta di lapangan", "B": "Motivasi korban saja", "C": "Beri konsekuensi pelaku", "D": "Panggil orang tua pelaku"}, "answer": "A", "explanation": ""}, {"num": 41, "question": "Orang tua jauh, sulit datang ambil rapor. Langkah Anda:", "options": {"A": "Paksa datang", "B": "Berikan rapor ke siswa langsung", "C": "Kirim via pos", "D": "Usulkan rapor digital yang bisa diakses jarak jauh"}, "answer": "D", "explanation": ""}, {"num": 42, "question": "Meningkatkan komunikasi dengan orang tua:", "options": {"A": "Hindari interaksi", "B": "Beri laporan secara teratur", "C": "Adakan pertemuan dan komunikasi terbuka", "D": "Salahkan orang tua jika nilai rendah"}, "answer": "C", "explanation": ""}, {"num": 43, "question": "Menanggapi kesalahan siswa:", "options": {"A": "Abaikan", "B": "Gunakan sebagai kesempatan belajar", "C": "Beri hukuman", "D": "Minta siswa lain koreksi"}, "answer": "B", "explanation": ""}, {"num": 44, "question": "Strategi efektif mengelola kelas beragam:", "options": {"A": "Aturan sama", "B": "Adaptasi metode sesuai kebutuhan individu", "C": "Pembelajaran frontal", "D": "Hindari teknologi"}, "answer": "B", "explanation": ""}, {"num": 45, "question": "Merencanakan pembelajaran berbasis teknologi:", "options": {"A": "Hindari", "B": "Pakai tanpa tujuan jelas", "C": "Pilih dan integrasikan yang relevan dengan tujuan pembelajaran", "D": "Hanya hiburan"}, "answer": "C", "explanation": ""}, {"num": 46, "question": "Anda menemukan banyak siswa menggunakan AI untuk menyalin tugas. Langkah paling tepat:", "options": {"A": "Larang total AI", "B": "Biarkan", "C": "Desain tugas yang menuntut proses berpikir dan refleksi", "D": "Kurangi tugas"}, "answer": "C", "explanation": ""}, {"num": 47, "question": "Program ekstrakurikuler minatnya menurun. Langkah terbaik:", "options": {"A": "Lanjutkan tanpa perubahan", "B": "Perbaiki berdasarkan masukan peserta didik", "C": "Ganti dengan program akademik", "D": "Biarkan"}, "answer": "B", "explanation": ""}, {"num": 48, "question": "Beberapa guru senior masih menggunakan hukuman fisik. Tindakan Anda:", "options": {"A": "Biarkan", "B": "Tegur di depan umum", "C": "Ajak diskusi berbasis regulasi + tawarkan alternatif positif", "D": "Langsung laporkan ke dinas"}, "answer": "C", "explanation": ""}, {"num": 49, "question": "Orang tua memberi oleh-oleh karena Anda kirim tugas saat anak izin. Sikap Anda:", "options": {"A": "Terima", "B": "Tolak dengan sopan dan jelaskan itu bagian tugas", "C": "Terima lalu bagikan", "D": "Laporkan"}, "answer": "B", "explanation": ""}, {"num": 50, "question": "Tim kurikulum mengalami hambatan koordinasi. Tindakan Anda:", "options": {"A": "Kerja sendiri", "B": "Fasilitasi pertemuan klarifikasi peran dan alur komunikasi", "C": "Tunggu instruksi", "D": "Laporkan saja"}, "answer": "B", "explanation": ""}, {"num": 51, "question": "Orang tua sering mempertanyakan peraturan kelas. Langkah preventif:", "options": {"A": "Buat sepihak", "B": "Libatkan peserta didik dan komunikasikan kepada orang tua sejak awal", "C": "Hilangkan peraturan", "D": "Biarkan masing-masing"}, "answer": "B", "explanation": ""}, {"num": 52, "question": "Guru senior masih memakai kurikulum lama. Tindakan Anda:", "options": {"A": "Biarkan", "B": "Tegur keras", "C": "Fasilitasi pendampingan dan berbagi praktik baik", "D": "Laporkan"}, "answer": "C", "explanation": ""}, {"num": 53, "question": "Anda punya siswa berkebutuhan khusus, tahu teori tapi belum praktik. Langkah:", "options": {"A": "Abaikan", "B": "Terapkan bertahap sambil berkonsultasi", "C": "Serahkan ke guru lain", "D": "Minta pindah kelas"}, "answer": "B", "explanation": ""}, {"num": 54, "question": "Dua guru junior berbakat ingin jadi koordinator mapel. Tindakan adil:", "options": {"A": "Pilih yang lebih senior", "B": "Buat kriteria transparan + libatkan dalam seleksi", "C": "Biarkan kepala sekolah", "D": "Pilih yang dekat"}, "answer": "B", "explanation": ""}, {"num": 55, "question": "Sebagai Duta Lingkungan, langkah pertama efektif:", "options": {"A": "Buat poster", "B": "Bentuk tim kecil + program sederhana yang melibatkan warga sekolah", "C": "Tunggu anggaran", "D": "Ceramah"}, "answer": "B", "explanation": ""}, {"num": 56, "question": "Tim promosi siswa baru belum hasil setelah sebulan. Sebagai ketua:", "options": {"A": "Ganti anggota", "B": "Evaluasi data + sesuaikan strategi", "C": "Tambah brosur", "D": "Biarkan"}, "answer": "B", "explanation": ""}, {"num": 57, "question": "Rekan guru menolak ubah nilai meski ada kesalahan. Tindakan:", "options": {"A": "Biarkan", "B": "Mediasi profesional dengan data", "C": "Laporkan", "D": "Ambil alih"}, "answer": "B", "explanation": ""}, {"num": 58, "question": "Perpustakaan sepi, anggaran terbatas. Langkah:", "options": {"A": "Tunggu anggaran", "B": "Buat program sederhana dengan sumber daya yang ada", "C": "Tutup", "D": "Paksa siswa"}, "answer": "B", "explanation": ""}, {"num": 59, "question": "Pelatihan bagus tapi mahal, sekolah hemat. Saran Anda:", "options": {"A": "Paksa ikuti", "B": "Cari alternatif internal atau berbagi biaya", "C": "Batalkan", "D": "Tunggu tahun depan"}, "answer": "B", "explanation": ""}, {"num": 60, "question": "Sekolah belum punya tata tertib resmi. Langkah pertama:", "options": {"A": "Buat sendiri", "B": "Libatkan perwakilan guru, siswa, dan orang tua", "C": "Salin sekolah lain", "D": "Tunggu dinas"}, "answer": "B", "explanation": ""}, {"num": 61, "question": "Ada kesenjangan sosial-ekonomi di kelas. Cara mencegah diskriminasi:", "options": {"A": "Abaikan", "B": "Bangun budaya kelas yang menghargai keberagaman", "C": "Pisahkan siswa", "D": "Bantu hanya yang miskin"}, "answer": "B", "explanation": ""}, {"num": 62, "question": "Ingin ajarkan Bhinneka Tunggal Ika. Tindakan efektif:", "options": {"A": "Ceramah", "B": "Rancang kegiatan yang memanfaatkan keberagaman siswa", "C": "Tugas hafalan", "D": "Biarkan"}, "answer": "B", "explanation": ""}, {"num": 63, "question": "Penggunaan teknologi belum optimal. Tindakan:", "options": {"A": "Paksa semua", "B": "Mulai dari yang sederhana + pendampingan bertahap", "C": "Tunggu perangkat lengkap", "D": "Larang"}, "answer": "B", "explanation": ""}, {"num": 64, "question": "Siswa mengalami perundungan karena kasus orang tua. Respons:", "options": {"A": "Abaikan", "B": "Lindungi siswa, edukasi kelas, koordinasi dengan BK", "C": "Pindahkan siswa", "D": "Biarkan orang tua"}, "answer": "B", "explanation": ""}, {"num": 65, "question": "Siswa ADHD sulit fokus. Langkah terbaik:", "options": {"A": "Hukum", "B": "Sesuaikan strategi dan lingkungan kelas", "C": "Minta obat", "D": "Abaikan"}, "answer": "B", "explanation": ""}, {"num": 66, "question": "Kepala sekolah minta Anda pimpin perbaikan motivasi belajar. Langkah:", "options": {"A": "Ganti guru", "B": "Analisis data + observasi + rencana berbasis data", "C": "Tambah jam pelajaran", "D": "Hukum siswa"}, "answer": "B", "explanation": ""}, {"num": 67, "question": "Guru senior menolak ikut workshop. Tindakan:", "options": {"A": "Paksa", "B": "Libatkan secara bertahap dengan peran sesuai", "C": "Abaikan", "D": "Laporkan"}, "answer": "B", "explanation": ""}, {"num": 68, "question": "Orang tua marah karena nilai anak. Tindakan:", "options": {"A": "Naikkan nilai", "B": "Jelaskan dengan data objektif + tawarkan solusi", "C": "Hindari", "D": "Serahkan ke kepala sekolah"}, "answer": "B", "explanation": ""}, {"num": 69, "question": "Ada konflik antar guru. Tindakan:", "options": {"A": "Biarkan", "B": "Fasilitasi mediasi profesional", "C": "Pilih salah satu pihak", "D": "Laporkan langsung"}, "answer": "B", "explanation": ""}, {"num": 70, "question": "Menyusun kurikulum operasional baru. Langkah awal:", "options": {"A": "Kerjakan sendiri", "B": "Libatkan semua pihak sejak perencanaan", "C": "Salin sekolah lain", "D": "Tunggu perintah"}, "answer": "B", "explanation": ""}, {"num": 71, "question": "Siswa sering terlambat. Upaya terbaik:", "options": {"A": "Hukum", "B": "Buat kesepakatan kelas bersama", "C": "Abaikan", "D": "Minta orang tua"}, "answer": "B", "explanation": ""}, {"num": 72, "question": "Kelas tidak kondusif. Langkah:", "options": {"A": "Tegur keras", "B": "Cari metode yang sesuai karakter kelas", "C": "Keluarkan siswa", "D": "Biarkan"}, "answer": "B", "explanation": ""}, {"num": 73, "question": "Kebijakan asesmen baru. Upaya Anda:", "options": {"A": "Langsung terapkan", "B": "Analisis kesesuaian dengan kebutuhan siswa", "C": "Tolak", "D": "Tunggu"}, "answer": "B", "explanation": ""}, {"num": 74, "question": "Perundungan terjadi. Upaya:", "options": {"A": "Hukum pelaku", "B": "Koordinasi antar guru + cari fakta", "C": "Abaikan", "D": "Pindahkan korban"}, "answer": "B", "explanation": ""}, {"num": 75, "question": "Rapor sulit diakses orang tua jauh. Langkah:", "options": {"A": "Paksa datang", "B": "Usulkan sistem digital", "C": "Kirim pos", "D": "Berikan ke siswa"}, "answer": "B", "explanation": ""}, {"num": 76, "question": "Sebagai guru, Anda ingin meningkatkan komunikasi dengan orang tua siswa yang jarang datang ke sekolah. Langkah paling tepat adalah:", "options": {"A": "Menghindari interaksi karena mereka sibuk", "B": "Memberikan laporan perkembangan siswa secara teratur melalui media yang mudah diakses", "C": "Mengadakan pertemuan tatap muka wajib setiap bulan", "D": "Menyalahkan orang tua jika hasil belajar anak rendah"}, "answer": "B", "explanation": ""}, {"num": 77, "question": "Saat siswa membuat kesalahan dalam proses pembelajaran, sikap guru yang paling tepat adalah:", "options": {"A": "Mengabaikan kesalahan tersebut agar tidak mengganggu jalannya pelajaran", "B": "Menggunakan kesalahan sebagai kesempatan untuk belajar bersama", "C": "Memberikan hukuman agar tidak terulang", "D": "Meminta siswa lain untuk mengoreksi di depan kelas"}, "answer": "B", "explanation": ""}, {"num": 78, "question": "Kelas Anda memiliki siswa dengan latar belakang kemampuan yang sangat beragam. Strategi paling efektif adalah:", "options": {"A": "Memberlakukan aturan dan metode yang sama untuk semua siswa", "B": "Mengadaptasi metode pengajaran sesuai kebutuhan individu siswa", "C": "Menekankan pembelajaran frontal agar semua menerima materi yang sama", "D": "Menghindari penggunaan teknologi karena rumit"}, "answer": "B", "explanation": ""}, {"num": 79, "question": "Anda merencanakan pembelajaran berbasis teknologi. Hal yang paling perlu diperhatikan adalah:", "options": {"A": "Menghindari penggunaan teknologi agar tidak ribet", "B": "Menerapkan teknologi tanpa mempertimbangkan tujuan pembelajaran", "C": "Memilih dan mengintegrasikan teknologi yang relevan dengan tujuan pembelajaran", "D": "Membatasi penggunaan teknologi hanya sebagai hiburan di kelas"}, "answer": "C", "explanation": ""}, {"num": 80, "question": "Cara terbaik membangun hubungan positif dengan rekan kerja adalah:", "options": {"A": "Mementingkan kepentingan pribadi dan bersaing", "B": "Menghindari kerja sama tim", "C": "Membangun komunikasi yang efektif dan saling mendukung", "D": "Membatasi interaksi hanya dalam konteks formal"}, "answer": "C", "explanation": ""}, {"num": 81, "question": "Untuk meningkatkan keterampilan manajemen konflik di kelas, guru sebaiknya:", "options": {"A": "Menghindari konfrontasi dengan siswa yang bermasalah", "B": "Mengabaikan konflik yang muncul", "C": "Menerapkan strategi penyelesaian konflik yang efektif dan adil", "D": "Menghukum siswa yang terlibat tanpa mencari akar masalah"}, "answer": "C", "explanation": ""}, {"num": 82, "question": "Saat berhadapan dengan siswa berkebutuhan khusus, tindakan yang paling tepat adalah:", "options": {"A": "Mengabaikan kebutuhan khusus mereka", "B": "Memisahkan mereka dari siswa lain", "C": "Memberikan dukungan dan penyesuaian yang sesuai dengan kebutuhan", "D": "Membiarkan mereka mengatasi hambatannya sendiri"}, "answer": "C", "explanation": ""}, {"num": 83, "question": "Cara paling efektif untuk meningkatkan kualitas pengajaran Anda adalah:", "options": {"A": "Menghindari mencari umpan balik dari siswa dan rekan kerja", "B": "Mengandalkan materi dari buku teks tanpa inovasi", "C": "Melakukan refleksi diri secara teratur dan mencari umpan balik", "D": "Menerapkan metode yang sama tanpa penyesuaian"}, "answer": "C", "explanation": ""}, {"num": 84, "question": "Pengajaran yang responsif terhadap keberagaman siswa berarti:", "options": {"A": "Mengabaikan perbedaan individual siswa", "B": "Menggunakan satu pendekatan untuk semua siswa", "C": "Mengakui dan menghargai latar belakang serta kebutuhan siswa yang beragam", "D": "Memisahkan siswa berdasarkan kemampuan akademik"}, "answer": "C", "explanation": ""}, {"num": 85, "question": "Differentiated instruction (diferensiasi pembelajaran) adalah:", "options": {"A": "Pengajaran yang sama untuk setiap siswa", "B": "Modifikasi pengajaran sesuai dengan kebutuhan individu siswa", "C": "Menggunakan satu metode pengajaran untuk semua topik", "D": "Mengajar tanpa menggunakan alat bantu"}, "answer": "B", "explanation": ""}, {"num": 86, "question": "Agar komunikasi dengan siswa efektif, guru sebaiknya:", "options": {"A": "Menggunakan bahasa teknis yang sulit dipahami", "B": "Mengabaikan pertanyaan atau kekhawatiran siswa", "C": "Menggunakan contoh dan ilustrasi yang relevan", "D": "Menghindari media atau alat bantu komunikasi"}, "answer": "C", "explanation": ""}, {"num": 87, "question": "Peran utama teknologi informasi dalam pendidikan modern adalah:", "options": {"A": "Sebagai pengganti guru di kelas", "B": "Memperkaya sumber belajar dan alat pengajaran", "C": "Membatasi interaksi sosial di kelas", "D": "Mengurangi kebutuhan akan buku teks"}, "answer": "B", "explanation": ""}, {"num": 88, "question": "Dalam proyek kolaboratif, cara terbaik mengintegrasikan siswa adalah:", "options": {"A": "Memberikan tugas terpisah tanpa koordinasi", "B": "Memimpin dan mengoordinasikan diskusi kelompok agar siswa saling berbagi", "C": "Fokus hanya pada kontribusi sendiri", "D": "Menghindari kolaborasi untuk mencegah kesalahan"}, "answer": "B", "explanation": ""}, {"num": 89, "question": "Fungsi utama penerapan penilaian portofolio adalah:", "options": {"A": "Mengumpulkan hasil karya siswa", "B": "Meningkatkan rasa saling percaya", "C": "Mengetahui peningkatan kemampuan siswa dari waktu ke waktu", "D": "Menilai hasil belajar secara instan"}, "answer": "C", "explanation": ""}, {"num": 90, "question": "Ciri karya tulis ilmiah, kecuali:", "options": {"A": "Memaparkan bidang ilmu tertentu", "B": "Merupakan deskripsi suatu kejadian sehari-hari", "C": "Menggunakan gaya bahasa resmi", "D": "Disajikan secara sistematis"}, "answer": "B", "explanation": ""}, {"num": 91, "question": "Siswa sering datang terlambat. Upaya paling efektif adalah:", "options": {"A": "Memberikan hukuman setiap kali terlambat", "B": "Membuat kesepakatan kelas bersama peserta didik", "C": "Mengabaikan karena sudah biasa", "D": "Meminta orang tua yang mengatur"}, "answer": "B", "explanation": ""}, {"num": 92, "question": "Kelas tidak kondusif karena banyak siswa ngobrol sendiri. Langkah yang tepat adalah:", "options": {"A": "Menegur secara lisan terus-menerus", "B": "Membuat kontrak pembelajaran", "C": "Mencari metode pembelajaran yang sesuai dengan karakter kelas", "D": "Memberi tugas tambahan kepada yang ngobrol"}, "answer": "C", "explanation": ""}, {"num": 93, "question": "Sekolah menerapkan asesmen berbasis proyek setelah studi banding. Upaya Anda yang paling tepat adalah:", "options": {"A": "Langsung melaksanakan tanpa analisis", "B": "Menganalisis kesesuaian asesmen tersebut dengan kebutuhan peserta didik", "C": "Menolak karena merepotkan", "D": "Menunggu instruksi lebih lanjut"}, "answer": "B", "explanation": ""}, {"num": 94, "question": "Terjadi perundungan yang melibatkan siswa dari beberapa kelas. Upaya yang tepat adalah:", "options": {"A": "Langsung menghukum pelaku", "B": "Bersama guru lain melakukan pencarian fakta di lapangan", "C": "Hanya memotivasi korban", "D": "Memindahkan korban ke kelas lain"}, "answer": "B", "explanation": ""}, {"num": 95, "question": "Banyak orang tua yang tinggal jauh dan sulit datang mengambil rapor. Langkah terbaik adalah:", "options": {"A": "Memaksa mereka datang", "B": "Mengusulkan penggunaan rapor digital yang dapat diakses jarak jauh", "C": "Memberikan rapor langsung kepada siswa", "D": "Mengirim melalui pos tanpa pemberitahuan"}, "answer": "B", "explanation": ""}, {"num": 96, "question": "Banyak siswa menggunakan AI untuk menyalin tugas tanpa memahami. Langkah paling tepat adalah:", "options": {"A": "Melarang total penggunaan AI", "B": "Membiarkan karena zaman sudah berubah", "C": "Mendesain tugas yang mengharuskan siswa menjelaskan proses berpikir dan refleksi", "D": "Mengurangi jumlah tugas"}, "answer": "C", "explanation": ""}, {"num": 97, "question": "Program ekstrakurikuler yang Anda kelola mengalami penurunan minat. Langkah terbaik adalah:", "options": {"A": "Melanjutkan program tanpa perubahan", "B": "Memperbaiki program berdasarkan masukan peserta didik", "C": "Mengganti dengan program akademik", "D": "Membiarkan peserta didik memilih sendiri"}, "answer": "B", "explanation": ""}, {"num": 98, "question": "Beberapa guru senior masih menerapkan hukuman yang mengarah pada kekerasan. Tindakan Anda adalah:", "options": {"A": "Membiarkan karena sudah menjadi kebiasaan", "B": "Menegur di depan umum", "C": "Mengajak diskusi berbasis regulasi perlindungan anak dan menawarkan alternatif positif", "D": "Langsung melaporkan ke dinas pendidikan"}, "answer": "C", "explanation": ""}, {"num": 99, "question": "Orang tua memberikan oleh-oleh sebagai ucapan terima kasih karena Anda mengirimkan tugas saat anaknya izin. Sikap yang tepat adalah:", "options": {"A": "Menerima dengan senang hati", "B": "Menolak dengan sopan dan menjelaskan bahwa itu merupakan bagian dari tugas profesional", "C": "Menerima lalu membagikan kepada rekan guru", "D": "Melaporkan kepada kepala sekolah"}, "answer": "B", "explanation": ""}, {"num": 100, "question": "Tim kurikulum mengalami hambatan koordinasi antar guru. Tindakan yang paling tepat adalah:", "options": {"A": "Bekerja sendiri agar cepat selesai", "B": "Memfasilitasi pertemuan untuk klarifikasi peran dan alur komunikasi", "C": "Menunggu instruksi dari kepala sekolah", "D": "Melaporkan saja tanpa solusi"}, "answer": "B", "explanation": ""}], "B": [{"num": 1, "question": "Anda sebagai guru, mengetahui bahwa banyak peserta didik di kelas Anda yang terkadang melakukan kecurangan dalam mengerjakan tugas. Salah satu contohnya memanfaatkan artificial intelligence (AI) untuk membantu mengerjakan tugas-tugas sekolah, seperti tugas merangkum dan menyusun makalah. Padahal melalui AI tersebut, peserta didik mendapatkan hasil yang instan tanpa melalui proses berpikir dan para guru lainnya perlu lebih perhatian terhadap perubahan yang terjadi ini. Langkah yang akan Anda lakukan adalah...", "options": {"A": "Memberikan pelatihan kepada guru-guru dan peserta didik tentang etika dan konsekuensi dari kecurangan akademik yang melibatkan AI", "B": "Memberikan edukasi kepada para guru dan peserta didik mengenai penggunaan AI yang bijak agar tidak menggantikan usaha dan pemikiran diri sendiri", "C": "Mengadakan diskusi terbuka yang melibatkan para guru tentang kecurangan akademik dan penggunaan AI sebelum ke peserta didik", "D": "Melakukan pemantauan terhadap tugas dan pekerjaan peserta didik, seperti mengidentifikasi tanda-tanda penggunaan AI dalam tugas peserta didik"}, "answer": "B", "explanation": "Paling tepat karena menekankan edukasi penggunaan AI secara bijak, bukan hanya melarang atau memantau."}, {"num": 2, "question": "Menjelang akhir semester, Anda mengevaluasi capaian belajar peserta didik dan menemukan bahwa terdapat satu anak yang beresiko tinggal kelas. Anda menemui peserta didik tersebut untuk mencari tahu penyebabnya. Peserta didik tersebut mengatakan bahwa ia sempat kewalahan beberapa bulan terakhir, namun ia berjanji akan berusaha mengejar ketertinggalannya karena tidak ingin tinggal kelas. Cara Anda membantu peserta didik tersebut adalah...", "options": {"A": "Memberikan semua materi yang tertinggal sekaligus agar cepat mengejar", "B": "Menyusun rencana pembelajaran remedial yang terstruktur, memantau progres secara berkala, dan melibatkan orang tua", "C": "Meminta peserta didik belajar sendiri di rumah karena sudah berjanji", "D": "Mengabaikan sementara dan fokus pada siswa lain yang lebih siap"}, "answer": "B", "explanation": "Pendekatan terstruktur, kolaboratif, dan berkelanjutan adalah ciri jawaban SJT yang kuat."}, {"num": 3, "question": "Penggunaan kecerdasan buatan atau artificial intelligence (AI) seperti ChatGPT semakin luas. Banyak yang merasa resah dengan teknologi tersebut, khawatir akan disalahgunakan oleh peserta didik untuk berbuat curang. Di sisi lain, Anda mengetahui banyak peserta didik yang dimudahkan dengan adanya ChatGPT karena dapat membantu mereka belajar secara mandiri. Anda berencana untuk meluruskan pandangan warga sekolah terkait penggunaan ChatGPT. Hal efektif yang dapat Anda lakukan adalah...", "options": {"A": "Membuat tulisan formal berupa batasan penggunaan ChatGPT lalu mengajukan peraturan baru kepada Kepala Sekolah", "B": "Membuat tulisan formal berupa panduan singkat terkait ChatGPT (fungsi, keuntungan, kerugian, batasan, dan cara mendeteksi kecurangan)", "C": "Membuat dan menyebarkan poster edukasi yang hanya menekankan manfaat ChatGPT", "D": "Bekerja sama dengan peserta didik yang berhasil menggunakan ChatGPT secara positif untuk menyebarkan contoh baik"}, "answer": "B", "explanation": "Panduan yang seimbang (manfaat + risiko + batasan) paling efektif untuk meluruskan pandangan."}, {"num": 4, "question": "Anda adalah seorang guru yang menjabat sebagai kepala sekolah dan sudah lebih dari sepuluh tahun mengajar di sekolah X. Anda menyadari bahwa pentingnya mengikuti pelatihan kompetensi khusus yang harus dimiliki oleh para guru. Di sisi lain, Anda mengetahui bahwa tidak semua guru menyadari akan hal ini, sehingga mereka tidak meluangkan waktu mengikuti kompetensi khusus yang harus dimiliki oleh para guru yang bisa diterapkan konsisten dan membudaya di sekolah Anda. Langkah yang akan Anda lakukan adalah...", "options": {"A": "Menginisiasi penyusunan program pengembangan bersama rekan guru dan mendiskusikan rancangan yang sesuai kebutuhan", "B": "Menunjuk salah satu guru sebagai koordinator tanpa melibatkan yang lain", "C": "Secara proaktif menyusun program pengembangan jangka panjang sendiri lalu memerintahkan semua guru mengikutinya", "D": "Mengajukan program ke pusat agar menjadi contoh bagi sekolah lain tanpa melibatkan guru di sekolah"}, "answer": "A", "explanation": "Keterlibatan bersama sejak awal meningkatkan ownership dan keberlanjutan."}, {"num": 5, "question": "Anda adalah seorang guru yang juga bertanggung jawab atas program ekstrakurikuler di sekolah. Sebuah program ekstrakurikuler yang Anda kelola telah mengalami penurunan minat peserta didik dan hasil yang tidak memuaskan. Padahal Anda mengetahui bahwa selain pembelajaran akademik, program ekstrakurikuler menunjang prestasi peserta didik di bidang non akademik. Langkah yang akan Anda lakukan adalah...", "options": {"A": "Melanjutkan program ekstrakurikuler dan tetap berfokus pada kelancaran keberjalanan program agar minat peserta didik meningkat dengan sendirinya", "B": "Memperbaiki program ekstrakurikuler yang mengalami penurunan minat berdasarkan masukan dan saran dari peserta didik", "C": "Mengadakan pertemuan dengan peserta didik untuk mendengarkan alasan mereka tidak tertarik, lalu merevisi program", "D": "Mengganti program ekstrakurikuler dengan program pembelajaran akademik ekstra"}, "answer": "C", "explanation": "Mendengarkan alasan peserta didik dulu sebelum merevisi adalah langkah paling tepat dan partisipatif."}, {"num": 6, "question": "Kebijakan umumnya dibuat sebagai pedoman untuk bertindak dan berfungsi sebagaimana mestinya. Strategi efektif yang akan Anda usulkan dalam membentuk kebijakan di Sekolah Anda adalah...", "options": {"A": "Menyusun kebijakan sendiri berdasarkan pengalaman pribadi", "B": "Melibatkan perwakilan guru, tenaga kependidikan, dan jika perlu perwakilan siswa/orang tua dalam proses penyusunan", "C": "Menyalin kebijakan dari sekolah lain yang sudah berhasil", "D": "Menunggu kebijakan dari dinas pendidikan tanpa inisiatif lokal"}, "answer": "B", "explanation": "Partisipasi stakeholder membuat kebijakan lebih diterima dan relevan."}, {"num": 7, "question": "Anda terlibat kembali dalam tim kurikulum yang dibentuk oleh Kepala Sekolah untuk menyusun kurikulum operasional satuan pendidikan yang wajib diterapkan di tahun depan. Ada beberapa program baru dan pengembangan program lama sesuai visi misi kurikulum baru yang akan diterapkan. Agar pergantian kurikulum dapat berjalan minim hambatan, langkah awal yang dapat Anda lakukan sebagai tim kurikulum adalah...", "options": {"A": "Langsung menyusun dokumen kurikulum tanpa sosialisasi", "B": "Melakukan pemetaan kesiapan guru, sarana, dan mengidentifikasi potensi hambatan terlebih dahulu", "C": "Memerintahkan semua guru menerapkan kurikulum baru tanpa pelatihan", "D": "Menunggu tahun ajaran baru dimulai baru melakukan sosialisasi"}, "answer": "B", "explanation": "Pemetaan kesiapan dan hambatan di awal adalah kunci transisi yang mulus."}, {"num": 8, "question": "Kasus kekerasan pada peserta didik seringkali menjadi sorotan publik. Di sekolah Anda beberapa guru senior masih menerapkan sistem punishment yang mengarah pada kekerasan peserta didik. Mereka menganggap hal tersebut sudah lumrah dilakukan. Tindakan yang Anda lakukan adalah...", "options": {"A": "Membiarkan karena sudah menjadi kebiasaan lama", "B": "Menegur guru tersebut di depan umum agar jera", "C": "Mengajak diskusi berbasis regulasi perlindungan anak dan menawarkan alternatif disiplin positif", "D": "Langsung melaporkan ke dinas pendidikan tanpa komunikasi internal"}, "answer": "C", "explanation": "Pendekatan edukatif dan berbasis regulasi lebih efektif daripada konfrontasi atau pembiaran."}, {"num": 9, "question": "Anda menyaksikan perseteruan antara rekan guru lain yaitu Pak Boni, dengan peserta didik bernama Dino. Dino diketahui tidak mengerjakan tugas yang diberikan oleh Pak Boni. Pak Boni kemudian memanggil Dino serta berusaha menanyakan kondisinya, mengapa ia sering tidak mengerjakan tugas. Dino membalas dengan membentak Pak Boni dan mengatakan hal-hal kasar. Pak Boni tersulut emosi kemudian mengancam akan memberikan nilai yang rendah untuk Dino. Tindakan yang dapat Anda lakukan pada situasi tersebut adalah...", "options": {"A": "Membiarkan karena itu urusan Pak Boni dan Dino", "B": "Langsung memihak salah satu pihak", "C": "Menenangkan situasi, memisahkan keduanya sementara, lalu memfasilitasi komunikasi yang lebih tenang di kemudian hari", "D": "Melaporkan keduanya ke kepala sekolah tanpa mediasi"}, "answer": "C", "explanation": "Menenangkan dulu lalu memfasilitasi komunikasi adalah tindakan profesional dan de-eskalasi."}, {"num": 10, "question": "Salah satu peserta didik Anda meminta izin untuk tidak hadir ke sekolah karena perlu menghadiri acara keluarga. Sebagai wali kelas, Anda mengirimkan informasi seperti tugas atau pengumuman yang peserta didik tersebut lewatkan selama tidak hadir. Saat kembali, orang tua peserta didik tersebut memberikan Anda oleh-oleh sebagai bentuk terima kasih atas bantuan Anda memberikan informasi. Sikap Anda saat hal tersebut terjadi adalah...", "options": {"A": "Menerima dengan senang hati sebagai apresiasi", "B": "Menolak dengan sopan dan menjelaskan bahwa itu merupakan bagian dari tugas profesional Anda", "C": "Menerima lalu membagikan kepada rekan guru lain", "D": "Melaporkan pemberian tersebut kepada kepala sekolah"}, "answer": "B", "explanation": "Menolak dengan sopan menjaga integritas profesional."}, {"num": 11, "question": "Anda adalah seorang guru yang ditunjuk menjadi ketua panitia dalam memperingati kemerdekaan Indonesia di sekolah. Sekolah Anda berencana untuk memecahkan rekor dengan membuat produk dari daur ulang sampah terbanyak. Beberapa guru di sekolah Anda terkesan menolak untuk ikut berpartisipasi dalam kegiatan ini, seringkali pulang lebih dulu dan tidak mengikuti pembuatan prakarya daur ulang sampah. Hal ini mulai mempengaruhi semangat beberapa guru lainnya, dan ada potensi kegiatan tersebut tidak berhasil. Upaya yang akan Anda lakukan adalah...", "options": {"A": "Memaksa semua guru untuk ikut serta", "B": "Mengajak dialog, mencari tahu alasan penolakan, dan menyesuaikan peran agar lebih fleksibel serta bermakna", "C": "Melaporkan guru yang tidak berpartisipasi kepada kepala sekolah", "D": "Melanjutkan kegiatan hanya dengan guru yang mau saja"}, "answer": "B", "explanation": "Dialog dan penyesuaian peran meningkatkan partisipasi tanpa memaksa."}, {"num": 12, "question": "Anda tergabung dalam tim kurikulum di sekolah Anda. Dalam prosesnya, tidak dipungkiri bahwa adanya hambatan dalam berkoordinasi seperti salah persepsi, antar guru dan tenaga kependidikan di unit kerja kurang lancar dalam berkolaborasi sehingga menyebabkan tidak tercapainya tujuan bersama. Mengetahui situasi tersebut, tindakan yang akan Anda lakukan adalah...", "options": {"A": "Bekerja sendiri agar target tercapai", "B": "Memfasilitasi pertemuan untuk klarifikasi peran, menyamakan persepsi, dan memperbaiki alur komunikasi", "C": "Menunggu instruksi kepala sekolah", "D": "Melaporkan anggota yang kurang kooperatif"}, "answer": "B", "explanation": "Klarifikasi dan perbaikan komunikasi adalah solusi sistemik."}, {"num": 13, "question": "Sering terjadi dimana orang tua murid mempertanyakan atau tidak setuju dengan peraturan kelas yang dibuat oleh wali kelas masing-masing. Untuk menghindari hal ini, tindakan yang Anda lakukan adalah...", "options": {"A": "Membuat peraturan sepihak agar tegas", "B": "Melibatkan peserta didik dalam penyusunan peraturan kelas dan mengomunikasikannya kepada orang tua sejak awal", "C": "Menghilangkan peraturan kelas agar tidak ada konflik", "D": "Membiarkan masing-masing wali kelas membuat peraturan sendiri tanpa koordinasi"}, "answer": "B", "explanation": "Keterlibatan dan komunikasi preventif mengurangi resistensi."}, {"num": 14, "question": "Sebagai salah satu guru penggerak yang dipindahtugaskan ke sekolah yang baru, Anda menemukan peluang untuk mengadakan workshop tentang kerja sama dan sinergi antar unit kerja di sekolah Anda. Namun karena budaya ini belum pernah dilakukan di sekolah, Anda ingin memastikan bahwa setiap unit kerja dipastikan terlibat dalam workshop ini. Langkah yang akan Anda lakukan adalah...", "options": {"A": "Langsung mengundang semua unit tanpa pendekatan awal", "B": "Melakukan pendekatan personal dan membangun pemahaman bersama tentang manfaat workshop sebelum pelaksanaannya", "C": "Meminta kepala sekolah memerintahkan semua unit hadir", "D": "Melaksanakan workshop hanya dengan unit yang sudah siap"}, "answer": "B", "explanation": "Pendekatan personal membangun buy-in sebelum kegiatan formal."}, {"num": 15, "question": "Sekolah Anda baru saja menerapkan kurikulum terbaru sesuai dengan aturan pemerintah. Namun, pada kenyataannya, beberapa guru senior masih mengajar menggunakan kurikulum lama. Alasannya adalah bahwa secara umum keduanya sama. Hanya saja kurikulum baru lebih rumit penerapannya. Pada situasi tersebut tindakan yang semestinya Anda lakukan sebagai guru adalah...", "options": {"A": "Membiarkan guru senior menggunakan kurikulum lama", "B": "Menegur secara keras di forum resmi", "C": "Memfasilitasi pendampingan, berbagi praktik baik, dan menunjukkan manfaat kurikulum baru secara konkret", "D": "Melaporkan guru tersebut kepada pengawas"}, "answer": "C", "explanation": "Pendampingan dan praktik baik lebih efektif daripada paksaan."}, {"num": 16, "question": "Anda merupakan wali kelas dengan salah satu peserta didik yang merupakan anak berkebutuhan khusus. Anda mengetahui teori maupun praktik baik yang dapat dilakukan di kelas dengan anak berkebutuhan khusus, namun Anda belum pernah menerapkannya sebelumnya. Tindakan Anda dalam menghadapi situasi ini adalah...", "options": {"A": "Mengabaikan perbedaan dan memperlakukan sama seperti siswa lain", "B": "Mulai menerapkan secara bertahap sambil berkonsultasi dengan guru pendamping khusus atau ahli", "C": "Meminta siswa tersebut pindah ke kelas lain", "D": "Menyerahkan sepenuhnya kepada guru BK"}, "answer": "B", "explanation": "Penerapan bertahap + konsultasi adalah pendekatan profesional dan bertanggung jawab."}, {"num": 17, "question": "Anda adalah seorang guru senior yang memiliki tanggung jawab untuk mengembangkan bakat guru junior di sekolah Anda. Salah satu guru junior, yang satu MGMP dengan Anda, telah menunjukkan kemajuan yang luar biasa dalam mengajar dan memiliki potensi besar untuk menjadi koordinator mata pelajaran. Namun, ada seorang guru junior lain yang juga berbakat dan sangat ingin mengambil peran tersebut. Tindakan yang Anda lakukan dalam situasi tersebut adalah...", "options": {"A": "Memilih yang lebih senior secara usia", "B": "Membuat kriteria yang transparan dan melibatkan proses yang adil serta terbuka", "C": "Memilih yang paling dekat dengan Anda", "D": "Membiarkan kepala sekolah memutuskan sendiri tanpa masukan"}, "answer": "B", "explanation": "Transparansi dan keadilan menjaga kredibilitas serta motivasi."}, {"num": 18, "question": "Sebagai guru yang aktif dan peduli terhadap kebersihan lingkungan sekolah, Anda dipilih menjadi Duta Lingkungan Hidup di sekolah Anda. Tugas Anda adalah menyebarluaskan hal positif terkait kebersihan lingkungan di sekolah Anda. Langkah pertama yang dapat Anda lakukan untuk merealisasikan hal tersebut adalah...", "options": {"A": "Membuat poster dan menempelkannya di seluruh sekolah", "B": "Membentuk tim kecil dan merancang program sederhana yang melibatkan warga sekolah", "C": "Menunggu anggaran dari sekolah", "D": "Memberikan ceramah di upacara bendera saja"}, "answer": "B", "explanation": "Membangun tim dan program partisipatif lebih berkelanjutan."}, {"num": 19, "question": "Tahun ini sekolah Anda ingin meningkatkan jumlah penerimaan peserta didik baru yang tahun-tahun sebelumnya cukup rendah. Untuk itu, akan dibentuk sebuah tim yang terdiri atas beberapa guru dan tenaga kependidikan. Dilakukan berbagai upaya promosi mulai dari menyebar brosur hingga aktivitas melalui media sosial. Namun, setelah sebulan tim terbentuk, masih belum terlihat peningkatan hasil. Sebagai guru yang menjabat ketua tim, hal yang sebaiknya Anda lakukan adalah...", "options": {"A": "Mengganti seluruh anggota tim", "B": "Mengevaluasi data dan strategi yang sudah dijalankan, lalu menyesuaikan pendekatan", "C": "Menambah jumlah brosur yang disebar", "D": "Membiarkan berjalan karena masih awal"}, "answer": "B", "explanation": "Evaluasi berbasis data adalah langkah manajerial yang tepat."}, {"num": 20, "question": "Salah satu orang tua murid di kelas Anda datang ke sekolah karena merasa anaknya tidak diperlakukan dengan baik oleh rekan guru lain. Peserta didik tersebut keliru dalam mengumpulkan tugas, namun rekan guru telah memberikan nilai pada tugas tersebut dan menolak untuk mengubah nilai berdasarkan tugas yang sebenarnya. Hal ini dilakukan karena tidak ingin peserta didik yang lain merasa tidak adil. Tindakan Anda menghadapi situasi tersebut adalah...", "options": {"A": "Membela rekan guru sepenuhnya", "B": "Memediasi secara profesional dengan data dan mencari solusi yang adil bagi semua pihak", "C": "Langsung meminta rekan guru mengubah nilai", "D": "Menyerahkan sepenuhnya kepada kepala sekolah"}, "answer": "B", "explanation": "Mediasi berbasis data dan keadilan adalah tindakan profesional."}, {"num": 21, "question": "Anda adalah seorang guru yang juga diberikan amanat sebagai kepala perpustakaan di sekolah. Anda mendapatkan tanggung jawab untuk meningkatkan minat baca peserta didik yang ada di sekolah tanpa target spesifik dari Kepala Sekolah. Di sisi lain, kenyataannya hanya 2-3 orang dari seluruh peserta didik lintas angkatan yang terpantau memanfaatkan buku yang ada di perpustakaan. Anda bersama tim yang bertanggung jawab di perpustakaan menetapkan target bersama, yaitu 10% peserta didik setiap angkatan berkunjung ke perpustakaan dan pemanfaatan buku yang dimiliki sekolah. Namun, Anda memiliki sumber daya dan anggaran yang terbatas untuk mencapai kinerja yang sudah disepakati bersama. Pada kondisi tersebut langkah yang akan Anda lakukan adalah...", "options": {"A": "Menunggu anggaran tambahan dari sekolah", "B": "Merancang program sederhana (pojok baca, tantangan membaca, kolaborasi dengan guru mapel) dengan sumber daya yang ada", "C": "Menutup perpustakaan sementara", "D": "Memaksa siswa datang ke perpustakaan"}, "answer": "B", "explanation": "Inovasi dengan sumber daya terbatas menunjukkan kompetensi manajerial."}, {"num": 22, "question": "Setelah pandemi Covid-19, banyak peserta didik yang kurang aktif di kelas dan cenderung bosan mengikuti pelajaran di kelas. Ada lembaga yang menyediakan pelatihan manajemen kelas yang atraktif untuk peserta didik. Hanya saja biaya yang dibutuhkan cukup besar untuk mengikuti kegiatan tersebut. Sementara itu, sekolah sedang menghemat dana karena sedang melakukan renovasi di beberapa fasilitas di sekolah. Hal yang sebaiknya Anda sarankan kepada kepala sekolah adalah...", "options": {"A": "Memaksa sekolah mengalokasikan dana untuk pelatihan tersebut", "B": "Mencari alternatif internal atau berbagi biaya dengan sekolah lain / memanfaatkan sumber daya lokal", "C": "Membatalkan saja karena sedang hemat", "D": "Menunggu tahun depan ketika anggaran longgar"}, "answer": "B", "explanation": "Solusi kreatif dan hemat biaya lebih realistis."}, {"num": 23, "question": "Sering terjadi kejadian dimana orang tua murid memperdebatkan kegiatan pembelajaran yang dibuat oleh guru atau wali kelas. Hal ini sering terjadi karena ketidaktahuan orang tua murid terkait perkembangan pembelajaran peserta didik. Untuk menghindari hal ini, tindakan yang dapat Anda lakukan adalah...", "options": {"A": "Mengurangi komunikasi dengan orang tua", "B": "Meningkatkan komunikasi rutin dan transparan mengenai tujuan serta proses pembelajaran", "C": "Membuat kegiatan pembelajaran yang sangat sederhana agar tidak diperdebatkan", "D": "Menyerahkan sepenuhnya komunikasi kepada kepala sekolah"}, "answer": "B", "explanation": "Komunikasi preventif dan transparan mengurangi konflik."}, {"num": 24, "question": "Saat ini, sekolah Anda belum memiliki acuan atau pedoman peraturan tata tertib sekolah secara resmi. Hal ini berdampak pada tingginya subjektivitas hukuman atau sanksi yang diberikan kepada peserta didik oleh guru. Para guru setuju bahwa sekolah perlu membuat pedoman tata tertib, agar seluruh warga sekolah mengetahui standar tata tertib yang perlu diikuti. Apabila Anda diminta untuk membuat pedoman tata tertib, langkah pertama yang perlu Anda lakukan adalah...", "options": {"A": "Menyusun sendiri berdasarkan pengalaman", "B": "Melibatkan perwakilan guru, siswa, dan orang tua dalam proses penyusunan", "C": "Menyalin tata tertib dari sekolah lain", "D": "Menunggu peraturan dari dinas"}, "answer": "B", "explanation": "Partisipasi membuat peraturan lebih diterima dan adil."}, {"num": 25, "question": "Peserta didik Anda memiliki latar belakang sosial dan ekonomi yang berbeda-beda. Adanya perbedaan tersebut membuat Anda khawatir adanya kesenjangan yang berujung pada diskriminasi yang marak terjadi pada pelajar. Sebagai wali kelas, cara terbaik untuk memastikan bahwa tidak ada peserta didik yang mengalami diskriminasi atas perbedaan latar belakang mereka yaitu dengan...", "options": {"A": "Mengabaikan perbedaan agar terlihat adil", "B": "Membangun budaya kelas yang menghargai keberagaman dan memantau interaksi antar siswa secara aktif", "C": "Memisahkan siswa berdasarkan latar belakang ekonomi", "D": "Memberikan bantuan hanya kepada siswa yang kurang mampu"}, "answer": "B", "explanation": "Membangun budaya inklusif + monitoring adalah pendekatan preventif terbaik."}, {"num": 26, "question": "Anda merupakan guru yang sering menerapkan metode pembelajaran berbasis diskusi dan kebebasan berpendapat. Menurut Anda, metode ini merupakan cara sederhana dalam membantu peserta didik untuk mengetahui dan menyadari adanya perbedaan dan keberagaman. Berikut ini, tindakan manakah yang paling efektif untuk dilakukan oleh seorang Guru di kelas dalam menjaga nilai-nilai perbedaan?", "options": {"A": "Membatasi pendapat yang berbeda agar diskusi tetap aman", "B": "Merancang kegiatan yang secara aktif memanfaatkan keberagaman siswa dan mengajarkan cara menghargai perbedaan", "C": "Menghindari topik yang sensitif", "D": "Hanya membiarkan siswa yang pintar yang berbicara"}, "answer": "B", "explanation": "Aktif memanfaatkan keberagaman lebih baik daripada menghindarinya."}, {"num": 27, "question": "Anda merupakan wali kelas dengan peserta didik yang beragam atas agama/kepercayaan, suku, ras, golongan ingin memanfaatkan keberagaman ini dalam kegiatan pembelajaran, sebagai langkah Anda dalam mengajarkan nilai-nilai Bhinneka Tunggal Ika kepada peserta didik. Tindakan yang paling efektif untuk dilakukan adalah...", "options": {"A": "Memberikan ceramah tentang Bhinneka Tunggal Ika", "B": "Merancang kegiatan pembelajaran yang memanfaatkan keberagaman siswa secara aktif dan bermakna", "C": "Memberikan tugas hafalan tentang semboyan negara", "D": "Membiarkan keberagaman tanpa intervensi"}, "answer": "B", "explanation": "Pengalaman langsung lebih efektif daripada ceramah."}, {"num": 28, "question": "Agar pemanfaatan teknologi dapat lebih bijak dan tidak terjadi penyalahgunaan teknologi, Anda mengawali untuk memanfaatkan aplikasi interaktif berbasis teknologi untuk memudahkan peserta didik mengakses isu terkini yang kemudian dijadikan bahasan dalam konten pembelajaran. Namun, terbatasnya fasilitas dan minimnya pengetahuan guru menjadikan metode ini kurang optimal sehingga guru lain juga belum memiliki bayangan teknis untuk menerapkannya. Apa tindakan Anda?", "options": {"A": "Memaksa semua guru menggunakan teknologi yang sama", "B": "Memulai dari yang sederhana, memberikan pendampingan bertahap, dan berbagi praktik baik", "C": "Menunggu fasilitas lengkap baru menerapkan", "D": "Menghentikan penggunaan teknologi"}, "answer": "B", "explanation": "Pendekatan bertahap dan berbagi praktik paling realistis."}, {"num": 29, "question": "Orang tua dari salah satu peserta didik Anda harus menjalani masa tahanan akibat penyalahgunaan keuangan di tempat kerja. Kondisi tersebut membuat peserta didik mengalami perundungan dan mendapat label sebagai anak koruptor. Sebagai guru, apa respons Anda terkait hal ini?", "options": {"A": "Mengabaikan karena itu urusan keluarga", "B": "Melindungi siswa, mengedukasi kelas tentang empati, dan berkoordinasi dengan BK/kepala sekolah", "C": "Memindahkan siswa ke kelas lain", "D": "Membiarkan orang tua menyelesaikan sendiri"}, "answer": "B", "explanation": "Perlindungan + edukasi + koordinasi adalah respons profesional."}, {"num": 30, "question": "Di dalam kelas Anda terdapat peserta didik yang menyandang ADHD sehingga ia sulit fokus dan cenderung hiperaktif. Tindakan yang paling tepat Anda lakukan adalah...", "options": {"A": "Memberikan hukuman setiap kali tidak fokus", "B": "Menyesuaikan strategi pembelajaran dan menata lingkungan kelas agar lebih mendukung fokus", "C": "Meminta orang tua memberikan obat", "D": "Mengabaikan karena itu karakter bawaan"}, "answer": "B", "explanation": "Penyesuaian strategi dan lingkungan adalah pendekatan inklusif yang tepat."}]};
+
+let state = {
+  deckLabel: "",
+  questions: [],   // array of question objects with unique key
+  answers: {},     // idx -> 'A'/'B'/'C'/'D'
+  current: 0,
+};
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function buildDeck(kind, mixCount){
+  let qs = [];
+  if(kind === 'A'){
+    qs = DATA.A.map(q => ({...q, set:'A'}));
+    state.deckLabel = "Paket 01 — Pilihan Ganda Umum";
+  } else if(kind === 'B'){
+    qs = DATA.B.map(q => ({...q, set:'B'}));
+    state.deckLabel = "Paket 02 — Skenario SJT";
+  } else if(kind === 'MIX'){
+    const all = [...DATA.A.map(q=>({...q,set:'A'})), ...DATA.B.map(q=>({...q,set:'B'}))];
+    qs = shuffle(all).slice(0, mixCount);
+    state.deckLabel = `Paket 03 — Campuran Acak (${mixCount} soal)`;
+  }
+  state.questions = qs;
+  state.answers = {};
+  state.current = 0;
+}
+
+function startQuiz(kind, mixCount){
+  buildDeck(kind, mixCount);
+  showScreen('screen-quiz');
+  document.getElementById('quiz-set-label').textContent = state.deckLabel;
+  buildLjk();
+  renderQuestion();
+}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function buildLjk(){
+  const grid = document.getElementById('ljk-grid');
+  grid.innerHTML = '';
+  state.questions.forEach((q, i)=>{
+    const cell = document.createElement('div');
+    cell.className = 'ljk-cell';
+    cell.textContent = i+1;
+    cell.dataset.idx = i;
+    cell.addEventListener('click', ()=>{ state.current = i; renderQuestion(); });
+    grid.appendChild(cell);
+  });
+}
+
+function updateLjk(){
+  const total = state.questions.length;
+  document.querySelectorAll('.ljk-cell').forEach((cell)=>{
+    const i = parseInt(cell.dataset.idx,10);
+    cell.classList.toggle('current', i===state.current);
+    cell.classList.toggle('done', !!state.answers[i]);
+  });
+  const answeredCount = Object.keys(state.answers).length;
+  document.getElementById('finish-note').textContent = `${answeredCount} dari ${total} terjawab`;
+}
+
+function renderQuestion(){
+  const total = state.questions.length;
+  const i = state.current;
+  const q = state.questions[i];
+
+  document.getElementById('quiz-progress-label').textContent = `Soal ${i+1} dari ${total}`;
+  document.getElementById('progress-fill').style.width = `${((i+1)/total)*100}%`;
+  document.getElementById('q-num').textContent = `No. ${i+1}`;
+  document.getElementById('q-flag').textContent = q.set === 'B' ? 'Skenario SJT' : 'Pilihan Ganda';
+  document.getElementById('q-text').textContent = q.question;
+
+  const optsWrap = document.getElementById('q-options');
+  optsWrap.innerHTML = '';
+  ['A','B','C','D'].forEach(letter=>{
+    const opt = document.createElement('div');
+    opt.className = 'option' + (state.answers[i]===letter ? ' selected' : '');
+    opt.innerHTML = `<span class="option-letter">${letter}</span><span class="option-text">${q.options[letter]}</span>`;
+    opt.addEventListener('click', ()=>{
+      state.answers[i] = letter;
+      renderQuestion();
+      updateLjk();
+    });
+    optsWrap.appendChild(opt);
+  });
+
+  document.getElementById('btn-prev').disabled = (i===0);
+  document.getElementById('btn-next').textContent = (i===total-1) ? 'Ke Akhir' : 'Berikutnya →';
+
+  updateLjk();
+}
+
+document.getElementById('btn-prev').addEventListener('click', ()=>{
+  if(state.current>0){ state.current--; renderQuestion(); }
+});
+document.getElementById('btn-next').addEventListener('click', ()=>{
+  if(state.current < state.questions.length-1){ state.current++; renderQuestion(); }
+  else { finishQuiz(); }
+});
+document.getElementById('btn-finish').addEventListener('click', finishQuiz);
+
+document.querySelectorAll('.deck-card').forEach(card=>{
+  card.addEventListener('click', ()=> startQuiz(card.dataset.deck, null));
+});
+document.getElementById('start-mix').addEventListener('click', ()=>{
+  const n = parseInt(document.getElementById('mix-count').value,10);
+  startQuiz('MIX', n);
+});
+document.getElementById('btn-back-home').addEventListener('click', ()=> showScreen('screen-start'));
+document.getElementById('btn-restart-same').addEventListener('click', ()=>{
+  state.answers = {};
+  state.current = 0;
+  showScreen('screen-quiz');
+  buildLjk();
+  renderQuestion();
+});
+
+let lastResults = [];
+let currentFilter = 'all';
+
+function finishQuiz(){
+  const results = state.questions.map((q,i)=>{
+    const your = state.answers[i] || null;
+    const correct = q.answer;
+    let status = 'skipped';
+    if(your){ status = (your===correct) ? 'correct' : 'wrong'; }
+    return { idx:i, q, your, correct, status };
+  });
+  lastResults = results;
+
+  const nCorrect = results.filter(r=>r.status==='correct').length;
+  const nWrong = results.filter(r=>r.status==='wrong').length;
+  const nSkipped = results.filter(r=>r.status==='skipped').length;
+  const total = results.length;
+  const pct = Math.round((nCorrect/total)*100);
+
+  document.getElementById('score-pct').textContent = pct + '%';
+  document.getElementById('stat-correct').textContent = nCorrect;
+  document.getElementById('stat-wrong').textContent = nWrong;
+  document.getElementById('stat-skipped').textContent = nSkipped;
+
+  const circumference = 2 * Math.PI * 70;
+  const ring = document.getElementById('score-ring');
+  ring.style.strokeDasharray = `${circumference}`;
+  ring.style.strokeDashoffset = `${circumference * (1 - pct/100)}`;
+  ring.style.stroke = pct>=70 ? 'var(--green)' : (pct>=50 ? 'var(--gold)' : 'var(--red)');
+  ring.style.transition = 'stroke-dashoffset 1s ease';
+
+  let verdict, sub;
+  if(pct>=85){ verdict='Sangat siap.'; sub='Penguasaan materi kuat — pertahankan dengan latihan berkala.'; }
+  else if(pct>=70){ verdict='Cukup siap.'; sub='Sudah di jalur yang tepat, perkuat bagian yang masih meleset.'; }
+  else if(pct>=50){ verdict='Perlu latihan lebih.'; sub='Ulangi paket ini dan cermati pembahasan tiap soal yang salah.'; }
+  else { verdict='Mulai dari dasar dulu.'; sub='Baca ulang materi kompetensi guru, lalu coba lagi paket ini.'; }
+  document.getElementById('verdict-text').textContent = verdict;
+  document.getElementById('verdict-sub').textContent = sub;
+
+  currentFilter = 'all';
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active', t.dataset.filter==='all'));
+  renderReview();
+  showScreen('screen-results');
+}
+
+document.querySelectorAll('.tab').forEach(tab=>{
+  tab.addEventListener('click', ()=>{
+    currentFilter = tab.dataset.filter;
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    tab.classList.add('active');
+    renderReview();
+  });
+});
+
+function renderReview(){
+  const list = document.getElementById('review-list');
+  list.innerHTML = '';
+  const filtered = lastResults.filter(r => currentFilter==='all' ? true : r.status===currentFilter);
+
+  if(filtered.length===0){
+    const empty = document.createElement('p');
+    empty.className = 'verdict-sub';
+    empty.textContent = 'Tidak ada soal pada kategori ini.';
+    list.appendChild(empty);
+    return;
+  }
+
+  filtered.forEach(r=>{
+    const item = document.createElement('div');
+    item.className = 'review-item ' + r.status;
+
+    const tagLabel = r.status==='correct' ? 'Benar' : (r.status==='wrong' ? 'Salah' : 'Kosong');
+
+    let optsHtml = '';
+    ['A','B','C','D'].forEach(letter=>{
+      let cls = '';
+      if(letter===r.correct) cls = 'correct-answer';
+      else if(letter===r.your && r.status==='wrong') cls = 'your-wrong';
+      optsHtml += `<div class="review-opt ${cls}"><span class="letter">${letter}.</span><span>${r.q.options[letter]}</span></div>`;
+    });
+
+    let explHtml = '';
+    if(r.q.explanation){
+      explHtml = `<div class="review-expl"><b>Keterangan:</b> ${r.q.explanation}</div>`;
+    }
+    let yourLine = '';
+    if(!r.your){
+      yourLine = `<div class="review-expl"><b>Jawaban Anda:</b> tidak diisi</div>`;
+    }
+
+    item.innerHTML = `
+      <div class="review-head">
+        <span class="review-num">Soal ${r.idx+1} &middot; ${r.q.set==='B' ? 'SJT' : 'PG'}</span>
+        <span class="review-tag ${r.status}">${tagLabel}</span>
+      </div>
+      <p class="review-q">${r.q.question}</p>
+      ${optsHtml}
+      ${yourLine}
+      ${explHtml}
+    `;
+    list.appendChild(item);
+  });
+}
+</script>
+</body>
+</html>

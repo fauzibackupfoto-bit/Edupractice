@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EduPractice — Satu Aplikasi, Banyak Latihan</title>
+<link rel="icon" type="image/svg+xml" href="logo.svg">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<style>
+  :root {
+    --bg: #F0F7F0;
+    --forest: #1B3A2B;
+    --forest-deep: #12281D;
+    --green: #2F9E52;
+    --green-dark: #1F7A3D;
+    --green-tint: #E6F5EA;
+    --indigo: #4C5FD7;
+    --indigo-tint: #E4E7FB;
+    --purple: #7A5CE0;
+    --purple-tint: #EDE7FB;
+    --ink: #1B3A2B;
+    --ink-soft: rgba(27,58,43,0.62);
+    --card: #FFFFFF;
+    --border: rgba(27,58,43,0.08);
+    --radius: 20px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: radial-gradient(ellipse 900px 500px at 15% -10%, #E1F2E4 0%, transparent 60%), var(--bg);
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+    color: var(--ink);
+    min-height: 100vh;
+  }
+  .shell { max-width: 1180px; margin: 0 auto; padding: 28px 24px 0; }
+  .brand { display: flex; align-items: center; gap: 12px; margin-bottom: 34px; }
+  .brand-mark {
+    width: 46px; height: 46px; border-radius: 13px; background: var(--green);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    box-shadow: 0 6px 14px rgba(47,158,82,0.28);
+  }
+  .brand-mark svg { width: 24px; height: 24px; }
+  .brand-name { font-size: 21px; font-weight: 800; line-height: 1.15; }
+  .brand-name span { color: var(--green-dark); }
+  .brand-tag { font-size: 12.5px; color: var(--ink-soft); margin-top: 1px; }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 30px;
+    align-items: start;
+    padding-bottom: 40px;
+  }
+  @media (max-width: 880px) {
+    .layout { grid-template-columns: 1fr; }
+    .auth-panel { position: static; }
+  }
+  @media (max-width: 640px) {
+    .shell { padding: 18px 14px 0; }
+    .brand-mark { width: 40px; height: 40px; }
+    .brand-name { font-size: 18px; }
+    .brand-tag { font-size: 11px; }
+    .hero h1 { font-size: 26px; }
+    .hero p.lede { font-size: 13.5px; }
+    .stats-row { gap: 16px; }
+    .stat { max-width: 100%; }
+    .program-card { padding: 14px; }
+    .program-card-top { gap: 10px; }
+    .program-icon { width: 40px; height: 40px; }
+    .program-title { font-size: 14.5px; }
+    .program-sub { font-size: 12px; }
+    .feature-chips { padding-left: 0; }
+    .auth-panel { padding: 24px 18px; }
+    .footer-bar { font-size: 11px; padding: 14px; }
+  }
+
+  .hero h1 { font-size: 34px; font-weight: 800; line-height: 1.2; margin: 0 0 12px; }
+  .hero h1 em { font-style: normal; color: var(--green-dark); }
+  .hero p.lede { font-size: 15px; color: var(--ink-soft); max-width: 480px; line-height: 1.6; margin: 0 0 22px; }
+
+  .hero-illustration {
+    display: flex; justify-content: flex-start; margin-bottom: 26px;
+  }
+  .hero-illustration img {
+    width: 220px; height: auto; display: block; border-radius: 18px;
+    box-shadow: 0 14px 26px rgba(27,58,43,0.16);
+  }
+  @media (max-width: 640px) {
+    .hero-illustration { justify-content: center; margin-bottom: 20px; }
+    .hero-illustration img { width: 170px; }
+  }
+
+  .stats-row { display: flex; gap: 26px; margin-bottom: 30px; flex-wrap: wrap; }
+  .stat { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; max-width: 140px; }
+  .stat-icon {
+    width: 38px; height: 38px; border-radius: 50%; background: var(--green-tint);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .stat-icon svg { width: 18px; height: 18px; }
+  .stat-label { font-size: 12px; color: var(--ink-soft); line-height: 1.4; }
+
+  .program-list { display: flex; flex-direction: column; gap: 12px; }
+  .program-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+    padding: 16px 18px; display: flex; flex-direction: column; gap: 10px; cursor: pointer;
+    transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+    text-align: left; position: relative;
+  }
+  .program-card:hover { transform: translateY(-2px); box-shadow: 0 10px 22px rgba(27,58,43,0.10); border-color: transparent; }
+  .program-card:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+  .program-card.featured { border: 1.5px solid rgba(122,92,224,0.35); background: linear-gradient(180deg, #FBFAFF 0%, #FFFFFF 60%); }
+  .card-ribbon {
+    align-self: flex-start; background: var(--purple); color: #fff; font-size: 10.5px; font-weight: 800;
+    padding: 4px 10px; border-radius: 999px; letter-spacing: 0.2px;
+  }
+  .program-card-top { display: flex; align-items: center; gap: 14px; }
+  .program-icon { width: 46px; height: 46px; border-radius: 13px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+  .program-icon svg { width: 22px; height: 22px; }
+  .program-icon.tka { background: var(--green-tint); }
+  .program-icon.ukkj { background: var(--indigo-tint); }
+  .program-icon.toefl { background: var(--purple-tint); }
+  .program-body { flex: 1; min-width: 0; }
+  .program-eyebrow { font-size: 11.5px; color: var(--ink-soft); font-weight: 600; }
+  .program-title { font-size: 15.5px; font-weight: 800; margin-top: 1px; }
+  .program-sub { font-size: 12.5px; color: var(--ink-soft); margin-top: 2px; line-height: 1.4; }
+  .program-chevron { color: var(--ink-soft); flex-shrink: 0; }
+  .program-chevron svg { width: 18px; height: 18px; }
+
+  .feature-chips { display: flex; flex-wrap: wrap; gap: 6px; padding-left: 60px; }
+  .chip {
+    font-size: 10.5px; font-weight: 600; color: var(--ink-soft); background: rgba(27,58,43,0.05);
+    border: 1px solid var(--border); border-radius: 999px; padding: 4px 9px; white-space: nowrap;
+  }
+  .chip-ai { color: var(--purple); background: var(--purple-tint); border-color: rgba(122,92,224,0.25); }
+
+  @media (max-width: 480px) {
+    .feature-chips { padding-left: 0; }
+  }
+
+  .auth-panel {
+    background: linear-gradient(165deg, var(--forest) 0%, var(--forest-deep) 100%);
+    border-radius: var(--radius); padding: 30px 26px; color: #fff;
+    display: flex; flex-direction: column; align-items: center; text-align: center;
+    box-shadow: 0 18px 40px rgba(18,40,29,0.20);
+    position: sticky; top: 24px;
+  }
+  .auth-seal {
+    width: 58px; height: 58px; border-radius: 50%; background: rgba(255,255,255,0.12);
+    display: flex; align-items: center; justify-content: center; margin-bottom: 14px;
+  }
+  .auth-seal svg { width: 28px; height: 28px; }
+  .auth-panel h2 { font-size: 19px; font-weight: 800; margin: 0 0 6px; }
+  .auth-panel p.sub { font-size: 12.5px; color: #BFE3CB; margin: 0 0 22px; max-width: 260px; line-height: 1.5; }
+
+  .auth-btn {
+    width: 100%; display: flex; align-items: center; gap: 12px; padding: 13px 16px;
+    border-radius: 13px; cursor: pointer; font-family: inherit; text-align: left;
+  }
+  #google-signin-mount { width: 100%; display: flex; justify-content: center; margin-bottom: 14px; min-height: 44px; }
+  .btn-guest {
+    width: 100%; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.18);
+    color: #fff;
+  }
+  .btn-guest .auth-btn-icon { background: rgba(255,255,255,0.14); }
+  .auth-btn-icon {
+    width: 34px; height: 34px; border-radius: 10px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .auth-btn-icon svg { width: 17px; height: 17px; }
+  .auth-btn-title { font-size: 13.5px; font-weight: 700; }
+  .auth-btn-sub { font-size: 11px; color: #BFE3CB; margin-top: 1px; }
+
+  .divider { display: flex; align-items: center; gap: 10px; width: 100%; margin: 16px 0; }
+  .divider span { flex: 1; height: 1px; background: rgba(255,255,255,0.14); }
+  .divider em { font-style: normal; font-size: 11px; color: #9FCBAC; }
+
+  .trust-box {
+    width: 100%; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.14);
+    border-radius: 13px; padding: 12px 14px; display: flex; align-items: center; gap: 10px;
+    margin-top: 6px; text-align: left;
+  }
+  .trust-box svg { width: 18px; height: 18px; flex-shrink: 0; color: #9FE8B4; }
+  .trust-box .t-title { font-size: 12.5px; font-weight: 700; }
+  .trust-box .t-sub { font-size: 11px; color: #BFE3CB; margin-top: 1px; }
+
+  .legal { font-size: 10.5px; color: #9FCBAC; margin-top: 18px; line-height: 1.6; }
+  .legal a { color: #D8F5DF; }
+
+  .login-error { font-size: 11.5px; color: #FBD5CF; min-height: 16px; margin-top: 6px; }
+
+  /* ---- Account (logged-in) state ---- */
+  .account-panel { display: none; }
+  .account-panel.active { display: flex; }
+  .account-avatar {
+    width: 58px; height: 58px; border-radius: 50%; background: rgba(255,255,255,0.14);
+    display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 800;
+    margin-bottom: 14px;
+  }
+  .account-name { font-size: 16px; font-weight: 800; }
+  .account-email { font-size: 12px; color: #BFE3CB; margin-top: 2px; margin-bottom: 20px; }
+  .account-hint { font-size: 12px; color: #BFE3CB; margin-bottom: 18px; line-height: 1.5; }
+  .btn-logout {
+    background: rgba(255,255,255,0.10); border: 1px solid rgba(255,255,255,0.2); color: #fff;
+    border-radius: 999px; padding: 8px 18px; font-size: 12.5px; font-weight: 700; cursor: pointer;
+    font-family: inherit;
+  }
+
+  .footer-bar {
+    margin-top: 10px; background: var(--forest); color: #D8F5DF; text-align: center;
+    font-size: 12px; padding: 16px; border-radius: 0;
+  }
+
+  .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+  @keyframes pulseCard {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(47,158,82,0.4); }
+    50% { box-shadow: 0 0 0 8px rgba(47,158,82,0); }
+  }
+  .program-card.pulse { animation: pulseCard 0.9s ease-out 2; border-color: var(--green); }
+</style>
+</head>
+<body>
+<div class="shell">
+  <div class="brand">
+    <div class="brand-mark">
+      <img src="logo.svg" alt="Logo EduPractice" width="24" height="24">
+    </div>
+    <div>
+      <div class="brand-name">Edu<span>Practice</span></div>
+      <div class="brand-tag">Satu Aplikasi, Banyak Latihan, Raih Prestasi</div>
+    </div>
+  </div>
+
+  <div class="layout">
+    <div class="hero">
+      <h1>Selamat Datang di<br><em>EduPractice</em></h1>
+      <p class="lede">Platform latihan online untuk membantu kamu menguasai berbagai ujian penting — mulai dari tes akademik sekolah sampai uji kompetensi guru.</p>
+
+      <div class="hero-illustration">
+        <img src="hero-illustration.png" alt="Ilustrasi siswa belajar dengan laptop dan buku TKA SMP, UKom Guru, TOEFL ITP">
+      </div>
+
+      <div class="stats-row">
+        <div class="stat">
+          <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="#1F7A3D" stroke-width="1.6"/><circle cx="12" cy="12" r="3" fill="#1F7A3D"/></svg></div>
+          <div class="stat-label">Latihan Terstruktur — Materi lengkap dan sistematis</div>
+        </div>
+        <div class="stat">
+          <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M5 19V13M12 19V8M19 19V5" stroke="#1F7A3D" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+          <div class="stat-label">Evaluasi Akurat — Analisis hasil &amp; pembahasan</div>
+        </div>
+        <div class="stat">
+          <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M8 21H16M12 17V21M6 4H18V9C18 12.3137 15.3137 15 12 15C8.68629 15 6 12.3137 6 9V4Z" stroke="#1F7A3D" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
+          <div class="stat-label">Tingkatkan Skor — Siap tempur, raih hasil terbaik</div>
+        </div>
+      </div>
+
+      <div class="program-list">
+        <button type="button" class="program-card featured" data-app="toefl">
+          <div class="card-ribbon">✨ Fitur AI Terlengkap</div>
+          <div class="program-card-top">
+            <div class="program-icon toefl"><svg viewBox="0 0 24 24" fill="none"><path d="M4 8L12 4L20 8L12 12L4 8Z" stroke="#7A5CE0" stroke-width="1.6" stroke-linejoin="round"/><path d="M8 10V15C8 15 9.5 17 12 17C14.5 17 16 15 16 15V10" stroke="#7A5CE0" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
+            <div class="program-body">
+              <div class="program-eyebrow">Latihan</div>
+              <div class="program-title">TOEFL ITP</div>
+              <div class="program-sub">Tingkatkan kemampuan Bahasa Inggrismu dengan bantuan AI di setiap langkah</div>
+            </div>
+            <div class="program-chevron"><svg viewBox="0 0 24 24" fill="none"><path d="M9 5L16 12L9 19" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
+          <div class="feature-chips">
+            <span class="chip chip-ai">🤖 AI Tutor tanya-jawab</span>
+            <span class="chip chip-ai">🤖 Auto-grading jawaban esai</span>
+            <span class="chip chip-ai">🤖 Soal Bonus dibuat AI</span>
+            <span class="chip">🔊 Audio Listening</span>
+            <span class="chip">🎯 Daily Target &amp; Streak</span>
+            <span class="chip">📊 Analisis Weak Areas</span>
+          </div>
+        </button>
+
+        <button type="button" class="program-card" data-app="ukkj">
+          <div class="program-card-top">
+            <div class="program-icon ukkj"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="13" rx="2" stroke="#4C5FD7" stroke-width="1.6"/><path d="M9 21H15M12 17V21" stroke="#4C5FD7" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+              <div class="program-body">
+              <div class="program-eyebrow">Latihan</div>
+              <div class="program-title">UKom Guru</div>
+              <div class="program-sub">Persiapkan diri menghadapi Uji Kompetensi Guru</div>
+            </div>
+            <div class="program-chevron"><svg viewBox="0 0 24 24" fill="none"><path d="M9 5L16 12L9 19" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
+          <div class="feature-chips">
+            <span class="chip">📝 130 Soal Latihan</span>
+            <span class="chip">🎭 Skenario SJT</span>
+            <span class="chip">💡 Pembahasan Lengkap</span>
+            <span class="chip">🗂️ Simulasi LJK</span>
+          </div>
+        </button>
+
+        <button type="button" class="program-card" data-app="tka">
+          <div class="program-card-top">
+            <div class="program-icon tka"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3L2 8L12 13L22 8L12 3Z" stroke="#1F7A3D" stroke-width="1.6" stroke-linejoin="round"/><path d="M6 10.5V16C6 16 8.5 18 12 18C15.5 18 18 16 18 16V10.5" stroke="#1F7A3D" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
+            <div class="program-body">
+              <div class="program-eyebrow">Latihan</div>
+              <div class="program-title">TKA SMP</div>
+              <div class="program-sub">Persiapan terbaik untuk Tes Kemampuan Akademik SMP</div>
+            </div>
+            <div class="program-chevron"><svg viewBox="0 0 24 24" fill="none"><path d="M9 5L16 12L9 19" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
+          <div class="feature-chips">
+            <span class="chip">📚 4 Mata Pelajaran</span>
+            <span class="chip">🏆 Latihan Olimpiade</span>
+            <span class="chip">🥇 Papan Peringkat</span>
+            <span class="chip">⭐ Sistem Level &amp; XP</span>
+          </div>
+        </button>
+      </div>
+    </div>
+
+    <div class="auth-panel">
+      <!-- Logged-out state -->
+      <div id="login-state">
+        <div class="auth-seal"><svg viewBox="0 0 24 24" fill="none"><path d="M4 5C4 5 8 3 12 5.5C16 3 20 5 20 5V17C20 17 16 15 12 17.5C8 15 4 17 4 17V5Z" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
+        <h2>Masuk ke EduPractice</h2>
+        <p class="sub">Pilih cara masuk yang kamu inginkan</p>
+
+        <div id="google-signin-mount"></div>
+        <div id="google-signin-fallback" style="display:none;">
+          <div class="auth-btn btn-guest" style="justify-content:center; opacity:.7;">
+            <span class="auth-btn-title">Memuat Google Sign-In...</span>
+          </div>
+        </div>
+
+        <div class="divider"><span></span><em>atau</em><span></span></div>
+
+        <button type="button" id="guest-btn" class="auth-btn btn-guest">
+          <div class="auth-btn-icon"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.4" stroke="#fff" stroke-width="1.6"/><path d="M5 19C5 15.5 8 13.5 12 13.5C16 13.5 19 15.5 19 19" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+          <div>
+            <div class="auth-btn-title">Masuk sebagai Tamu</div>
+            <div class="auth-btn-sub">Gunakan aplikasi tanpa membuat akun</div>
+          </div>
+        </button>
+
+        <div class="login-error" id="login-error"></div>
+
+        <div class="trust-box">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 3L4 6V11C4 16 7.5 20 12 21C16.5 20 20 16 20 11V6L12 3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+          <div>
+            <div class="t-title">Belajar Tanpa Batas</div>
+            <div class="t-sub">Akses semua fitur latihan. Kapan saja, di mana saja.</div>
+          </div>
+        </div>
+
+        <div class="legal">Dengan masuk, kamu setuju dengan<br>Ketentuan Layanan dan Kebijakan Privasi</div>
+      </div>
+
+      <!-- Logged-in state -->
+      <div id="account-state" class="account-panel">
+        <div class="account-avatar" id="account-avatar">?</div>
+        <div class="account-name" id="account-name">—</div>
+        <div class="account-email" id="account-email"></div>
+        <div class="account-hint">Pilih salah satu program di samping untuk mulai latihan. Progresmu tersimpan otomatis.</div>
+        <button type="button" class="btn-logout" id="logout-btn">Keluar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer-bar">&copy; 2026 EduPractice. All rights reserved.</div>
+
+<script>
+(function(){
+  // ==== KONFIGURASI ====
+  // Worker yang sama dipakai bersama oleh ketiga aplikasi (TKA SMP, UKom Guru, TOEFL ITP).
+  const API_BASE = 'https://toefl-ai-proxy.edupractise.workers.dev';
+  const GOOGLE_CLIENT_ID = '11273947373-jg3kpoodtv1kg121elm3025jh6177mml.apps.googleusercontent.com';
+
+  const APP_PAGES = { tka: 'tka-smp.html', ukkj: 'ukkj.html', toefl: 'toefl-itp.html' };
+
+  const params = new URLSearchParams(window.location.search);
+  let pendingApp = params.get('redirect') || null;
+
+  const loginState = document.getElementById('login-state');
+  const accountState = document.getElementById('account-state');
+  const errorEl = document.getElementById('login-error');
+
+  function showError(msg) { errorEl.textContent = msg || ''; }
+
+  function goToApp(appId) {
+    const page = APP_PAGES[appId];
+    if (page) window.location.href = page;
+  }
+
+  function isLoggedIn() {
+    return !!(localStorage.getItem('edu-session-token') || localStorage.getItem('edu-guest-mode') === '1');
+  }
+
+  function renderAccountUI() {
+    loginState.style.display = 'none';
+    accountState.classList.add('active');
+    const name = localStorage.getItem('edu-user-name');
+    const email = localStorage.getItem('edu-user-email');
+    const isGuest = localStorage.getItem('edu-guest-mode') === '1';
+    const nameEl = document.getElementById('account-name');
+    const emailEl = document.getElementById('account-email');
+    const avatarEl = document.getElementById('account-avatar');
+    if (isGuest) {
+      nameEl.textContent = 'Tamu';
+      emailEl.textContent = 'Progres tersimpan di perangkat ini saja';
+      avatarEl.textContent = 'T';
+    } else {
+      nameEl.textContent = name || 'Pengguna';
+      emailEl.textContent = email || '';
+      avatarEl.textContent = (name || 'U').trim().charAt(0).toUpperCase();
+    }
+  }
+
+  function renderLoginUI() {
+    loginState.style.display = 'block';
+    accountState.classList.remove('active');
+  }
+
+  // ---- Google Sign-In ----
+  async function handleGoogleCredential(response) {
+    showError('');
+    try {
+      const res = await fetch(API_BASE + '/auth/google', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ credential: response.credential })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Login gagal');
+      localStorage.setItem('edu-session-token', data.sessionToken);
+      localStorage.setItem('edu-user-name', (data.user && data.user.name) || '');
+      localStorage.setItem('edu-user-email', (data.user && data.user.email) || '');
+      localStorage.removeItem('edu-guest-mode');
+      afterAuthSuccess();
+    } catch (e) {
+      showError('Login gagal, coba lagi. (' + e.message + ')');
+    }
+  }
+
+  function waitForGoogleAndInit(retries) {
+    retries = (retries === undefined) ? 50 : retries;
+    if (window.google && window.google.accounts && window.google.accounts.id) {
+      google.accounts.id.initialize({ client_id: GOOGLE_CLIENT_ID, callback: handleGoogleCredential });
+      const mount = document.getElementById('google-signin-mount');
+      const btnWidth = Math.min(280, mount.getBoundingClientRect().width || 280);
+      google.accounts.id.renderButton(mount, { theme: 'filled_white', size: 'large', width: btnWidth, text: 'signin_with' });
+    } else if (retries > 0) {
+      setTimeout(() => waitForGoogleAndInit(retries - 1), 200);
+    } else {
+      showError('Gagal memuat Google Sign-In. Cek koneksi internet lalu muat ulang halaman.');
+    }
+  }
+
+  // ---- Guest ----
+  document.getElementById('guest-btn').addEventListener('click', function(){
+    localStorage.setItem('edu-guest-mode', '1');
+    localStorage.removeItem('edu-session-token');
+    afterAuthSuccess();
+  });
+
+  // ---- Logout ----
+  document.getElementById('logout-btn').addEventListener('click', function(){
+    localStorage.removeItem('edu-session-token');
+    localStorage.removeItem('edu-guest-mode');
+    localStorage.removeItem('edu-user-name');
+    localStorage.removeItem('edu-user-email');
+    if (window.google && window.google.accounts && window.google.accounts.id) {
+      google.accounts.id.disableAutoSelect();
+    }
+    renderLoginUI();
+  });
+
+  function afterAuthSuccess() {
+    renderAccountUI();
+    if (pendingApp && APP_PAGES[pendingApp]) {
+      goToApp(pendingApp);
+    }
+  }
+
+  // ---- Program cards ----
+  document.querySelectorAll('.program-card').forEach(function(card){
+    card.addEventListener('click', function(){
+      const appId = card.dataset.app;
+      if (isLoggedIn()) {
+        goToApp(appId);
+      } else {
+        pendingApp = appId;
+        const panel = document.querySelector('.auth-panel');
+        panel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        card.classList.add('pulse');
+        setTimeout(() => card.classList.remove('pulse'), 1900);
+      }
+    });
+  });
+
+  // ---- Bootstrap ----
+  async function bootstrap() {
+    waitForGoogleAndInit();
+    const token = localStorage.getItem('edu-session-token');
+    const guest = localStorage.getItem('edu-guest-mode') === '1';
+    if (guest) { renderAccountUI(); if (pendingApp) goToApp(pendingApp); return; }
+    if (!token) { renderLoginUI(); return; }
+    try {
+      const res = await fetch(API_BASE + '/auth/me', { headers: { 'Authorization': 'Bearer ' + token } });
+      if (!res.ok) throw new Error('expired');
+      const data = await res.json();
+      localStorage.setItem('edu-user-name', (data.user && data.user.name) || '');
+      localStorage.setItem('edu-user-email', (data.user && data.user.email) || '');
+      renderAccountUI();
+      if (pendingApp) goToApp(pendingApp);
+    } catch (e) {
+      localStorage.removeItem('edu-session-token');
+      renderLoginUI();
+    }
+  }
+
+  bootstrap();
+})();
+</script>
+</body>
+</html>
