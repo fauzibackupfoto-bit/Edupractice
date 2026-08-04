@@ -141,6 +141,26 @@ textarea{width:100%;min-height:90px;padding:12px;border:2px solid var(--paper-2)
 .oly-topic-filter{margin-bottom:16px;font-size:13px;color:var(--paper);}
 .oly-topic-filter select{margin-left:8px;padding:6px 10px;border-radius:6px;border:1px solid var(--paper-2);background:var(--ink);color:var(--paper);font-size:13px;max-width:100%;}
 .oly-topic-tag{display:inline-block;background:var(--paper-2);color:var(--paper);border-radius:12px;padding:2px 10px;font-size:10.5px;font-weight:500;margin-left:8px;vertical-align:middle;}
+.oly-mode-tabs{display:flex;gap:8px;margin-bottom:16px;}
+.oly-mode-tabs button{padding:8px 16px;border-radius:20px;border:2px solid var(--paper-2);background:transparent;color:var(--paper);font-weight:600;cursor:pointer;font-size:12.5px;}
+.oly-mode-tabs button.active{background:var(--ink);border-color:var(--gold);color:var(--gold);}
+.oly-item .opt.locked{cursor:default;}
+.oly-item .q-footer{margin-top:10px;}
+.oly-reveal-btn{background:var(--ink);color:var(--gold);border:1px solid var(--gold);border-radius:6px;padding:9px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;}
+.oly-reveal-btn:hover{background:var(--ink-2);}
+.ai-ask-wrap{margin-top:14px;border-top:1px dashed var(--paper-2);padding-top:14px;}
+.ai-ask-btn{background:transparent;border:1px solid var(--gold-2);color:var(--gold-2);border-radius:20px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;}
+.ai-ask-btn:hover{background:rgba(212,162,76,0.1);}
+.ai-panel{display:none;margin-top:12px;background:#fff;border:1px solid var(--paper-2);border-radius:8px;padding:14px;}
+.ai-panel.open{display:block;}
+.ai-panel textarea{width:100%;min-height:56px;border:1px solid var(--paper-2);border-radius:6px;padding:9px 11px;font-family:'Inter',sans-serif;font-size:13px;resize:vertical;box-sizing:border-box;}
+.ai-panel .ai-send-row{display:flex;justify-content:flex-end;gap:8px;margin-top:8px;}
+.ai-panel .ai-send-btn{background:var(--gold);border:none;color:var(--ink);font-weight:700;padding:7px 16px;border-radius:6px;font-size:12.5px;cursor:pointer;}
+.ai-panel .ai-send-btn:disabled{opacity:0.55;cursor:default;}
+.ai-answer{margin-top:10px;font-size:13.5px;line-height:1.6;background:var(--paper);border-radius:6px;padding:11px 13px;white-space:pre-wrap;}
+.ai-answer.loading{color:#7a7262;font-style:italic;}
+.ai-answer.error{color:var(--incorrect);}
+.ai-quota-note{font-size:11px;color:#7a7262;margin-top:6px;}
 
 /* ---------- LEADERBOARD ---------- */
 .lb-row{display:flex;align-items:center;gap:14px;background:var(--paper);color:var(--ink);border-radius:6px;padding:12px 18px;margin-bottom:8px;}
@@ -171,6 +191,50 @@ function eduAuthHeaders() {
   const h = { 'Content-Type': 'application/json' };
   if (eduSessionToken) h['Authorization'] = 'Bearer ' + eduSessionToken;
   return h;
+}
+
+// Tanya AI tentang satu soal olimpiade — pakai endpoint /ai yang SUDAH ADA
+// di worker (Cloudflare Workers AI, Llama 70B). Endpoint ini butuh login
+// (session token), jadi mode Tamu tidak bisa pakai fitur ini.
+// Endpoint: POST /ai  { contents:[{role:'user', parts:[{text}]}], system, maxTokens }
+// -> { text: string }
+async function askAIAboutQuestion({ subject, topic, question, options, correctAnswer, officialExplanation, userQuestion }) {
+  if (eduIsGuest) {
+    throw new Error('Fitur Tanya AI hanya untuk yang masuk dengan akun Google, bukan mode Tamu.');
+  }
+  const system = 'Kamu adalah tutor untuk siswa SMP di Indonesia. Jawab pertanyaan siswa tentang soal latihan dengan jelas, ramah, dan singkat (maksimal sekitar 120 kata), dalam Bahasa Indonesia yang mudah dipahami anak SMP. Jangan mengulang seluruh soal. Kalau pertanyaan di luar konteks soal, arahkan kembali ke soal dengan sopan.';
+  const userText = `Mapel: ${subject || ''}${topic ? ' (topik: ' + topic + ')' : ''}
+
+Soal:
+${question}
+
+Pilihan jawaban:
+${(options || []).map((o, i) => String.fromCharCode(65 + i) + '. ' + o).join('\n')}
+
+Jawaban benar: ${correctAnswer || '(tidak diketahui)'}
+Pembahasan resmi yang sudah ada di aplikasi:
+${officialExplanation || '(tidak ada)'}
+
+Pertanyaan siswa tentang soal ini:
+"${userQuestion}"
+
+Kalau siswa minta cara lain, berikan cara lain yang benar-benar berbeda dari pembahasan resmi.`;
+
+  const res = await fetch(EDU_API_BASE + '/ai', {
+    method: 'POST', headers: eduAuthHeaders(),
+    body: JSON.stringify({
+      contents: [{ role: 'user', parts: [{ text: userText }] }],
+      system,
+      maxTokens: 400
+    })
+  });
+  if (!res.ok) {
+    let msg = 'Gagal menghubungi AI';
+    try { const d = await res.json(); if (d && d.error) msg = d.error; } catch(e) {}
+    throw new Error(msg);
+  }
+  const data = await res.json();
+  return data.text || '(Tidak ada jawaban dari AI)';
 }
 
 // Key di-prefix 'tka:' supaya tidak bentrok dengan data aplikasi lain
@@ -2296,7 +2360,8 @@ let STATE = {
   currentGrade:7,
   currentChapterIdx:null,
   quiz:{questions:[],answers:[],idx:0,answered:false},
-  oly:{subject:'matematika', topic:'ALL'}
+  oly:{subject:'matematika', topic:'ALL', mode:'latihan', revealed:{}, picked:{}},
+  aiAsk:{} // key `${subj}:${idx}` -> {open, loading, question, answer, error}
 };
 
 function defaultProfile(name){
@@ -2605,14 +2670,47 @@ function renderResult(){
   </div>`;
 }
 
+function renderAIAskPanel(qKey, subj, q, correctIdx){
+  const st = STATE.aiAsk[qKey] || {};
+  if (eduIsGuest) {
+    return `<div class="ai-ask-wrap">
+      <div class="ai-quota-note">🤖 Tanya AI hanya tersedia untuk yang masuk dengan akun Google (bukan mode Tamu).</div>
+    </div>`;
+  }
+  let html = `<div class="ai-ask-wrap">
+    <button class="ai-ask-btn" data-ai-toggle="${qKey}">🤖 ${st.open ? 'Tutup Tanya AI' : 'Tanya AI soal ini'}</button>
+    <div class="ai-panel ${st.open?'open':''}">
+      <textarea id="aiInput-${cssId(qKey)}" placeholder="Contoh: kenapa jawabannya bukan opsi C? / jelaskan pakai cara lain">${st.draft||''}</textarea>
+      <div class="ai-send-row">
+        <button class="ai-send-btn" data-ai-send="${qKey}" ${st.loading?'disabled':''}>${st.loading?'Mengirim...':'Kirim ke AI'}</button>
+      </div>`;
+  if(st.loading){
+    html += `<div class="ai-answer loading">AI sedang menyusun jawaban...</div>`;
+  } else if(st.error){
+    html += `<div class="ai-answer error">⚠️ ${st.error}</div>`;
+  } else if(st.answer){
+    html += `<div class="ai-answer">${st.answer}</div>`;
+  }
+  html += `<div class="ai-quota-note">Jawaban AI bersifat bantuan tambahan — tetap cek dengan pembahasan di atas.</div>
+    </div>
+  </div>`;
+  return html;
+}
+function cssId(s){ return s.replace(/[^a-zA-Z0-9]/g,'_'); }
+
 function renderOlympiad(){
   const subj = STATE.oly.subject;
   const fullList = OLYMPIAD[subj] || [];
   const topics = ['ALL', ...new Set(fullList.map(q=>q.topic).filter(Boolean))];
   if(!STATE.oly.topic || !topics.includes(STATE.oly.topic)) STATE.oly.topic = 'ALL';
   const list = STATE.oly.topic==='ALL' ? fullList : fullList.filter(q=>q.topic===STATE.oly.topic);
+  const mode = STATE.oly.mode || 'latihan';
   let html = `
   <div class="oly-note">🏆 <b>Latihan Olimpiade & TKA SMP</b> — soal-soal berikut disusun asli dengan gaya kompetisi/HOTS (bukan salinan soal berhak cipta) untuk melatih penalaran tingkat lanjut. Total saat ini: <b>${fullList.length} soal</b> di mapel ini, menuju target 1000 soal per mapel.</div>
+  <div class="oly-mode-tabs">
+    <button data-oly-mode="latihan" class="${mode==='latihan'?'active':''}">✍️ Mode Latihan (jawab dulu)</button>
+    <button data-oly-mode="referensi" class="${mode==='referensi'?'active':''}">📖 Mode Referensi (langsung terlihat)</button>
+  </div>
   <div class="oly-subject-tabs">`;
   ['matematika','ipa','bindo','binggris'].forEach(s=>{
     html += `<button data-oly-subject="${s}" class="${subj===s?'active':''}">${SUBJECTS[s].icon} ${SUBJECTS[s].name}</button>`;
@@ -2631,14 +2729,31 @@ function renderOlympiad(){
   }
   list.forEach((q,i)=>{
     const correctIdx = q._fixCorrect!==undefined ? q._fixCorrect : q.correct;
-    html += `<div class="oly-item">
+    const qKey = subj+':'+(q.topic||'ALL')+':'+i;
+    const showAnswer = mode==='referensi' || !!STATE.oly.revealed[qKey];
+    const pickedIdx = STATE.oly.picked[qKey];
+    html += `<div class="oly-item" data-oly-key="${qKey}">
       <span class="oly-num">SOAL ${String(i+1).padStart(3,'0')}${q.topic?` <span class="oly-topic-tag">${q.topic}</span>`:''}</span>
       <h4>${q.text}</h4>
       <div>`;
     q.options.forEach((o,oi)=>{
-      html += `<button class="opt ${oi===correctIdx?'correct':''}" disabled style="cursor:default;">${String.fromCharCode(65+oi)}. ${o}</button>`;
+      let cls = 'opt';
+      if(showAnswer){
+        cls += oi===correctIdx ? ' correct' : (oi===pickedIdx ? ' incorrect' : '');
+        html += `<button class="${cls} locked" disabled>${String.fromCharCode(65+oi)}. ${o}</button>`;
+      } else {
+        cls += pickedIdx===oi ? ' selected' : '';
+        html += `<button class="${cls}" data-oly-pick="${qKey}" data-oly-opt="${oi}">${String.fromCharCode(65+oi)}. ${o}</button>`;
+      }
     });
-    html += `</div><div class="explanation"><b>Pembahasan:</b> ${q.explanation}</div></div>`;
+    html += `</div>`;
+    if(!showAnswer){
+      html += `<div class="q-footer"><button class="oly-reveal-btn" data-oly-reveal="${qKey}">Lihat Pembahasan</button></div>`;
+    } else {
+      html += `<div class="explanation"><b>Pembahasan:</b> ${q.explanation}</div>`;
+    }
+    html += renderAIAskPanel(qKey, subj, q, correctIdx);
+    html += `</div>`;
   });
   html += `</div>`;
   return html;
@@ -2718,6 +2833,63 @@ function attachEvents(){
   document.getElementById('olyTopicSelect')?.addEventListener('change', (e)=>{
     STATE.oly.topic = e.target.value; render();
   });
+  document.querySelectorAll('[data-oly-mode]').forEach(b=>b.addEventListener('click', ()=>{
+    STATE.oly.mode = b.dataset.olyMode; render();
+  }));
+  document.querySelectorAll('[data-oly-pick]').forEach(b=>b.addEventListener('click', ()=>{
+    const key = b.dataset.olyPick;
+    STATE.oly.picked[key] = parseInt(b.dataset.olyOpt);
+    render();
+  }));
+  document.querySelectorAll('[data-oly-reveal]').forEach(b=>b.addEventListener('click', ()=>{
+    STATE.oly.revealed[b.dataset.olyReveal] = true;
+    render();
+  }));
+  document.querySelectorAll('[data-ai-toggle]').forEach(b=>b.addEventListener('click', ()=>{
+    const key = b.dataset.aiToggle;
+    const cur = STATE.aiAsk[key] || {};
+    STATE.aiAsk[key] = { ...cur, open: !cur.open };
+    render();
+  }));
+  document.querySelectorAll('.ai-panel textarea').forEach(t=>t.addEventListener('input', (e)=>{
+    // simpan draft tanpa re-render supaya fokus ketik tidak hilang
+    const wrap = e.target.closest('.oly-item');
+    if(wrap){ const key = wrap.dataset.olyKey; STATE.aiAsk[key] = { ...(STATE.aiAsk[key]||{}), draft: e.target.value }; }
+  }));
+  document.querySelectorAll('[data-ai-send]').forEach(b=>b.addEventListener('click', async ()=>{
+    const key = b.dataset.aiSend;
+    const wrap = b.closest('.oly-item');
+    const textarea = wrap.querySelector('.ai-panel textarea');
+    const userQuestion = (textarea?.value || '').trim();
+    if(!userQuestion){ return; }
+    const subj = STATE.oly.subject;
+    const list = OLYMPIAD[subj] || [];
+    // cari soal dari qKey (format subj:topic:idxDalamList)
+    const parts = key.split(':');
+    const idx = parseInt(parts[parts.length-1]);
+    const topicFilter = STATE.oly.topic==='ALL' ? list : list.filter(q=>q.topic===STATE.oly.topic);
+    const q = topicFilter[idx];
+    if(!q){ return; }
+    const correctIdx = q._fixCorrect!==undefined ? q._fixCorrect : q.correct;
+    STATE.aiAsk[key] = { ...(STATE.aiAsk[key]||{}), open:true, loading:true, error:null, draft:userQuestion };
+    render();
+    try {
+      const answer = await askAIAboutQuestion({
+        app: 'tka-olympiad',
+        subject: SUBJECTS[subj].name,
+        topic: q.topic || '',
+        question: q.text,
+        options: q.options,
+        correctAnswer: q.options[correctIdx],
+        officialExplanation: q.explanation,
+        userQuestion
+      });
+      STATE.aiAsk[key] = { ...(STATE.aiAsk[key]||{}), loading:false, answer, error:null };
+    } catch(e) {
+      STATE.aiAsk[key] = { ...(STATE.aiAsk[key]||{}), loading:false, error: e.message || 'Gagal menghubungi AI' };
+    }
+    render();
+  }));
 
   if(STATE.view==='leaderboard') loadAndRenderLeaderboard();
 }
