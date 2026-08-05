@@ -358,7 +358,16 @@
     });
     const data = await res.json();
     if (!res.ok) throw new Error((data && data.error) || 'AI proxy error');
-    return data.text || '';
+    // The Worker is expected to return { text: "<string>" }, but some AI backends
+    // occasionally hand back structured content (an object/array) instead of a
+    // plain string for complex prompts. Always coerce to a string here so every
+    // caller (which does .replace/.trim on the result) can't break — if it was
+    // already structured JSON, stringifying it round-trips cleanly through the
+    // JSON.parse() that callers like generateBonusSet do right after.
+    const raw = data.text;
+    if (typeof raw === 'string') return raw;
+    if (raw === undefined || raw === null) return '';
+    try { return JSON.stringify(raw); } catch (e) { return String(raw); }
   }
 
   // ==== AUTH: pakai sesi dari EduPractice ====
