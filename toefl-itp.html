@@ -2046,6 +2046,15 @@ Return ONLY valid JSON, no markdown fences, no commentary, in exactly this shape
   async function generateBonusSet() {
     const btn = root.querySelector('#generate-btn');
     const status = root.querySelector('#generate-status');
+
+    // AI features require a Google-authenticated session (see callAI's guard below).
+    // Guest mode has no sessionToken, so fail fast with a clear reason instead of
+    // letting it hit the network and fall into the generic catch-all message.
+    if (!sessionToken) {
+      status.textContent = 'Bonus Set butuh login Google (mode Tamu tidak bisa pakai fitur AI). Klik "Keluar" lalu masuk pakai akun Google.';
+      return;
+    }
+
     btn.disabled = true;
     status.textContent = 'Generating your bonus set — this can take a few seconds...';
     const prompt = `You are an experienced ETS-style TOEFL ITP item writer. Generate new TOEFL ITP practice questions for a study app, in two rounds:
@@ -2076,9 +2085,19 @@ STRICT QUALITY RULES (a real ETS writer would enforce all of these):
 Return ONLY valid JSON with no markdown fences and no commentary, in exactly this shape: {"structure":[{"topic":"...","question":"...","options":["...","...","...","..."],"correctIndex":0,"explanation":"..."}],"written":[{"topic":"...","segments":["...","...","...","..."],"correctIndex":0,"explanation":"..."}],"listening":[{"transcript":"...","questions":[{"topic":"...","question":"...","options":["...","...","...","..."],"correctIndex":0,"explanation":"..."}]}],"shortAnswer":[{"type":"structure","topic":"...","prompt":"...","acceptedAnswer":"...","explanation":"..."},{"type":"written","topic":"...","prompt":"...","acceptedAnswer":"...","explanation":"..."},{"type":"listening","topic":"...","transcript":"...","prompt":"...","acceptedAnswer":"...","explanation":"..."}]}`;
 
     try {
-      const text = await callAI({ prompt, maxTokens: 8000 });
+      // Lowered from 8000: the free-tier Workers AI daily neuron budget is easy to
+      // exhaust with a request this size, and a smaller cap also reduces the chance
+      // of the model's JSON getting cut off mid-response.
+      const text = await callAI({ prompt, maxTokens: 4000 });
       const clean = text.replace(/```json|```/g, '').trim();
-      const parsed = JSON.parse(clean);
+      let parsed;
+      try {
+        parsed = JSON.parse(clean);
+      } catch (parseErr) {
+        // Most common real-world cause: the model's response got cut off before
+        // the JSON closed, or it added stray commentary despite instructions.
+        throw new Error('AI response was not valid JSON (likely cut off or malformed) — please try again.');
+      }
       try {
         await storageSetWithRetry('toefl-bonus-' + todayStr(), JSON.stringify(parsed), false);
       } catch (e) {
@@ -2088,7 +2107,10 @@ Return ONLY valid JSON with no markdown fences and no commentary, in exactly thi
       status.textContent = 'New set ready — check the "Bonus Set" tab.';
     } catch (e) {
       console.error(e);
-      status.textContent = 'Could not generate a new set right now — try again in a moment.';
+      // Surface the real reason when we have one, instead of always showing
+      // the same generic message — makes future failures self-diagnosing.
+      const reason = (e && e.message) ? e.message : 'Unknown error.';
+      status.textContent = 'Could not generate a new set: ' + reason;
       btn.disabled = false;
     }
   }
