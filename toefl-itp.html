@@ -497,6 +497,7 @@
         <div class="tab" data-tab="tutor">AI Tutor</div>
         <div class="tab" data-tab="vocab">Vocabulary</div>
         <div class="tab" data-tab="results">Recap &amp; Weak Areas</div>
+        <div class="tab" data-tab="mock">Mock Test</div>
       </div>
 
       <div class="timer-toggle-bar">
@@ -2330,6 +2331,17 @@
         </div>
         <div class="footnote">Reading passages and questions here are written to be comparable in length, vocabulary level, and question style to official ETS TOEFL ITP passages, but they are original content, not taken from any real ETS test, and this isn't an official ETS score.</div>
       </div>
+
+      <div class="panel" id="panel-mock">
+        <div class="section-label">Mock Test</div>
+        <h2>Simulasi Ujian Penuh</h2>
+        <div class="hint">
+          Meniru alur hari-H TOEFL ITP: Listening (35 menit) &rarr; Structure &amp; Written Expression (25 menit gabungan) &rarr; Reading (55 menit), berurutan, timer jalan otomatis dan tidak bisa dijeda, tidak bisa kembali ke bagian sebelumnya. Soal yang dipakai sama seperti bank latihan biasa (bukan soal baru), jadi kalau kamu sudah sering drilling topik tertentu, itu wajar terasa familiar.
+        </div>
+        <div class="footnote">Memulai mock test akan mereset tampilan jawaban di tab Listening, Structure, Written Expression, dan Reading (progres &amp; riwayat latihan yang sudah tersimpan sebelumnya tidak hilang). Pastikan kamu punya waktu &plusmn;115 menit tanpa gangguan sebelum mulai.</div>
+        <button class="btn" id="mock-start-btn" style="margin-top:14px;">Mulai Mock Test (&plusmn;115 menit)</button>
+        <div id="mock-result" style="display:none;"></div>
+      </div>
     </div>
   `;
 
@@ -3952,6 +3964,337 @@ Return ONLY valid JSON, no markdown fences, no commentary, in exactly this shape
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+</script>
+
+<style>
+  #itp-root.mock-hide-tabs .tabs { display: none !important; }
+  #mock-overlay-bar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 99999;
+    background: #1F3B27; color: #F5F1E4; padding: 10px 16px;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    flex-wrap: wrap; font-family: inherit; box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+  }
+  #mock-overlay-bar .mock-left { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  #mock-overlay-bar #mock-timer-readout { font-family: 'IBM Plex Mono', monospace; font-size: 14px; }
+  #mock-overlay-bar button { cursor: pointer; border-radius: 8px; padding: 8px 14px; font-weight: 700; font-family: inherit; font-size: 13px; }
+  #mock-advance-btn { background: #2F9E52; color: #fff; border: none; }
+  #mock-cancel-btn { background: transparent; color: #F5F1E4; border: 1px solid rgba(245,241,228,0.5); }
+  @media (max-width: 600px) {
+    #mock-overlay-bar { flex-direction: column; align-items: stretch; text-align: center; padding: 10px 12px; gap: 8px; }
+    #mock-overlay-bar .mock-left { justify-content: center; flex-direction: column; gap: 4px; }
+    #mock-overlay-bar #mock-stage-label { font-size: 13px; }
+    #mock-overlay-bar div[style*="display:flex"] { justify-content: center; }
+    #mock-overlay-bar button { flex: 1 1 auto; padding: 12px 10px; font-size: 13px; }
+  }
+</style>
+<script>
+(function () {
+  'use strict';
+
+  var STAGES = [
+    { key: 'listening', tabs: ['listening'], timerGroup: 'listening', checkBtns: ['listening-check'], label: 'Listening' },
+    { key: 'sw', tabs: ['structure', 'written'], timerGroup: 'structure_written', checkBtns: ['structure-check'], label: 'Structure & Written Expression', isWritten: true },
+    { key: 'reading', tabs: ['reading'], timerGroup: 'reading', checkBtns: ['reading-check'], label: 'Reading' }
+  ];
+
+  var state = { active: false, stageIndex: -1, baseline: null, results: {}, pollInterval: null };
+
+  function root() { return document.getElementById('itp-root'); }
+  function byId(id) { return document.getElementById(id); }
+
+  function resetSectionPanel(panelId) {
+    var panel = byId('panel-' + panelId);
+    if (!panel) return;
+    panel.querySelectorAll('.q').forEach(function (q) {
+      delete q.dataset.selected;
+      q.querySelectorAll('.opt').forEach(function (o) {
+        o.classList.remove('disabled', 'correct', 'incorrect');
+        o.style.background = '';
+      });
+      var explain = q.querySelector('.explain');
+      if (explain) explain.classList.remove('show');
+    });
+    panel.querySelectorAll('.we-sentence').forEach(function (s) {
+      delete s.dataset.done;
+      s.querySelectorAll('.seg').forEach(function (seg) {
+        seg.classList.remove('disabled', 'correct', 'incorrect');
+      });
+    });
+    delete panel.dataset.scored;
+    var btnMap = { listening: 'listening-check', structure: 'structure-check', written: 'written-check', reading: 'reading-check' };
+    var btn = byId(btnMap[panelId]);
+    if (btn) { btn.disabled = false; btn.style.display = ''; }
+    var scoreMap = { listening: 'score-listening', structure: 'score-structure', written: 'score-written', reading: 'score-reading' };
+    var scoreEl = byId(scoreMap[panelId]);
+    if (scoreEl) scoreEl.textContent = '\u2013';
+  }
+
+  function resetAllSections() {
+    ['listening', 'structure', 'written', 'reading'].forEach(resetSectionPanel);
+  }
+
+  function forceFinishWritten() {
+    document.querySelectorAll('#panel-written .we-sentence').forEach(function (s) {
+      if (!s.dataset.done) {
+        var seg = s.querySelector('.seg');
+        if (seg) seg.click();
+      }
+    });
+  }
+
+  function forceClickCheck(id) {
+    var b = byId(id);
+    if (b && !b.disabled) b.click();
+  }
+
+  function clickTab(name) {
+    var t = root() && root().querySelector('.tab[data-tab="' + name + '"]');
+    if (t) t.click();
+  }
+
+  function enableTimerForced() {
+    var cb = byId('timer-enable-toggle');
+    if (cb && !cb.checked) {
+      cb.checked = true;
+      cb.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+  }
+
+  function resetTimerGroupUI(group) {
+    document.querySelectorAll('#itp-root .timer-box[data-timer-group="' + group + '"] .timer-reset-btn').forEach(function (btn) {
+      btn.click();
+    });
+  }
+
+  function readTimerText(group) {
+    var box = document.querySelector('#itp-root .timer-box[data-timer-group="' + group + '"]');
+    var t = box && box.querySelector('.timer-time');
+    return t ? t.textContent.trim() : null;
+  }
+
+  function snapshotAgg() {
+    try { return JSON.parse(JSON.stringify(window.__toeflAgg || {})); }
+    catch (e) { return {}; }
+  }
+
+  function diffKey(before, after, key) {
+    var b = before || {}, a = after || {};
+    return {
+      correct: (a[key + 'Correct'] || 0) - (b[key + 'Correct'] || 0),
+      total: (a[key + 'Total'] || 0) - (b[key + 'Total'] || 0)
+    };
+  }
+
+  function estimateScaled(correct, total, min, max) {
+    if (!total) return null;
+    return Math.round(min + (correct / total) * (max - min));
+  }
+
+  function cefrForTotal(total) {
+    if (total >= 543) return 'B2';
+    if (total >= 433) return 'B1';
+    if (total >= 343) return 'A2';
+    return 'A1';
+  }
+
+  function buildOverlay() {
+    var bar = byId('mock-overlay-bar');
+    if (bar) return bar;
+    bar = document.createElement('div');
+    bar.id = 'mock-overlay-bar';
+    bar.innerHTML =
+      '<div class="mock-left"><strong id="mock-stage-label">Mock Test</strong>' +
+      '<span id="mock-timer-readout"></span></div>' +
+      '<div style="display:flex;gap:8px;flex-wrap:wrap;">' +
+      '<button type="button" id="mock-advance-btn">Selesaikan &amp; lanjut &rarr;</button>' +
+      '<button type="button" id="mock-cancel-btn">Batalkan</button>' +
+      '</div>';
+    document.body.appendChild(bar);
+    byId('mock-advance-btn').addEventListener('click', function () { advanceStage(false); });
+    byId('mock-cancel-btn').addEventListener('click', cancelMock);
+    return bar;
+  }
+
+  function removeOverlay() {
+    var b = byId('mock-overlay-bar');
+    if (b) b.remove();
+  }
+
+  function updateTimerReadout() {
+    var stage = STAGES[state.stageIndex];
+    if (!stage) return;
+    var t = readTimerText(stage.timerGroup);
+    var el = byId('mock-timer-readout');
+    if (el) el.textContent = t ? ('\u23F1 ' + t) : '';
+  }
+
+  function goToStage(idx) {
+    state.stageIndex = idx;
+    var stage = STAGES[idx];
+    clickTab(stage.tabs[0]);
+    if (stage.tabs[1]) {
+      var p2 = byId('panel-' + stage.tabs[1]);
+      if (p2) p2.classList.add('active');
+    }
+    var label = byId('mock-stage-label');
+    if (label) label.textContent = (idx + 1) + '/' + STAGES.length + ' \u00b7 ' + stage.label;
+    updateTimerReadout();
+    syncBodyPadding();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function syncBodyPadding() {
+    var bar = byId('mock-overlay-bar');
+    if (!bar) { document.body.style.paddingTop = ''; return; }
+    document.body.style.paddingTop = (bar.getBoundingClientRect().height + 10) + 'px';
+  }
+
+  function pollTimer() {
+    if (!state.active) return;
+    updateTimerReadout();
+    var stage = STAGES[state.stageIndex];
+    if (!stage) return;
+    var t = readTimerText(stage.timerGroup);
+    if (t === '00:00') advanceStage(true);
+  }
+
+  function advanceStage(isAuto) {
+    if (!state.active) return;
+    var stage = STAGES[state.stageIndex];
+    if (!stage) return;
+    var proceed = isAuto || confirm('Selesaikan bagian "' + stage.label + '" sekarang dan lanjut ke bagian berikutnya? Soal yang belum dijawab akan dihitung salah, seperti di ujian asli.');
+    if (!proceed) return;
+
+    if (stage.isWritten) {
+      forceFinishWritten();
+      forceClickCheck('structure-check');
+    } else {
+      stage.checkBtns.forEach(forceClickCheck);
+    }
+
+    setTimeout(function () {
+      var after = snapshotAgg();
+      state.results[stage.key] = diffKey(state.baseline, after, stage.key);
+      if (state.stageIndex + 1 < STAGES.length) {
+        goToStage(state.stageIndex + 1);
+      } else {
+        finishMock();
+      }
+    }, 60);
+  }
+
+  function cancelMock() {
+    if (!confirm('Batalkan mock test? Bagian yang sudah kamu kerjakan tetap tersimpan di riwayat latihan biasa.')) return;
+    endMockUI();
+    state.active = false;
+  }
+
+  function endMockUI() {
+    if (state.pollInterval) { clearInterval(state.pollInterval); state.pollInterval = null; }
+    window.removeEventListener('resize', syncBodyPadding);
+    window.removeEventListener('orientationchange', syncBodyPadding);
+    removeOverlay();
+    var r = root();
+    if (r) r.classList.remove('mock-hide-tabs');
+    document.body.style.paddingTop = '';
+  }
+
+  function cardHtml(label, res, scaled) {
+    var pct = res.total ? Math.round((res.correct / res.total) * 100) : 0;
+    return '<div class="summary-card"><div class="k">' + label + '</div><div class="v">' +
+      res.correct + '/' + res.total + ' (' + pct + '%)' +
+      (scaled !== null ? ' &middot; est. ' + scaled : '') + '</div></div>';
+  }
+
+  function finishMock() {
+    endMockUI();
+    state.active = false;
+    clickTab('mock');
+    renderMockResult();
+  }
+
+  function renderMockResult() {
+    var wrap = byId('mock-result');
+    if (!wrap) return;
+    var r = state.results;
+    var listening = r.listening || { correct: 0, total: 0 };
+    var sw = r.sw || { correct: 0, total: 0 };
+    var reading = r.reading || { correct: 0, total: 0 };
+    var lScaled = estimateScaled(listening.correct, listening.total, 31, 68);
+    var sScaled = estimateScaled(sw.correct, sw.total, 31, 68);
+    var rScaled = estimateScaled(reading.correct, reading.total, 31, 67);
+    var parts = [lScaled, sScaled, rScaled].filter(function (v) { return v !== null; });
+
+    var html = '<div class="section-label" style="margin-top:22px;">Hasil Mock Test</div>';
+    html += '<div class="summary-grid">';
+    html += cardHtml('Listening', listening, lScaled);
+    html += cardHtml('Structure &amp; Written Expr.', sw, sScaled);
+    html += cardHtml('Reading', reading, rScaled);
+    html += '</div>';
+
+    if (parts.length === 3) {
+      var avg = parts.reduce(function (a, b) { return a + b; }, 0) / parts.length;
+      var total = Math.round(avg * 10);
+      var cefr = cefrForTotal(total);
+      html += '<div class="summary-grid" style="margin-top:10px;"><div class="summary-card"><div class="k">Estimasi skor total</div><div class="v">' + total + '</div></div></div>';
+      html += '<div class="cefr-tag" style="display:inline-block;margin-top:12px;font-family:\'IBM Plex Mono\',monospace;font-size:12px;border:1px solid var(--red);color:var(--red);padding:3px 10px;border-radius:12px;">~CEFR ' + cefr + ' range</div>';
+    } else {
+      html += '<div style="font-size:13.5px;color:var(--ink-soft);margin-top:8px;">Mock test dibatalkan sebelum semua bagian selesai, jadi estimasi total belum bisa dihitung.</div>';
+    }
+
+    html += '<div class="footnote" style="margin-top:14px;">Estimasi tidak resmi memakai konversi linier sederhana (ETS tidak mempublikasikan tabel equating aslinya). Soal di sini adalah materi latihan buatan sendiri bergaya ETS, bukan soal ETS asli &mdash; anggap ini sinyal arah, bukan skor prediksi pasti.</div>';
+    html += '<button class="btn ghost" id="mock-retake-btn" style="margin-top:16px;">Ulangi Mock Test</button>';
+
+    wrap.style.display = 'block';
+    wrap.innerHTML = html;
+    var startBtn = byId('mock-start-btn');
+    if (startBtn) startBtn.style.display = 'none';
+    var retakeBtn = byId('mock-retake-btn');
+    if (retakeBtn) {
+      retakeBtn.addEventListener('click', function () {
+        wrap.style.display = 'none';
+        if (startBtn) startBtn.style.display = 'inline-block';
+        startMock();
+      });
+    }
+  }
+
+  function startMock() {
+    if (state.active) return;
+    var ok = confirm('Mock test akan mereset tampilan jawaban di Listening, Structure, Written Expression, dan Reading (riwayat latihan sebelumnya tetap aman). Timer berjalan otomatis dan kamu tidak bisa pindah tab sampai selesai. Siapkan waktu \u00b1115 menit tanpa gangguan. Mulai sekarang?');
+    if (!ok) return;
+
+    resetAllSections();
+    enableTimerForced();
+    STAGES.forEach(function (s) { resetTimerGroupUI(s.timerGroup); });
+
+    state.active = true;
+    state.stageIndex = -1;
+    state.baseline = snapshotAgg();
+    state.results = {};
+
+    var r = root();
+    if (r) r.classList.add('mock-hide-tabs');
+    buildOverlay();
+    syncBodyPadding();
+    window.addEventListener('resize', syncBodyPadding);
+    window.addEventListener('orientationchange', syncBodyPadding);
+
+    goToStage(0);
+    state.pollInterval = setInterval(pollTimer, 1000);
+  }
+
+  function init() {
+    var startBtn = byId('mock-start-btn');
+    if (startBtn) startBtn.addEventListener('click', startMock);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
   } else {
     init();
   }
