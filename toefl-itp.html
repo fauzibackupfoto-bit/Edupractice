@@ -69,20 +69,35 @@
 }
 
 #itp-root .tabs {
-  display: flex; flex-direction: column; gap: 4px;
+  display: flex; flex-direction: column; gap: 6px;
   background: var(--bg-card);
-  padding: 12px 14px;
+  padding: 10px 14px 12px;
   border-bottom: 1px solid var(--line);
 }
+#itp-root .tab-row {
+  display: flex; flex-direction: row; gap: 6px;
+  overflow-x: auto; overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  padding-bottom: 2px;
+}
+#itp-root .tab-row::-webkit-scrollbar { height: 4px; }
+#itp-root .tab-row::-webkit-scrollbar-thumb { background: var(--line); border-radius: 4px; }
 #itp-root .tab-group-label {
   font-size: 10.5px; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase;
-  color: var(--muted); padding: 8px 10px 2px;
+  color: var(--muted); padding: 6px 2px 0; display: flex; align-items: center; justify-content: space-between; gap: 8px;
 }
 #itp-root .tab-group-label:first-child { padding-top: 0; }
+#itp-root .tab-group-toggle {
+  font-size: 10.5px; font-weight: 800; letter-spacing: 0.3px; text-transform: none;
+  color: var(--green-dark); background: var(--green-tint); border: none; border-radius: 999px;
+  padding: 4px 10px; cursor: pointer;
+}
+#itp-root .tab-row.collapsed { display: none; }
 #itp-root .tab {
-  display: flex; align-items: center; gap: 8px;
-  text-align: left;
-  padding: 11px 12px; font-size: 13.5px; font-weight: 700;
+  display: flex; align-items: center; gap: 8px; flex: 0 0 auto;
+  text-align: left; white-space: nowrap;
+  padding: 10px 14px; font-size: 13.5px; font-weight: 700;
   letter-spacing: 0.2px; cursor: pointer; color: var(--muted);
   border-radius: 10px; border: 1.5px solid transparent;
 }
@@ -511,17 +526,24 @@
       </div>
       <div class="tabs">
         <div class="tab-group-label">Urutan ujian asli</div>
-        <div class="tab" data-tab="listening"><span class="step-no">1</span>Listening</div>
-        <div class="tab active" data-tab="structure"><span class="step-no">2a</span>Structure</div>
-        <div class="tab" data-tab="written"><span class="step-no">2b</span>Written Expr.</div>
-        <div class="tab" data-tab="reading"><span class="step-no">3</span>Reading</div>
-        <div class="tab-group-label">Fitur lain</div>
-        <div class="tab" data-tab="target">Daily Target</div>
-        <div class="tab" data-tab="planner">Study Plan</div>
-        <div class="tab" data-tab="tutor">AI Tutor</div>
-        <div class="tab" data-tab="vocab">Vocabulary</div>
-        <div class="tab" data-tab="results">Recap &amp; Weak Areas</div>
-        <div class="tab" data-tab="mock">Mock Test</div>
+        <div class="tab-row">
+          <div class="tab" data-tab="listening"><span class="step-no">1</span>Listening</div>
+          <div class="tab active" data-tab="structure"><span class="step-no">2a</span>Structure</div>
+          <div class="tab" data-tab="written"><span class="step-no">2b</span>Written Expr.</div>
+          <div class="tab" data-tab="reading"><span class="step-no">3</span>Reading</div>
+        </div>
+        <div class="tab-group-label">
+          <span>Fitur lain</span>
+          <button type="button" class="tab-group-toggle" id="tabs-more-toggle">Tampilkan &#9660;</button>
+        </div>
+        <div class="tab-row collapsed" id="tabs-more-row">
+          <div class="tab" data-tab="target">Daily Target</div>
+          <div class="tab" data-tab="planner">Study Plan</div>
+          <div class="tab" data-tab="tutor">AI Tutor</div>
+          <div class="tab" data-tab="vocab">Vocabulary</div>
+          <div class="tab" data-tab="results">Recap &amp; Weak Areas</div>
+          <div class="tab" data-tab="mock">Mock Test</div>
+        </div>
       </div>
 
       <div class="timer-toggle-bar">
@@ -2524,6 +2546,20 @@
     });
   });
 
+  const tabsMoreToggle = root.querySelector('#tabs-more-toggle');
+  const tabsMoreRow = root.querySelector('#tabs-more-row');
+  if (tabsMoreToggle && tabsMoreRow) {
+    tabsMoreToggle.addEventListener('click', () => {
+      const isCollapsed = tabsMoreRow.classList.toggle('collapsed');
+      tabsMoreToggle.innerHTML = isCollapsed ? 'Tampilkan &#9660;' : 'Sembunyikan &#9650;';
+    });
+    // Kalau salah satu tab di grup ini yang aktif (mis. dibuka lewat link luar), otomatis buka grupnya.
+    if (tabsMoreRow.querySelector('.tab.active')) {
+      tabsMoreRow.classList.remove('collapsed');
+      tabsMoreToggle.innerHTML = 'Sembunyikan &#9650;';
+    }
+  }
+
   const topicStats = {}; // topic -> {correct, total}
 
   function recordTopic(topic, isCorrect) {
@@ -3082,7 +3118,13 @@ Return ONLY valid JSON, no markdown fences, no commentary, in exactly this shape
         tab.classList.add('active');
         panel.classList.add('active');
       });
-      root.querySelector('.tabs').appendChild(tab);
+      root.querySelector('#tabs-more-row').appendChild(tab);
+      const moreRow = root.querySelector('#tabs-more-row');
+      const moreToggle = root.querySelector('#tabs-more-toggle');
+      if (moreRow && moreRow.classList.contains('collapsed')) {
+        moreRow.classList.remove('collapsed');
+        if (moreToggle) moreToggle.innerHTML = 'Sembunyikan &#9650;';
+      }
 
       panel = document.createElement('div');
       panel.className = 'panel';
