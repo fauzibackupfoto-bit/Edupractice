@@ -3430,32 +3430,22 @@ Return ONLY valid JSON, no markdown fences, no commentary, in exactly this shape
   }
 
     // ---------- Audio playback (edge-tts backend, gender-matched, with Web Speech fallback) ----------
-  // Point this at your deployed backend (see /tts-backend/server.py). Leave as-is for local dev.
-  const TTS_BACKEND_URL = 'http://localhost:8000';
-  let ttsBackendAvailable = null; // null = not checked yet, true/false once known
   const ttsAudioCache = new Map(); // "voice|text" -> object URL, avoids re-fetching within a session
 
-  async function checkTtsBackend() {
-    if (ttsBackendAvailable !== null) return ttsBackendAvailable;
-    try {
-      const res = await fetch(TTS_BACKEND_URL + '/health', { method: 'GET', signal: AbortSignal.timeout(2000) });
-      ttsBackendAvailable = res.ok;
-    } catch (e) {
-      ttsBackendAvailable = false;
-    }
-    return ttsBackendAvailable;
-  }
+  // ---- Static pre-generated audio (no server) ----
+  // audio/manifest.json maps "voice|text" -> filename, produced once by
+  // audio-gen/generate_audio.py and uploaded as static files next to this HTML.
+  let audioManifest = null; // null = not loaded yet, {} = loaded (possibly empty/missing)
 
-  async function fetchEdgeTtsAudio(text, voice) {
-    const key = voice + '|' + text;
-    if (ttsAudioCache.has(key)) return ttsAudioCache.get(key);
-    const url = TTS_BACKEND_URL + '/tts?voice=' + encodeURIComponent(voice) + '&text=' + encodeURIComponent(text);
-    const res = await fetch(url);
-    if (!res.ok) throw new Error('TTS backend error: ' + res.status);
-    const blob = await res.blob();
-    const objectUrl = URL.createObjectURL(blob);
-    ttsAudioCache.set(key, objectUrl);
-    return objectUrl;
+  async function loadAudioManifest() {
+    if (audioManifest !== null) return audioManifest;
+    try {
+      const res = await fetch('audio/manifest.json', { signal: AbortSignal.timeout(4000) });
+      audioManifest = res.ok ? await res.json() : {};
+    } catch (e) {
+      audioManifest = {};
+    }
+    return audioManifest;
   }
 
   function speakerToEdgeVoice(speaker) {
@@ -3465,20 +3455,33 @@ Return ONLY valid JSON, no markdown fences, no commentary, in exactly this shape
     return 'female'; // unlabeled/narrator lines default to female, same as the Web Speech fallback below
   }
 
-  // Plays segments sequentially through the edge-tts backend. Throws if the
-  // backend is unreachable mid-playback so the caller can fall back cleanly.
-  async function speakSegmentsViaBackend(segments, btn) {
-    for (let i = 0; i < segments.length; i++) {
-      const seg = segments[i];
+  async function playStaticAudio(url) {
+    await new Promise((resolve, reject) => {
+      const audio = new Audio(url);
+      audio.onended = resolve;
+      audio.onerror = () => reject(new Error('Audio playback failed: ' + url));
+      audio.play().catch(reject);
+    });
+  }
+
+  // Plays each segment from a pre-generated static mp3 when available.
+  // Returns the list of segments that had NO matching file, so the caller
+  // can fall back to Web Speech API for just those lines (e.g. brand-new
+  // AI-generated bonus content that hasn't been baked into audio/ yet).
+  async function speakSegmentsViaStaticAudio(segments) {
+    const manifest = await loadAudioManifest();
+    const missing = [];
+    for (const seg of segments) {
       const voice = speakerToEdgeVoice(seg.speaker);
-      const objectUrl = await fetchEdgeTtsAudio(seg.text, voice);
-      await new Promise((resolve, reject) => {
-        const audio = new Audio(objectUrl);
-        audio.onended = resolve;
-        audio.onerror = () => reject(new Error('Audio playback failed'));
-        audio.play().catch(reject);
-      });
+      const key = voice + '|' + seg.text;
+      const filename = manifest[key];
+      if (!filename) { missing.push(seg); continue; }
+      const cacheKey = 'static:' + filename;
+      let url = ttsAudioCache.get(cacheKey);
+      if (!url) { url = 'audio/' + filename; ttsAudioCache.set(cacheKey, url); }
+      await playStaticAudio(url);
     }
+    return missing;
   }
 
   let cachedGenderVoices = null;
@@ -3595,19 +3598,18 @@ Return ONLY valid JSON, no markdown fences, no commentary, in exactly this shape
     btn.classList.add('playing');
     btn.textContent = '\u25B6 Playing...';
 
-    const backendUp = await checkTtsBackend();
-    if (backendUp) {
-      try {
-        await speakSegmentsViaBackend(segments, btn);
-        resetAudioBtn(btn);
-        return;
-      } catch (e) {
-        console.warn('edge-tts backend failed mid-playback, falling back to Web Speech API:', e);
-        ttsBackendAvailable = false; // stop retrying the backend for the rest of this session
+    try {
+      const missing = await speakSegmentsViaStaticAudio(segments);
+      if (missing.length) {
+        console.info(missing.length + ' line(s) not in audio/manifest.json yet — using browser voice for those.');
+        speakPassageViaWebSpeech(missing, btn);
+        return; // resetAudioBtn happens at the end of the Web Speech chain
       }
+      resetAudioBtn(btn);
+    } catch (e) {
+      console.warn('Static audio playback failed, falling back to Web Speech API:', e);
+      speakPassageViaWebSpeech(segments, btn);
     }
-    // No backend configured/reachable (or it just failed) — use the browser's built-in voices.
-    speakPassageViaWebSpeech(segments, btn);
   }
 
   function wireAudioButton(btn) {
