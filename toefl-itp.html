@@ -49,6 +49,17 @@
 }
 #itp-root .masthead h1 { font-weight: 800; font-size: 24px; margin: 0 0 4px; letter-spacing: -0.3px; }
 #itp-root .masthead .sub { font-size: 13px; letter-spacing: 0.2px; color: #BFE3CB; font-weight: 600; }
+#itp-root .masthead .disclaimer {
+  margin-top: 10px;
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: #E7F7EB;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.22);
+  border-radius: 8px;
+  padding: 8px 12px;
+  max-width: 640px;
+}
 #itp-root .stamp {
   position: absolute; top: 20px; right: 20px;
   font-size: 11px; font-weight: 700;
@@ -56,34 +67,82 @@
   background: rgba(255,255,255,0.14); color: #D8F5DF;
   border: 1px solid rgba(255,255,255,0.25);
 }
-/* Mobile: stamp overlap fix */
-@media (max-width: 480px) {
-  #itp-root .stamp { display: none; }
-  #itp-root .user-bar {
-    position: static !important;
-    background: rgba(0,0,0,0.18);
-    padding: 8px 14px 6px;
-    margin-bottom: 2px;
-    flex-wrap: wrap;
-    gap: 6px;
-    font-size: 12px;
-  }
-}
 
 #itp-root .tabs {
-  display: flex; flex-wrap: wrap; gap: 6px;
+  display: flex; flex-direction: column; gap: 4px;
   background: var(--bg-card);
-  padding: 10px 14px;
+  padding: 12px 14px;
   border-bottom: 1px solid var(--line);
 }
-#itp-root .tab {
-  flex: 1 1 auto; min-width: 100px; text-align: center;
-  padding: 10px 10px; font-size: 12.5px; font-weight: 700;
-  letter-spacing: 0.2px; cursor: pointer; color: var(--muted);
-  border-radius: 999px; border: 1.5px solid transparent;
+#itp-root .tab-group-label {
+  font-size: 10.5px; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase;
+  color: var(--muted); padding: 8px 10px 2px;
 }
+#itp-root .tab-group-label:first-child { padding-top: 0; }
+#itp-root .tab {
+  display: flex; align-items: center; gap: 8px;
+  text-align: left;
+  padding: 11px 12px; font-size: 13.5px; font-weight: 700;
+  letter-spacing: 0.2px; cursor: pointer; color: var(--muted);
+  border-radius: 10px; border: 1.5px solid transparent;
+}
+#itp-root .tab .step-no {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 20px; height: 20px; padding: 0 4px; flex: 0 0 auto; border-radius: 999px;
+  background: var(--green-tint); color: var(--green-dark);
+  font-size: 10.5px; font-weight: 800;
+}
+#itp-root .tab.active .step-no { background: rgba(255,255,255,0.25); color: #FFFFFF; }
 #itp-root .tab.active { background: var(--green); color: #FFFFFF; box-shadow: 0 3px 10px rgba(47,158,82,0.35); }
 #itp-root .tab:hover:not(.active) { background: var(--green-tint); color: var(--green-dark); }
+
+#itp-root .timer-toggle-bar {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--bg-card);
+  padding: 8px 14px 12px;
+  border-bottom: 1px solid var(--line);
+  font-size: 12px; color: var(--ink-soft);
+}
+#itp-root .timer-toggle {
+  position: relative; display: inline-block; width: 38px; height: 22px; flex: 0 0 auto;
+}
+#itp-root .timer-toggle input { opacity: 0; width: 0; height: 0; }
+#itp-root .timer-toggle-slider {
+  position: absolute; cursor: pointer; inset: 0;
+  background: #C9D6CD; border-radius: 999px; transition: background 0.15s;
+}
+#itp-root .timer-toggle-slider::before {
+  content: ""; position: absolute; height: 16px; width: 16px; left: 3px; top: 3px;
+  background: #FFFFFF; border-radius: 50%; transition: transform 0.15s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+}
+#itp-root .timer-toggle input:checked + .timer-toggle-slider { background: var(--green); }
+#itp-root .timer-toggle input:checked + .timer-toggle-slider::before { transform: translateX(16px); }
+#itp-root .timer-toggle-label { line-height: 1.4; }
+
+#itp-root .timer-box {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  background: var(--green-tint); border: 1px solid var(--green);
+  border-radius: 10px; padding: 8px 12px; margin: 4px 0 14px;
+  font-size: 13px; font-weight: 700; color: var(--green-dark);
+}
+#itp-root .timer-box .timer-time { font-variant-numeric: tabular-nums; font-size: 15px; }
+#itp-root .timer-box .timer-reset-btn {
+  margin-left: auto; border: 1px solid var(--green); background: #FFFFFF;
+  color: var(--green-dark); border-radius: 999px; padding: 3px 12px;
+  font-size: 11.5px; font-weight: 700; cursor: pointer;
+}
+#itp-root .timer-box .timer-reset-btn:hover { background: var(--green-tint); }
+#itp-root .timer-box.timer-warning { background: #FFF3D6; border-color: #E0A800; color: #8A6300; }
+#itp-root .timer-box.timer-expired { background: #FBDCDC; border-color: #D33; color: #8A1F1F; }
+
+#itp-root .timer-expired-banner {
+  background: #FBDCDC; border: 1px solid #D33; color: #8A1F1F;
+  border-radius: 10px; padding: 10px 14px; margin: 0 0 14px;
+  font-size: 12.5px; font-weight: 600; line-height: 1.5;
+}
+#itp-root .panel.timer-locked .q { opacity: 0.55; pointer-events: none; }
+
 
 #itp-root .panel { display: none; padding: 20px 20px 26px; background: var(--bg); }
 #itp-root .panel.active { display: block; }
@@ -144,6 +203,15 @@
 #itp-root .passage p { margin: 0 0 10px; }
 #itp-root .passage p:last-child { margin-bottom: 0; }
 
+#itp-root .rc-title { font-size: 16px; font-weight: 800; margin: 0 0 8px; color: var(--forest); }
+#itp-root .rc-passage {
+  background: var(--bg-card); border: 1.5px solid var(--line); border-left: 5px solid var(--green);
+  border-radius: 14px; padding: 18px 20px; font-size: 15.5px; line-height: 1.8; margin-bottom: 18px;
+}
+#itp-root .rc-passage p { margin: 0 0 12px; }
+#itp-root .rc-passage p:last-child { margin-bottom: 0; }
+#itp-root .rc-passage .para-no { font-weight: 800; color: var(--green-dark); margin-right: 2px; }
+
 #itp-root .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-top: 16px; }
 #itp-root .summary-card { border: 1.5px solid var(--line); border-radius: 14px; padding: 14px 15px; background: var(--bg-card); }
 #itp-root .summary-card .k { font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--muted); letter-spacing: 0.5px; }
@@ -168,6 +236,16 @@
 #itp-root .btn.ghost { background: #FFFFFF; color: var(--green-dark); border: 1.5px solid var(--green); box-shadow: none; }
 #itp-root .btn.ghost:hover { background: var(--green-tint); }
 #itp-root .gen-status { font-size: 13.5px; color: var(--ink-soft); margin-top: 10px; }
+#itp-root input[type="date"] {
+  border: 1.5px solid var(--line); border-radius: 10px; padding: 8px 10px; font-size: 14px; color: var(--ink); background: var(--bg-card);
+}
+#itp-root .day-card { background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; margin-top: 12px; }
+#itp-root .day-card .day-head { font-weight: 800; color: var(--forest); font-size: 14.5px; }
+#itp-root .day-card .day-focus { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+#itp-root .task-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; padding: 7px 0; border-top: 1px solid var(--green-tint); font-size: 13.5px; line-height: 1.45; }
+#itp-root .task-row:first-of-type { border-top: none; margin-top: 8px; }
+#itp-root .task-row .task-min { color: var(--green-dark); font-weight: 700; white-space: nowrap; }
+#itp-root .planner-summary { background: var(--green-tint); border-radius: 12px; padding: 12px 14px; font-size: 13.5px; color: var(--ink-soft); margin-bottom: 4px; }
 #itp-root .streak-badge {
   display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 800;
   color: #B85C1E; padding: 7px 14px; border-radius: 999px; margin-bottom: 16px;
@@ -262,24 +340,24 @@
   #itp-root .wrap { border-radius: 18px; }
   #itp-root .masthead { padding: 18px 16px 16px; }
   #itp-root .masthead h1 { font-size: 20px; }
+  #itp-root .masthead .disclaimer { font-size: 11px; max-width: 100%; }
+  #itp-root .timer-toggle-bar { flex-wrap: wrap; }
+  #itp-root .timer-box .timer-reset-btn { margin-left: 0; }
   #itp-root .masthead .sub { font-size: 12px; }
   #itp-root .stamp { top: 16px; right: 16px; font-size: 10px; padding: 5px 10px; }
 
-  #itp-root .tabs {
-    flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch;
-    scrollbar-width: none; padding: 8px 10px;
-  }
-  #itp-root .tabs::-webkit-scrollbar { display: none; }
-  #itp-root .tab { flex: 0 0 auto; min-width: auto; white-space: nowrap; padding: 10px 14px; font-size: 12px; }
+  #itp-root .tabs { padding: 10px 10px; gap: 3px; }
+  #itp-root .tab { padding: 10px 12px; font-size: 12.5px; }
+  #itp-root .tab-group-label { padding: 6px 10px 2px; }
 
   #itp-root .panel { padding: 16px 14px 22px; }
   #itp-root h2 { font-size: 18px; }
   #itp-root .q { padding: 14px 14px 12px; border-radius: 14px; }
-  #itp-root .qtext { font-size: 15.5px; line-height: 1.6; word-break: break-word; overflow-wrap: break-word; }
-  #itp-root .opt { padding: 12px 13px; font-size: 14.5px; border-radius: 12px; word-break: break-word; overflow-wrap: break-word; }
+  #itp-root .qtext { font-size: 16px; }
+  #itp-root .opt { padding: 13px 14px; font-size: 15.5px; border-radius: 12px; }
   #itp-root .we-sentence { font-size: 16px; line-height: 2.35; }
   #itp-root .seg { padding: 4px 3px; display: inline-block; }
-  #itp-root .passage { padding: 14px 15px; font-size: 14.5px; max-height: 320px; overflow-y: auto; border-radius: 12px; -webkit-overflow-scrolling: touch; }
+  #itp-root .passage { padding: 14px 15px; font-size: 15.5px; max-height: 240px; overflow-y: auto; border-radius: 12px; }
 
   #itp-root .btn { width: 100%; padding: 14px 16px; font-size: 15px; }
   #itp-root .btn.ghost { width: auto; }
@@ -415,6 +493,7 @@
     await loadRecapData();
     await loadStreak();
     await initVocab();
+    await initStudyPlanner();
   }
 
   root.innerHTML = `
@@ -427,22 +506,43 @@
       <div class="masthead">
         <div class="stamp">PRACTICE<br/>NOT OFFICIAL</div>
         <h1>TOEFL ITP Focus Drill</h1>
-        <div class="sub">Structure &amp; Written Expression (40 soal) &middot; Listening (35 soal) &middot; total &plusmn;60 menit</div>
+        <div class="sub">Listening (50 soal) &middot; Structure &amp; Written Expression (40 soal) &middot; Reading (50 soal) &middot; total &plusmn;115 menit</div>
+        <div class="disclaimer">Ini latihan terfokus per bagian (drilling), bukan simulasi urutan ujian asli. Di ujian TOEFL ITP sesungguhnya, section berjalan berurutan (Listening &rarr; Structure &amp; Written Expression &rarr; Reading) dengan timer yang tidak bisa dijeda dan tidak bisa kembali ke section sebelumnya. Tab di sini bisa dipilih bebas supaya kamu bisa fokus latihan pada bagian yang masih lemah.</div>
       </div>
       <div class="tabs">
-        <div class="tab active" data-tab="structure">Structure</div>
-        <div class="tab" data-tab="written">Written Expr.</div>
-        <div class="tab" data-tab="listening">Listening</div>
+        <div class="tab-group-label">Urutan ujian asli</div>
+        <div class="tab" data-tab="listening"><span class="step-no">1</span>Listening</div>
+        <div class="tab active" data-tab="structure"><span class="step-no">2a</span>Structure</div>
+        <div class="tab" data-tab="written"><span class="step-no">2b</span>Written Expr.</div>
+        <div class="tab" data-tab="reading"><span class="step-no">3</span>Reading</div>
+        <div class="tab-group-label">Fitur lain</div>
         <div class="tab" data-tab="target">Daily Target</div>
+        <div class="tab" data-tab="planner">Study Plan</div>
         <div class="tab" data-tab="tutor">AI Tutor</div>
         <div class="tab" data-tab="vocab">Vocabulary</div>
         <div class="tab" data-tab="results">Recap &amp; Weak Areas</div>
+        <div class="tab" data-tab="mock">Mock Test</div>
+      </div>
+
+      <div class="timer-toggle-bar">
+        <label class="timer-toggle">
+          <input type="checkbox" id="timer-enable-toggle" />
+          <span class="timer-toggle-slider"></span>
+        </label>
+        <span class="timer-toggle-label">Timer per section (opsional) &mdash; Listening 35:00, Structure &amp; Written Expression 25:00 gabungan, seperti ujian asli</span>
       </div>
 
       <div class="panel active" id="panel-structure">
         <div class="section-label">Section 2A &middot; 15 soal &middot; &plusmn;25 menit</div>
         <h2>Structure &mdash; Complete the Sentence</h2>
         <div class="hint">Pilih pilihan yang benar untuk melengkapi kalimat. Materi diambil dari kelas Structure &amp; Written Expression (Febrina R. Agustina, M.Pd.) &mdash; klausa tunggal, klausa jamak (noun/adjective clause), kalimat terbalik (inversion), dan agreement.</div>
+
+        <div class="timer-box" data-timer-group="structure_written" style="display:none;">
+          <span class="timer-label">&#9201; Sisa waktu Structure &amp; Written Expression:</span>
+          <span class="timer-time">25:00</span>
+          <button type="button" class="timer-reset-btn">Reset</button>
+        </div>
+        <div class="timer-expired-banner" data-timer-group="structure_written" style="display:none;">Waktu Structure &amp; Written Expression sudah habis. Di ujian asli kamu tidak bisa lanjut mengerjakan lagi &mdash; selesaikan sisa jawaban lalu klik Check answers.</div>
 
         <div class="q" data-correct="1" data-topic="Sentence completeness (predicate)" data-section="structure_written">
           <div class="qtag">Kelengkapan kalimat &mdash; predikat utama</div>
@@ -601,6 +701,13 @@
         <div class="section-label">Section 2B &middot; 25 soal &middot; termasuk dalam &plusmn;25 menit Section 2</div>
         <h2>Written Expression &mdash; Find the Error</h2>
         <div class="hint">Klik satu segmen yang salah secara tata bahasa. Tiga segmen lain sudah pasti benar. Mengikuti materi Structure &amp; Written Expression Pt.2 (Subject-Verb Agreement, Parallel Structure, Comparatives, Connectors).</div>
+
+        <div class="timer-box" data-timer-group="structure_written" style="display:none;">
+          <span class="timer-label">&#9201; Sisa waktu Structure &amp; Written Expression:</span>
+          <span class="timer-time">25:00</span>
+          <button type="button" class="timer-reset-btn">Reset</button>
+        </div>
+        <div class="timer-expired-banner" data-timer-group="structure_written" style="display:none;">Waktu Structure &amp; Written Expression sudah habis. Di ujian asli kamu tidak bisa lanjut mengerjakan lagi &mdash; selesaikan sisa jawaban lalu klik Check answers.</div>
 
         <div class="q" data-topic="Subject-verb agreement" data-section="structure_written">
           <div class="qtag">Subject-verb agreement</div>
@@ -881,11 +988,18 @@
       </div>
 
       <div class="panel" id="panel-listening">
-        <div class="section-label">Section 1 &middot; 35 soal &middot; &plusmn;35 menit &middot; text-based simulation</div>
+        <div class="section-label">Section 1 &middot; 50 soal &middot; &plusmn;35 menit &middot; text-based simulation</div>
         <h2>Listening</h2>
         <div class="hint">Klik "Play audio" sekali, dengarkan sambil mencatat, baru jawab &mdash; pada ujian asli audio hanya diputar sekali. Suara otomatis menyesuaikan pembicara: <b>pria = suara laki-laki</b>, <b>wanita = suara perempuan</b> (mengikuti browser yang mendukung Text-to-Speech).</div>
 
-        <div class="section-label" style="margin-top:4px;">Part A &middot; Short Dialogues (15 soal)</div>
+        <div class="timer-box" data-timer-group="listening" style="display:none;">
+          <span class="timer-label">&#9201; Sisa waktu Listening:</span>
+          <span class="timer-time">35:00</span>
+          <button type="button" class="timer-reset-btn">Reset</button>
+        </div>
+        <div class="timer-expired-banner" data-timer-group="listening" style="display:none;">Waktu Listening sudah habis. Di ujian asli kamu tidak bisa lanjut mengerjakan lagi &mdash; selesaikan sisa jawaban lalu klik Check answers.</div>
+
+        <div class="section-label" style="margin-top:4px;">Part A &middot; Short Dialogues (30 soal)</div>
 
         <div class="q" data-correct="1" data-topic="Listening - functional expression (agreement)" data-section="listening">
           <div class="qtag">Functional Expression &mdash; Agreement</div>
@@ -1112,6 +1226,231 @@
           <div class="explain">"Hit the books" berarti belajar dengan giat.</div>
         </div>
 
+        <div class="q" data-correct="1" data-topic="Listening - focus on last line" data-section="listening">
+          <div class="qtag">Strategy &mdash; Focus on the Last Line</div>
+          <button class="audio-btn" data-target="sd-passage-16">&#9658; Play audio</button>
+          <div class="passage" id="sd-passage-16">
+            <p data-speaker="woman"><b>Woman:</b> "I heard the staff meeting got moved to 3 PM."</p>
+            <p data-speaker="man"><b>Man:</b> "Actually, it's back to 2 PM again."</p>
+          </div>
+          <div class="qtext">16. What does the man imply about the meeting time?</div>
+          <div class="opt" data-i="0">It is now at 3 PM.</div>
+          <div class="opt" data-i="1">It is back to the original 2 PM time.</div>
+          <div class="opt" data-i="2">It has been cancelled.</div>
+          <div class="opt" data-i="3">He is not sure of the time.</div>
+          <div class="explain">Jawaban yang benar selalu ada di baris TERAKHIR dialog &mdash; koreksi terbaru datang dari si pria, bukan dari pernyataan awal si wanita.</div>
+        </div>
+
+        <div class="q" data-correct="1" data-topic="Listening - synonym recognition" data-section="listening">
+          <div class="qtag">Strategy &mdash; Synonym Recognition</div>
+          <button class="audio-btn" data-target="sd-passage-17">&#9658; Play audio</button>
+          <div class="passage" id="sd-passage-17">
+            <p data-speaker="woman"><b>Woman:</b> "This laptop is quite pricey."</p>
+            <p data-speaker="man"><b>Man:</b> "Yeah, but it's worth every penny."</p>
+          </div>
+          <div class="qtext">17. What does the man mean?</div>
+          <div class="opt" data-i="0">The laptop is actually cheap.</div>
+          <div class="opt" data-i="1">The laptop is expensive but worthwhile.</div>
+          <div class="opt" data-i="2">He wants a refund.</div>
+          <div class="opt" data-i="3">He regrets buying it.</div>
+          <div class="explain">Jawaban yang benar sering memakai sinonim ("expensive" untuk "pricey"), bukan kata yang sama persis dari dialog.</div>
+        </div>
+
+        <div class="q" data-correct="1" data-topic="Listening - avoid similar sounds" data-section="listening">
+          <div class="qtag">Strategy &mdash; Avoid Similar Sounds</div>
+          <button class="audio-btn" data-target="sd-passage-18">&#9658; Play audio</button>
+          <div class="passage" id="sd-passage-18">
+            <p data-speaker="woman"><b>Woman:</b> "Did you check the mail today?"</p>
+            <p data-speaker="man"><b>Man:</b> "Yes, there's a bill from the electric company."</p>
+          </div>
+          <div class="qtext">18. What did the man find in the mail?</div>
+          <div class="opt" data-i="0">A bell from the electric company</div>
+          <div class="opt" data-i="1">A bill from the electric company</div>
+          <div class="opt" data-i="2">A ball from the electric company</div>
+          <div class="opt" data-i="3">A bull from the electric company</div>
+          <div class="explain">Hindari jebakan kata yang bunyinya mirip ("bell/ball/bull" vs "bill") &mdash; dengarkan makna, bukan sekadar bunyi.</div>
+        </div>
+
+        <div class="q" data-correct="1" data-topic="Listening - structures (multiple nouns)" data-section="listening">
+          <div class="qtag">Structures &mdash; Who/What with Multiple Nouns</div>
+          <button class="audio-btn" data-target="sd-passage-19">&#9658; Play audio</button>
+          <div class="passage" id="sd-passage-19">
+            <p data-speaker="woman"><b>Woman:</b> "The professor gave the students the results before the exam."</p>
+            <p data-speaker="man"><b>Man:</b> "Oh good, so they knew ahead of time."</p>
+          </div>
+          <div class="qtext">19. Who received the results?</div>
+          <div class="opt" data-i="0">The professor</div>
+          <div class="opt" data-i="1">The students</div>
+          <div class="opt" data-i="2">The exam</div>
+          <div class="opt" data-i="3">No one</div>
+          <div class="explain">Kalimat punya dua kata benda (professor, students) &mdash; perhatikan siapa pelaku dan siapa penerima aksi "memberi".</div>
+        </div>
+
+        <div class="q" data-correct="1" data-topic="Listening - structures (double negatives)" data-section="listening">
+          <div class="qtag">Structures &mdash; Double Negatives</div>
+          <button class="audio-btn" data-target="sd-passage-20">&#9658; Play audio</button>
+          <div class="passage" id="sd-passage-20">
+            <p data-speaker="woman"><b>Woman:</b> "Is it common for flights to be delayed here?"</p>
+            <p data-speaker="man"><b>Man:</b> "It's not uncommon, especially in winter."</p>
+          </div>
+          <div class="qtext">20. What does the man mean?</div>
+          <div class="opt" data-i="0">Flight delays are rare.</div>
+          <div class="opt" data-i="1">Flight delays are fairly common.</div>
+          <div class="opt" data-i="2">Flights are never delayed.</div>
+          <div class="opt" data-i="3">He doesn't know.</div>
+          <div class="explain">"Not uncommon" adalah double negative &mdash; dua negatif jadi positif, artinya "cukup umum/sering terjadi."</div>
+        </div>
+
+        <div class="q" data-correct="1" data-topic="Listening - structures (negative comparatives)" data-section="listening">
+          <div class="qtag">Structures &mdash; Negatives with Comparatives</div>
+          <button class="audio-btn" data-target="sd-passage-21">&#9658; Play audio</button>
+          <div class="passage" id="sd-passage-21">
+            <p data-speaker="woman"><b>Woman:</b> "How was the new restaurant compared to the old one?"</p>
+            <p data-speaker="man"><b>Man:</b> "It wasn't any better."</p>
+          </div>
+          <div class="qtext">21. What does the man mean?</div>
+          <div class="opt" data-i="0">The new restaurant was better.</div>
+          <div class="opt" data-i="1">The new restaurant was the same or worse.</div>
+          <div class="opt" data-i="2">The new restaurant was much better.</div>
+          <div class="opt" data-i="3">He didn't try the new restaurant.</div>
+          <div class="explain">"Wasn't any better" = negatif + comparative &mdash; artinya TIDAK lebih baik (sama saja atau malah lebih buruk).</div>
+        </div>
+
+        <div class="q" data-correct="1" data-topic="Listening - functional expression (agreement)" data-section="listening">
+          <div class="qtag">Functional Expression &mdash; Agreement</div>
+          <button class="audio-btn" data-target="sd-passage-22">&#9658; Play audio</button>
+          <div class="passage" id="sd-passage-22">
+            <p data-speaker="woman"><b>Woman:</b> "This heat is unbearable."</p>
+            <p data-speaker="man"><b>Man:</b> "Tell me about it! I can barely function."</p>
+          </div>
+          <div class="qtext">22. What does the man mean?</div>
+          <div class="opt" data-i="0">He wants her to explain more.</div>
+          <div class="opt" data-i="1">He strongly agrees.</div>
+          <div class="opt" data-i="2">He disagrees.</div>
+          <div class="opt" data-i="3">He didn't understand her.</div>
+          <div class="explain">"Tell me about it!" adalah ungkapan setuju kuat, bukan permintaan penjelasan lebih lanjut.</div>
+        </div>
+
+        <div class="q" data-correct="0" data-topic="Listening - functional expression (suggestion)" data-section="listening">
+          <div class="qtag">Functional Expression &mdash; Suggestion</div>
+          <button class="audio-btn" data-target="sd-passage-23">&#9658; Play audio</button>
+          <div class="passage" id="sd-passage-23">
+            <p data-speaker="woman"><b>Woman:</b> "I can't seem to focus at work lately."</p>
+            <p data-speaker="man"><b>Man:</b> "Why don't you try taking short walks between tasks?"</p>
+          </div>
+          <div class="qtext">23. What does the man suggest?</div>
+          <div class="opt" data-i="0">Taking short walks between tasks</div>
+          <div class="opt" data-i="1">Quitting her job</div>
+          <div class="opt" data-i="2">Working longer hours</div>
+          <div class="opt" data-i="3">Ignoring the problem</div>
+          <div class="explain">"Why don't you...?" adalah pola untuk memberi saran &mdash; sarannya persis apa yang disebut setelahnya.</div>
+        </div>
+
+        <div class="q" data-correct="2" data-topic="Listening - functional expression (uncertainty)" data-section="listening">
+          <div class="qtag">Functional Expression &mdash; Uncertainty</div>
+          <button class="audio-btn" data-target="sd-passage-24">&#9658; Play audio</button>
+          <div class="passage" id="sd-passage-24">
+            <p data-speaker="man"><b>Man:</b> "Do you think the flight will be delayed?"</p>
+            <p data-speaker="woman"><b>Woman:</b> "It's hard to say at this point."</p>
+          </div>
+          <div class="qtext">24. What does the woman mean?</div>
+          <div class="opt" data-i="0">She's certain it will be delayed.</div>
+          <div class="opt" data-i="1">She's certain it won't be delayed.</div>
+          <div class="opt" data-i="2">She doesn't know yet.</div>
+          <div class="opt" data-i="3">She already checked and confirmed.</div>
+          <div class="explain">"It's hard to say" berarti belum bisa dipastikan / belum tahu.</div>
+        </div>
+
+        <div class="q" data-correct="1" data-topic="Listening - functional expression (surprise)" data-section="listening">
+          <div class="qtag">Functional Expression &mdash; Surprise</div>
+          <button class="audio-btn" data-target="sd-passage-25">&#9658; Play audio</button>
+          <div class="passage" id="sd-passage-25">
+            <p data-speaker="man"><b>Man:</b> "I just found out I got the scholarship."</p>
+            <p data-speaker="woman"><b>Woman:</b> "No kidding! That's amazing news."</p>
+          </div>
+          <div class="qtext">25. What does the woman's response show?</div>
+          <div class="opt" data-i="0">She doesn't believe him.</div>
+          <div class="opt" data-i="1">She's surprised and happy for him.</div>
+          <div class="opt" data-i="2">She's annoyed by the news.</div>
+          <div class="opt" data-i="3">She already knew about it.</div>
+          <div class="explain">"No kidding!" mengekspresikan keterkejutan yang menyenangkan, bukan ketidakpercayaan.</div>
+        </div>
+
+        <div class="q" data-correct="1" data-topic="Listening - idiomatic (two-part verb)" data-section="listening">
+          <div class="qtag">Idiomatic Expression &mdash; Two-Part Verb</div>
+          <button class="audio-btn" data-target="sd-passage-26">&#9658; Play audio</button>
+          <div class="passage" id="sd-passage-26">
+            <p data-speaker="man"><b>Man:</b> "The invoice amount seems wrong."</p>
+            <p data-speaker="woman"><b>Woman:</b> "I'll look into it right away."</p>
+          </div>
+          <div class="qtext">26. What will the woman do?</div>
+          <div class="opt" data-i="0">Ignore it</div>
+          <div class="opt" data-i="1">Investigate it</div>
+          <div class="opt" data-i="2">Pay it immediately without checking</div>
+          <div class="opt" data-i="3">Delete it</div>
+          <div class="explain">"Look into" berarti menyelidiki / memeriksa lebih lanjut.</div>
+        </div>
+
+        <div class="q" data-correct="1" data-topic="Listening - idiomatic (three-part verb)" data-section="listening">
+          <div class="qtag">Idiomatic Expression &mdash; Three-Part Verb</div>
+          <button class="audio-btn" data-target="sd-passage-27">&#9658; Play audio</button>
+          <div class="passage" id="sd-passage-27">
+            <p data-speaker="woman"><b>Woman:</b> "Did the team find a solution?"</p>
+            <p data-speaker="man"><b>Man:</b> "Yes, they finally came up with a plan."</p>
+          </div>
+          <div class="qtext">27. What did the team do?</div>
+          <div class="opt" data-i="0">Rejected every plan</div>
+          <div class="opt" data-i="1">Devised/created a plan</div>
+          <div class="opt" data-i="2">Copied someone else's plan</div>
+          <div class="opt" data-i="3">Forgot about the plan</div>
+          <div class="explain">"Come up with" berarti menemukan / menghasilkan (ide, rencana, solusi).</div>
+        </div>
+
+        <div class="q" data-correct="1" data-topic="Listening - idiomatic (everyday idiom)" data-section="listening">
+          <div class="qtag">Idiomatic Expression &mdash; Everyday Idiom</div>
+          <button class="audio-btn" data-target="sd-passage-28">&#9658; Play audio</button>
+          <div class="passage" id="sd-passage-28">
+            <p data-speaker="woman"><b>Woman:</b> "You look tired today."</p>
+            <p data-speaker="man"><b>Man:</b> "Yeah, I've been feeling a bit under the weather."</p>
+          </div>
+          <div class="qtext">28. What does the man mean?</div>
+          <div class="opt" data-i="0">He's been enjoying the weather.</div>
+          <div class="opt" data-i="1">He feels slightly sick.</div>
+          <div class="opt" data-i="2">He's been outside all day.</div>
+          <div class="opt" data-i="3">He's very energetic today.</div>
+          <div class="explain">"Under the weather" berarti merasa kurang sehat / agak sakit.</div>
+        </div>
+
+        <div class="q" data-correct="1" data-topic="Listening - functional expression (agreement)" data-section="listening">
+          <div class="qtag">Functional Expression &mdash; Agreement</div>
+          <button class="audio-btn" data-target="sd-passage-29">&#9658; Play audio</button>
+          <div class="passage" id="sd-passage-29">
+            <p data-speaker="woman"><b>Woman:</b> "Should we reschedule the meeting?"</p>
+            <p data-speaker="man"><b>Man:</b> "Absolutely, that makes more sense."</p>
+          </div>
+          <div class="qtext">29. What does the man mean?</div>
+          <div class="opt" data-i="0">He disagrees with rescheduling.</div>
+          <div class="opt" data-i="1">He fully agrees with rescheduling.</div>
+          <div class="opt" data-i="2">He's unsure what to do.</div>
+          <div class="opt" data-i="3">He wants to cancel the meeting entirely.</div>
+          <div class="explain">"Absolutely" adalah ungkapan setuju penuh / sangat setuju.</div>
+        </div>
+
+        <div class="q" data-correct="1" data-topic="Listening - structures (passive paraphrase)" data-section="listening">
+          <div class="qtag">Structures &mdash; Passive Voice Paraphrase</div>
+          <button class="audio-btn" data-target="sd-passage-30">&#9658; Play audio</button>
+          <div class="passage" id="sd-passage-30">
+            <p data-speaker="woman"><b>Woman:</b> "The manager postponed the launch until next month."</p>
+            <p data-speaker="man"><b>Man:</b> "Ah, that explains the new timeline."</p>
+          </div>
+          <div class="qtext">30. What happened to the launch?</div>
+          <div class="opt" data-i="0">It was cancelled.</div>
+          <div class="opt" data-i="1">It was postponed.</div>
+          <div class="opt" data-i="2">It happened earlier than planned.</div>
+          <div class="opt" data-i="3">It stayed on the same schedule.</div>
+          <div class="explain">"The manager postponed the launch" diparafrasekan menjadi "it was postponed" dalam bentuk pasif.</div>
+        </div>
+
         <div class="section-label" style="margin-top:26px;">Part B &middot; Long Conversations (2 percakapan &middot; 8 soal)</div>
 
         <div class="section-label" style="margin-top:14px; background:transparent; color:var(--muted); text-transform:none; letter-spacing:0;">Conversation 1</div>
@@ -1128,7 +1467,7 @@
 
         <div class="q" data-correct="1" data-topic="Listening - main topic" data-section="listening">
           <div class="qtag">Main Topic</div>
-          <div class="qtext">16. What are the man and woman mainly discussing?</div>
+          <div class="qtext">31. What are the man and woman mainly discussing?</div>
           <div class="opt" data-i="0">How to prepare for a job interview</div>
           <div class="opt" data-i="1">How to follow up on an internship application</div>
           <div class="opt" data-i="2">How to write a resignation letter</div>
@@ -1138,7 +1477,7 @@
 
         <div class="q" data-correct="0" data-topic="Listening - detail" data-section="listening">
           <div class="qtag">Specific Detail</div>
-          <div class="qtext">17. Why hasn't the woman followed up yet?</div>
+          <div class="qtext">32. Why hasn't the woman followed up yet?</div>
           <div class="opt" data-i="0">She was worried it would seem impatient</div>
           <div class="opt" data-i="1">She forgot the deadline</div>
           <div class="opt" data-i="2">She was told not to contact them</div>
@@ -1148,7 +1487,7 @@
 
         <div class="q" data-correct="1" data-topic="Listening - suggestion/advice" data-section="listening">
           <div class="qtag">Suggestion &amp; Advice</div>
-          <div class="qtext">18. What does the man imply the woman should do?</div>
+          <div class="qtext">33. What does the man imply the woman should do?</div>
           <div class="opt" data-i="0">Withdraw her application</div>
           <div class="opt" data-i="1">Send a follow-up email</div>
           <div class="opt" data-i="2">Apply to a different department</div>
@@ -1158,7 +1497,7 @@
 
         <div class="q" data-correct="1" data-topic="Listening - next action" data-section="listening">
           <div class="qtag">Next Action</div>
-          <div class="qtext">19. What will the woman probably do next?</div>
+          <div class="qtext">34. What will the woman probably do next?</div>
           <div class="opt" data-i="0">Call the department directly</div>
           <div class="opt" data-i="1">Send a follow-up email today</div>
           <div class="opt" data-i="2">Wait another three weeks</div>
@@ -1179,7 +1518,7 @@
 
         <div class="q" data-correct="1" data-topic="Listening - main topic" data-section="listening">
           <div class="qtag">Main Topic / Problem</div>
-          <div class="qtext">20. What is the man mainly concerned about?</div>
+          <div class="qtext">35. What is the man mainly concerned about?</div>
           <div class="opt" data-i="0">Failing his biology courses</div>
           <div class="opt" data-i="1">Whether switching majors will delay his graduation</div>
           <div class="opt" data-i="2">Finding a new academic advisor</div>
@@ -1189,7 +1528,7 @@
 
         <div class="q" data-correct="1" data-topic="Listening - detail" data-section="listening">
           <div class="qtag">Specific Detail</div>
-          <div class="qtext">21. According to the woman, what should the man check with an advisor?</div>
+          <div class="qtext">36. According to the woman, what should the man check with an advisor?</div>
           <div class="opt" data-i="0">His current GPA</div>
           <div class="opt" data-i="1">How many credits would transfer</div>
           <div class="opt" data-i="2">The cost of tuition</div>
@@ -1199,7 +1538,7 @@
 
         <div class="q" data-correct="2" data-topic="Listening - suggestion/attitude" data-section="listening">
           <div class="qtag">Suggestion &amp; Advice</div>
-          <div class="qtext">22. What does the woman suggest about academic advisors?</div>
+          <div class="qtext">37. What does the woman suggest about academic advisors?</div>
           <div class="opt" data-i="0">They discourage students from switching majors</div>
           <div class="opt" data-i="1">They are hard to schedule meetings with</div>
           <div class="opt" data-i="2">They generally support an early switch over finishing an unwanted degree</div>
@@ -1209,7 +1548,7 @@
 
         <div class="q" data-correct="1" data-topic="Listening - next action" data-section="listening">
           <div class="qtag">Next Action</div>
-          <div class="qtext">23. What will the man probably do next?</div>
+          <div class="qtext">38. What will the man probably do next?</div>
           <div class="opt" data-i="0">Continue in the pre-med track without changes</div>
           <div class="opt" data-i="1">Schedule an appointment with an academic advisor</div>
           <div class="opt" data-i="2">Drop out of the environmental science program</div>
@@ -1229,7 +1568,7 @@
 
         <div class="q" data-correct="0" data-topic="Listening - detail" data-section="listening">
           <div class="qtag">Specific Detail</div>
-          <div class="qtext">24. According to the professor, what is the "real economic cost" of a decision?</div>
+          <div class="qtext">39. According to the professor, what is the "real economic cost" of a decision?</div>
           <div class="opt" data-i="0">The next-best alternative that was given up</div>
           <div class="opt" data-i="1">The total money spent on the chosen option</div>
           <div class="opt" data-i="2">The time it takes to make the decision</div>
@@ -1239,7 +1578,7 @@
 
         <div class="q" data-correct="1" data-topic="Listening - purpose of example" data-section="listening">
           <div class="qtag">Purpose of Example</div>
-          <div class="qtext">25. Why does the professor mention studying instead of working a shift?</div>
+          <div class="qtext">40. Why does the professor mention studying instead of working a shift?</div>
           <div class="opt" data-i="0">To recommend that students prioritize work over school</div>
           <div class="opt" data-i="1">To illustrate that opportunity cost is the forgone wages, not the cost of materials</div>
           <div class="opt" data-i="2">To explain how to apply for a part-time job</div>
@@ -1249,7 +1588,7 @@
 
         <div class="q" data-correct="2" data-topic="Listening - main idea" data-section="listening">
           <div class="qtag">Main Idea / Common Misunderstanding</div>
-          <div class="qtext">26. What common misunderstanding does the professor address?</div>
+          <div class="qtext">41. What common misunderstanding does the professor address?</div>
           <div class="opt" data-i="0">That opportunity cost applies only to businesses</div>
           <div class="opt" data-i="1">That opportunity cost changes every year</div>
           <div class="opt" data-i="2">That opportunity cost is the same thing as monetary cost</div>
@@ -1259,7 +1598,7 @@
 
         <div class="q" data-correct="1" data-topic="Listening - next action" data-section="listening">
           <div class="qtag">Next Action</div>
-          <div class="qtext">27. What are students asked to do before the next class?</div>
+          <div class="qtext">42. What are students asked to do before the next class?</div>
           <div class="opt" data-i="0">Submit a research paper</div>
           <div class="opt" data-i="1">Read chapter four and prepare to identify opportunity costs in case studies</div>
           <div class="opt" data-i="2">Take an online quiz</div>
@@ -1277,7 +1616,7 @@
 
         <div class="q" data-correct="1" data-topic="Listening - main idea" data-section="listening">
           <div class="qtag">Main Idea</div>
-          <div class="qtext">28. What is the main topic of the talk?</div>
+          <div class="qtext">43. What is the main topic of the talk?</div>
           <div class="opt" data-i="0">How predators hunt in groups</div>
           <div class="opt" data-i="1">Two strategies animals use for camouflage</div>
           <div class="opt" data-i="2">Why some animals change color seasonally only</div>
@@ -1287,7 +1626,7 @@
 
         <div class="q" data-correct="1" data-topic="Listening - detail" data-section="listening">
           <div class="qtag">Specific Detail</div>
-          <div class="qtext">29. According to the professor, what is "background matching"?</div>
+          <div class="qtext">44. According to the professor, what is "background matching"?</div>
           <div class="opt" data-i="0">Bold patterns that break up an animal's outline</div>
           <div class="opt" data-i="1">An animal's coloring resembling its typical environment</div>
           <div class="opt" data-i="2">An animal hiding underground</div>
@@ -1297,7 +1636,7 @@
 
         <div class="q" data-correct="1" data-topic="Listening - purpose of example" data-section="listening">
           <div class="qtag">Purpose of Example</div>
-          <div class="qtext">30. Why does the professor mention the zebra's stripes?</div>
+          <div class="qtext">45. Why does the professor mention the zebra's stripes?</div>
           <div class="opt" data-i="0">As an example of background matching</div>
           <div class="opt" data-i="1">As an example of disruptive coloration</div>
           <div class="opt" data-i="2">To explain how zebras communicate</div>
@@ -1307,7 +1646,7 @@
 
         <div class="q" data-correct="1" data-topic="Listening - next action" data-section="listening">
           <div class="qtag">Next Action</div>
-          <div class="qtext">31. What will students do in next week's lab?</div>
+          <div class="qtext">46. What will students do in next week's lab?</div>
           <div class="opt" data-i="0">Observe live animals in the field</div>
           <div class="opt" data-i="1">Classify photographs by camouflage strategy</div>
           <div class="opt" data-i="2">Write an essay on evolution</div>
@@ -1318,14 +1657,14 @@
         <div class="section-label" style="margin-top:22px; background:transparent; color:var(--muted); text-transform:none; letter-spacing:0;">Talk 3 &middot; Psychology</div>
         <button class="audio-btn" id="audio-btn-5" data-target="passage-5">&#9658; Play audio</button>
         <div class="passage" id="passage-5">
-          <p data-speaker="man"><i>Professor (Psychology):</i> "Let's discuss the concept of the spacing effect in memory. Research consistently shows that spreading study sessions out over several days leads to much stronger long-term retention than cramming the same amount of material into one long session the night before an exam. This happens because each time you retrieve information after a delay, you strengthen the memory trace more than if you review the same fact repeatedly while it's still fresh in short-term memory."</p>
-          <p data-speaker="man">"This doesn't mean cramming is completely useless &mdash; it can help you pass a quiz the next morning &mdash; but for information you need to remember weeks or months later, spaced repetition is far more effective. If you're preparing for a final exam, for example, reviewing your notes for twenty minutes every few days over three weeks will likely outperform one long six-hour session the night before."</p>
-          <p data-speaker="man">"For your next assignment, keep a short daily log of what study techniques you use and note which topics you review more than once."</p>
+          <p data-speaker="woman"><i>Professor (Psychology):</i> "Let's discuss the concept of the spacing effect in memory. Research consistently shows that spreading study sessions out over several days leads to much stronger long-term retention than cramming the same amount of material into one long session the night before an exam. This happens because each time you retrieve information after a delay, you strengthen the memory trace more than if you review the same fact repeatedly while it's still fresh in short-term memory."</p>
+          <p data-speaker="woman">"This doesn't mean cramming is completely useless &mdash; it can help you pass a quiz the next morning &mdash; but for information you need to remember weeks or months later, spaced repetition is far more effective. If you're preparing for a final exam, for example, reviewing your notes for twenty minutes every few days over three weeks will likely outperform one long six-hour session the night before."</p>
+          <p data-speaker="woman">"For your next assignment, keep a short daily log of what study techniques you use and note which topics you review more than once."</p>
         </div>
 
         <div class="q" data-correct="1" data-topic="Listening - main idea" data-section="listening">
           <div class="qtag">Main Idea</div>
-          <div class="qtext">32. What is the main topic of the lecture?</div>
+          <div class="qtext">47. What is the main topic of the lecture?</div>
           <div class="opt" data-i="0">How to reduce exam anxiety</div>
           <div class="opt" data-i="1">Why spaced-out study sessions improve long-term memory more than cramming</div>
           <div class="opt" data-i="2">How memory loss occurs with age</div>
@@ -1335,7 +1674,7 @@
 
         <div class="q" data-correct="1" data-topic="Listening - detail" data-section="listening">
           <div class="qtag">Specific Detail</div>
-          <div class="qtext">33. According to the professor, why does spacing out study sessions help memory?</div>
+          <div class="qtext">48. According to the professor, why does spacing out study sessions help memory?</div>
           <div class="opt" data-i="0">It reduces the total amount of material to study</div>
           <div class="opt" data-i="1">Retrieving information after a delay strengthens the memory trace more</div>
           <div class="opt" data-i="2">It prevents students from feeling tired</div>
@@ -1345,7 +1684,7 @@
 
         <div class="q" data-correct="1" data-topic="Listening - speaker attitude" data-section="listening">
           <div class="qtag">Speaker Attitude</div>
-          <div class="qtext">34. What does the professor say about cramming?</div>
+          <div class="qtext">49. What does the professor say about cramming?</div>
           <div class="opt" data-i="0">It is completely useless and should never be used</div>
           <div class="opt" data-i="1">It can help for a quiz the next day, but is less effective for long-term retention</div>
           <div class="opt" data-i="2">It is more effective than spaced repetition</div>
@@ -1355,7 +1694,7 @@
 
         <div class="q" data-correct="1" data-topic="Listening - next action" data-section="listening">
           <div class="qtag">Next Action</div>
-          <div class="qtext">35. What are students asked to do for the next assignment?</div>
+          <div class="qtext">50. What are students asked to do for the next assignment?</div>
           <div class="opt" data-i="0">Take a practice exam</div>
           <div class="opt" data-i="1">Keep a daily log of study techniques and repeated topics</div>
           <div class="opt" data-i="2">Write a summary of the lecture</div>
@@ -1364,6 +1703,565 @@
         </div>
 
         <button class="btn" id="listening-check">Check answers</button>
+      </div>
+
+      <div class="panel" id="panel-reading">
+        <div class="section-label">Section 3 &middot; 50 soal &middot; &plusmn;55 menit &middot; 5 passage</div>
+        <h2>Reading Comprehension</h2>
+        <div class="hint">Baca tiap passage, lalu jawab soal-soal di bawahnya. Soal mencakup main idea, detail, vocabulary in context, inference, reference (rujukan kata ganti), dan negative fact (EXCEPT) &mdash; enam tipe soal yang paling sering muncul di TOEFL ITP Reading asli. Tingkat kesulitan bacaan dan soal dibuat setara level ETS (akademik, kalimat kompleks).</div>
+
+        <div class="timer-box" data-timer-group="reading" style="display:none;">
+          <span class="timer-label">&#9201; Sisa waktu Reading:</span>
+          <span class="timer-time">55:00</span>
+          <button type="button" class="timer-reset-btn">Reset</button>
+        </div>
+        <div class="timer-expired-banner" data-timer-group="reading" style="display:none;">Waktu Reading sudah habis. Di ujian asli kamu tidak bisa lanjut mengerjakan lagi &mdash; selesaikan sisa jawaban lalu klik Check answers.</div>
+
+        <div class="section-label" style="margin-top:0px;">Passage 1 of 5 &middot; 10 soal</div>
+        <h3 class="rc-title">Coral Reefs: Underwater Cities</h3>
+        <div class="rc-passage">
+          <p data-para="1"><span class="para-no">1.</span> Coral reefs are among the most biologically diverse ecosystems on Earth, often described as the &quot;rainforests of the sea.&quot; Despite covering less than one percent of the ocean floor, they provide habitat for roughly twenty-five percent of all known marine species. A reef is built gradually by colonies of tiny animals called coral polyps, which secrete calcium carbonate to form hard, cup-shaped skeletons. As successive generations of polyps grow atop the remains of earlier ones, these skeletons accumulate into the massive limestone structures recognized as reefs.</p>
+          <p data-para="2"><span class="para-no">2.</span> Most reef-building corals depend on a mutualistic relationship with microscopic algae called zooxanthellae, which live within the polyps' tissues. Through photosynthesis, the algae supply the coral with nutrients and oxygen, while the coral provides the algae with a protected environment and access to sunlight. This partnership is so essential that when environmental stress, such as elevated water temperature, causes corals to expel their zooxanthellae, the corals turn pale, a phenomenon known as coral bleaching. Prolonged bleaching can starve and eventually kill the coral colony.</p>
+          <p data-para="3"><span class="para-no">3.</span> Charles Darwin was among the first to classify reefs according to their shape and position relative to land, proposing three principal types: fringing reefs, which grow directly along a coastline; barrier reefs, which are separated from the shore by a lagoon; and atolls, ring-shaped reefs that encircle a central lagoon where an island has subsided beneath the sea. Darwin's subsidence theory, formulated without the benefit of modern instruments, was later confirmed by twentieth-century drilling studies that found volcanic rock beneath layers of coral limestone precisely where his model predicted.</p>
+          <p data-para="4"><span class="para-no">4.</span> Beyond their ecological significance, reefs provide practical benefits to coastal communities. Their complex structures dissipate wave energy, reducing coastline erosion and protecting shorelines during storms. They also underpin local fishing economies and attract tourism revenue. Nevertheless, reefs face mounting threats from rising sea temperatures, pollution, and ocean acidification, which impairs corals' ability to build their calcium carbonate skeletons. In response, marine biologists and policymakers have established protected reserves and coral restoration programs, though scientists caution that reversing large-scale reef decline will require significant reductions in global carbon emissions.</p>
+        </div>
+        <div class="q" data-correct="1" data-topic="Reading - Main Idea" data-section="reading">
+          <div class="qtag">Reading - Main Idea</div>
+          <div class="qtext">1. What is the main topic of the passage?</div>
+          <div class="opt" data-i="0">The economic value of coastal tourism</div>
+          <div class="opt" data-i="1">The biological formation, ecological role, and threats facing coral reefs</div>
+          <div class="opt" data-i="2">Charles Darwin's contributions to marine biology</div>
+          <div class="opt" data-i="3">Methods for classifying ocean ecosystems</div>
+          <div class="explain">Seluruh paragraf membahas bagaimana reef terbentuk, hubungan simbiosis dengan zooxanthellae, klasifikasi Darwin, dan ancaman terhadap reef -- bukan hanya satu sub-topik.</div>
+        </div>
+
+        <div class="q" data-correct="1" data-topic="Reading - Detail" data-section="reading">
+          <div class="qtag">Reading - Detail</div>
+          <div class="qtext">2. According to paragraph 1, coral reefs are formed when...</div>
+          <div class="opt" data-i="0">ocean currents deposit limestone along coastlines</div>
+          <div class="opt" data-i="1">polyps secrete calcium carbonate that accumulates over generations</div>
+          <div class="opt" data-i="2">volcanic islands gradually erode into the sea</div>
+          <div class="opt" data-i="3">algae colonies harden into skeletal structures</div>
+          <div class="explain">Paragraf 1 menyatakan polyps mengeluarkan calcium carbonate yang menumpuk dari generasi ke generasi membentuk struktur reef.</div>
+        </div>
+
+        <div class="q" data-correct="2" data-topic="Reading - Detail" data-section="reading">
+          <div class="qtag">Reading - Detail</div>
+          <div class="qtext">3. According to paragraph 2, coral bleaching occurs when...</div>
+          <div class="opt" data-i="0">polyps stop reproducing during winter months</div>
+          <div class="opt" data-i="1">sunlight fails to reach deep-water reefs</div>
+          <div class="opt" data-i="2">corals expel the algae living in their tissues due to stress</div>
+          <div class="opt" data-i="3">fishing activities damage the coral's outer layer</div>
+          <div class="explain">Paragraf 2 menjelaskan bleaching terjadi saat coral mengeluarkan (expel) zooxanthellae akibat stres lingkungan seperti suhu air yang naik.</div>
+        </div>
+
+        <div class="q" data-correct="1" data-topic="Reading - Detail" data-section="reading">
+          <div class="qtag">Reading - Detail</div>
+          <div class="qtext">4. According to paragraph 3, Darwin's subsidence theory was later supported by...</div>
+          <div class="opt" data-i="0">satellite images of reef formations</div>
+          <div class="opt" data-i="1">drilling studies revealing volcanic rock beneath coral limestone</div>
+          <div class="opt" data-i="2">surveys of fish populations near atolls</div>
+          <div class="opt" data-i="3">comparisons between fringing and barrier reefs</div>
+          <div class="explain">Paragraf 3 menyebutkan studi pengeboran abad ke-20 menemukan batuan vulkanik di bawah limestone coral, sesuai prediksi Darwin.</div>
+        </div>
+
+        <div class="q" data-correct="1" data-topic="Reading - Vocabulary in Context" data-section="reading">
+          <div class="qtag">Reading - Vocabulary in Context</div>
+          <div class="qtext">5. The word &quot;mutualistic&quot; in paragraph 2 is closest in meaning to...</div>
+          <div class="opt" data-i="0">competitive</div>
+          <div class="opt" data-i="1">mutually beneficial</div>
+          <div class="opt" data-i="2">occasional</div>
+          <div class="opt" data-i="3">one-sided</div>
+          <div class="explain">&quot;Mutualistic&quot; berarti hubungan yang saling menguntungkan kedua pihak.</div>
+        </div>
+
+        <div class="q" data-correct="2" data-topic="Reading - Vocabulary in Context" data-section="reading">
+          <div class="qtag">Reading - Vocabulary in Context</div>
+          <div class="qtext">6. The word &quot;dissipate&quot; in paragraph 4 is closest in meaning to...</div>
+          <div class="opt" data-i="0">intensify</div>
+          <div class="opt" data-i="1">redirect</div>
+          <div class="opt" data-i="2">disperse or reduce</div>
+          <div class="opt" data-i="3">measure</div>
+          <div class="explain">&quot;Dissipate&quot; dalam konteks energi gelombang berarti menyebarkan/mengurangi kekuatannya.</div>
+        </div>
+
+        <div class="q" data-correct="1" data-topic="Reading - Inference" data-section="reading">
+          <div class="qtag">Reading - Inference</div>
+          <div class="qtext">7. It can be inferred from paragraph 2 that if zooxanthellae are permanently lost...</div>
+          <div class="opt" data-i="0">the coral will change color but remain healthy</div>
+          <div class="opt" data-i="1">the coral is likely to die from lack of nutrients</div>
+          <div class="opt" data-i="2">the coral will grow faster without them</div>
+          <div class="opt" data-i="3">new polyps will replace the algae's function</div>
+          <div class="explain">Karena algae memasok nutrisi penting, kehilangan permanen kemungkinan besar menyebabkan coral kelaparan dan mati, sesuai isyarat paragraf 2.</div>
+        </div>
+
+        <div class="q" data-correct="2" data-topic="Reading - Inference" data-section="reading">
+          <div class="qtag">Reading - Inference</div>
+          <div class="qtext">8. It can be inferred from paragraph 4 that reef restoration efforts alone...</div>
+          <div class="opt" data-i="0">have completely reversed global reef decline</div>
+          <div class="opt" data-i="1">are unnecessary given current pollution levels</div>
+          <div class="opt" data-i="2">may not succeed without broader reductions in carbon emissions</div>
+          <div class="opt" data-i="3">are more effective than reducing carbon emissions</div>
+          <div class="explain">Paragraf 4 menyebutkan ilmuwan memperingatkan bahwa membalikkan kerusakan reef besar-besaran memerlukan pengurangan emisi karbon global, bukan restorasi saja.</div>
+        </div>
+
+        <div class="q" data-correct="1" data-topic="Reading - Reference" data-section="reading">
+          <div class="qtag">Reading - Reference</div>
+          <div class="qtext">9. The word &quot;Their&quot; in paragraph 4, in the sentence &quot;Their complex structures dissipate wave energy,&quot; refers to...</div>
+          <div class="opt" data-i="0">coastal communities</div>
+          <div class="opt" data-i="1">reefs</div>
+          <div class="opt" data-i="2">fishing economies</div>
+          <div class="opt" data-i="3">marine biologists</div>
+          <div class="explain">&quot;Their&quot; merujuk kembali ke &quot;reefs&quot; yang disebut di kalimat sebelumnya.</div>
+        </div>
+
+        <div class="q" data-correct="3" data-topic="Reading - Negative Fact (EXCEPT)" data-section="reading">
+          <div class="qtag">Reading - Negative Fact (EXCEPT)</div>
+          <div class="qtext">10. According to the passage, all of the following are mentioned as threats to coral reefs EXCEPT:</div>
+          <div class="opt" data-i="0">rising sea temperatures</div>
+          <div class="opt" data-i="1">ocean acidification</div>
+          <div class="opt" data-i="2">pollution</div>
+          <div class="opt" data-i="3">overfishing pressure</div>
+          <div class="explain">Paragraf 4 hanya menyebut suhu laut naik, polusi, dan asidifikasi laut sebagai ancaman; overfishing tidak disebutkan secara eksplisit sebagai ancaman dalam teks ini.</div>
+        </div>
+
+
+        <div class="section-label" style="margin-top:4px;">Passage 2 of 5 &middot; 10 soal</div>
+        <h3 class="rc-title">The Transcontinental Railroad</h3>
+        <div class="rc-passage">
+          <p data-para="1"><span class="para-no">1.</span> Before 1869, travel between the eastern and western United States required months by wagon or a hazardous sea voyage around South America. Congress addressed this problem by passing the Pacific Railroad Act of 1862, which authorized the construction of a continuous rail line connecting Iowa to California. Two companies, the Union Pacific and the Central Pacific, were commissioned to build the route from opposite directions, meeting somewhere in the middle.</p>
+          <p data-para="2"><span class="para-no">2.</span> The Union Pacific began laying track westward from Omaha, Nebraska, across relatively flat terrain, while the Central Pacific pushed eastward from Sacramento, California, confronting the formidable granite peaks of the Sierra Nevada. To blast tunnels through solid rock, the Central Pacific relied heavily on Chinese immigrant laborers, who eventually made up roughly ninety percent of its workforce. These workers endured extreme conditions, including avalanches and long winters spent working inside snow tunnels.</p>
+          <p data-para="3"><span class="para-no">3.</span> On May 10, 1869, the two lines were joined at Promontory Summit, Utah, an event marked by the driving of a ceremonial golden spike. The completed railroad reduced the journey across the continent from several months to about one week, transforming the movement of goods, people, and information. Telegraph lines running alongside the tracks meant that news could travel from coast to coast almost instantly.</p>
+          <p data-para="4"><span class="para-no">4.</span> The railroad's economic consequences were profound. It opened vast new markets for eastern manufacturers and western agricultural producers, spurred the settlement of the Great Plains, and accelerated the decline of the bison herds that Plains Indigenous nations depended on for survival. Historians continue to debate whether the railroad's benefits, chiefly economic integration and westward expansion, outweighed the displacement it caused to Indigenous communities.</p>
+        </div>
+        <div class="q" data-correct="1" data-topic="Reading - Main Idea" data-section="reading">
+          <div class="qtag">Reading - Main Idea</div>
+          <div class="qtext">11. What is the primary purpose of the passage?</div>
+          <div class="opt" data-i="0">To describe the daily life of railroad workers</div>
+          <div class="opt" data-i="1">To explain the construction, completion, and consequences of the transcontinental railroad</div>
+          <div class="opt" data-i="2">To argue that the railroad should not have been built</div>
+          <div class="opt" data-i="3">To compare railroad construction methods in different countries</div>
+          <div class="explain">Bacaan menjelaskan latar belakang, proses pembangunan, penyelesaian, dan dampak dari rel kereta transkontinental secara keseluruhan.</div>
+        </div>
+
+        <div class="q" data-correct="1" data-topic="Reading - Detail" data-section="reading">
+          <div class="qtag">Reading - Detail</div>
+          <div class="qtext">12. According to paragraph 1, why was Congress motivated to fund the railroad?</div>
+          <div class="opt" data-i="0">To create jobs for immigrant laborers</div>
+          <div class="opt" data-i="1">Because travel between the coasts took months and was difficult</div>
+          <div class="opt" data-i="2">To compete with railroad expansion in Europe</div>
+          <div class="opt" data-i="3">To connect telegraph lines across the continent</div>
+          <div class="explain">Paragraf 1 menyebutkan perjalanan lintas benua memakan waktu berbulan-bulan dan berbahaya sebelum 1869, menjadi alasan utama.</div>
+        </div>
+
+        <div class="q" data-correct="2" data-topic="Reading - Detail" data-section="reading">
+          <div class="qtag">Reading - Detail</div>
+          <div class="qtext">13. According to paragraph 2, most of the Central Pacific's workforce consisted of...</div>
+          <div class="opt" data-i="0">Formerly enslaved workers</div>
+          <div class="opt" data-i="1">Union Pacific engineers</div>
+          <div class="opt" data-i="2">Chinese immigrant laborers</div>
+          <div class="opt" data-i="3">Plains Indigenous laborers</div>
+          <div class="explain">Paragraf 2 menyatakan buruh imigran Tiongkok mencapai sekitar 90% dari tenaga kerja Central Pacific.</div>
+        </div>
+
+        <div class="q" data-correct="2" data-topic="Reading - Detail" data-section="reading">
+          <div class="qtag">Reading - Detail</div>
+          <div class="qtext">14. According to paragraph 3, what happened on May 10, 1869?</div>
+          <div class="opt" data-i="0">Congress passed the Pacific Railroad Act</div>
+          <div class="opt" data-i="1">The Union Pacific began construction</div>
+          <div class="opt" data-i="2">The two rail lines were joined at Promontory Summit</div>
+          <div class="opt" data-i="3">The first telegraph message was sent</div>
+          <div class="explain">Paragraf 3 menyebutkan kedua jalur bertemu di Promontory Summit, Utah pada 10 Mei 1869.</div>
+        </div>
+
+        <div class="q" data-correct="0" data-topic="Reading - Vocabulary in Context" data-section="reading">
+          <div class="qtag">Reading - Vocabulary in Context</div>
+          <div class="qtext">15. The word &quot;formidable&quot; in paragraph 2 is closest in meaning to...</div>
+          <div class="opt" data-i="0">Imposing or difficult to overcome</div>
+          <div class="opt" data-i="1">Unnoticed</div>
+          <div class="opt" data-i="2">Temporary</div>
+          <div class="opt" data-i="3">Affordable</div>
+          <div class="explain">&quot;Formidable&quot; menggambarkan sesuatu yang mengesankan sekaligus sulit dihadapi, sesuai konteks pegunungan granit Sierra Nevada.</div>
+        </div>
+
+        <div class="q" data-correct="1" data-topic="Reading - Vocabulary in Context" data-section="reading">
+          <div class="qtag">Reading - Vocabulary in Context</div>
+          <div class="qtext">16. The word &quot;spurred&quot; in paragraph 4 is closest in meaning to...</div>
+          <div class="opt" data-i="0">Delayed</div>
+          <div class="opt" data-i="1">Stimulated or encouraged</div>
+          <div class="opt" data-i="2">Prevented</div>
+          <div class="opt" data-i="3">Documented</div>
+          <div class="explain">&quot;Spurred&quot; berarti mendorong/memicu terjadinya sesuatu, dalam hal ini penyebaran penduduk ke Great Plains.</div>
+        </div>
+
+        <div class="q" data-correct="1" data-topic="Reading - Inference" data-section="reading">
+          <div class="qtag">Reading - Inference</div>
+          <div class="qtext">17. It can be inferred from paragraph 3 that before the railroad's completion...</div>
+          <div class="opt" data-i="0">Telegraph technology did not yet exist</div>
+          <div class="opt" data-i="1">Cross-country communication was slower than after 1869</div>
+          <div class="opt" data-i="2">Most Americans preferred sea travel</div>
+          <div class="opt" data-i="3">The golden spike had already been used elsewhere</div>
+          <div class="explain">Karena berita bisa menyebar 'hampir instan' setelah rel dan telegraf selesai, dapat disimpulkan komunikasi sebelumnya lebih lambat.</div>
+        </div>
+
+        <div class="q" data-correct="2" data-topic="Reading - Inference" data-section="reading">
+          <div class="qtag">Reading - Inference</div>
+          <div class="qtext">18. It can be inferred from paragraph 4 that the railroad's expansion...</div>
+          <div class="opt" data-i="0">Had no effect on Indigenous nations</div>
+          <div class="opt" data-i="1">Benefited every group in the United States equally</div>
+          <div class="opt" data-i="2">Created economic gains alongside serious harm to Indigenous communities</div>
+          <div class="opt" data-i="3">Was reversed shortly after completion</div>
+          <div class="explain">Paragraf 4 menyebut manfaat ekonomi sekaligus percepatan kepunahan bison dan perdebatan soal dampaknya pada komunitas Pribumi.</div>
+        </div>
+
+        <div class="q" data-correct="1" data-topic="Reading - Reference" data-section="reading">
+          <div class="qtag">Reading - Reference</div>
+          <div class="qtext">19. The word &quot;its&quot; in paragraph 2, in the phrase &quot;roughly ninety percent of its workforce,&quot; refers to...</div>
+          <div class="opt" data-i="0">The Union Pacific</div>
+          <div class="opt" data-i="1">The Central Pacific</div>
+          <div class="opt" data-i="2">The Sierra Nevada</div>
+          <div class="opt" data-i="3">Sacramento</div>
+          <div class="explain">&quot;Its&quot; merujuk pada Central Pacific, perusahaan yang disebut sebelumnya dalam kalimat yang sama.</div>
+        </div>
+
+        <div class="q" data-correct="3" data-topic="Reading - Negative Fact (EXCEPT)" data-section="reading">
+          <div class="qtag">Reading - Negative Fact (EXCEPT)</div>
+          <div class="qtext">20. According to the passage, all of the following are mentioned as effects of the railroad EXCEPT:</div>
+          <div class="opt" data-i="0">Faster cross-country travel</div>
+          <div class="opt" data-i="1">New markets for manufacturers and farmers</div>
+          <div class="opt" data-i="2">Decline of bison herds</div>
+          <div class="opt" data-i="3">Increased immigration from Europe</div>
+          <div class="explain">Paragraf 4 menyebut kecepatan perjalanan, pasar baru, dan penurunan populasi bison; peningkatan imigrasi dari Eropa tidak disebutkan.</div>
+        </div>
+
+
+        <div class="section-label" style="margin-top:4px;">Passage 3 of 5 &middot; 10 soal</div>
+        <h3 class="rc-title">Memory and the Role of Sleep</h3>
+        <div class="rc-passage">
+          <p data-para="1"><span class="para-no">1.</span> Cognitive scientists have long recognized that sleep plays an active role in learning, not merely a period of rest following it. During the day, the brain continuously acquires new information, but that information initially exists in a fragile, easily disrupted state. Sleep, researchers now believe, provides a critical window during which the brain reorganizes and strengthens these fragile memory traces, a process known as consolidation.</p>
+          <p data-para="2"><span class="para-no">2.</span> Much of this consolidation appears to occur during slow-wave sleep, the deep stage characterized by synchronized, low-frequency brain activity. Studies using electroencephalography (EEG) have shown that the hippocampus, a brain structure essential for forming new memories, reactivates patterns of neural firing that occurred during earlier waking experiences. This replay is thought to gradually transfer memories from the hippocampus to the cortex, where they can be stored more permanently and integrated with existing knowledge.</p>
+          <p data-para="3"><span class="para-no">3.</span> Rapid eye movement (REM) sleep, by contrast, has been linked less to factual memory and more to procedural and emotional memory, such as the consolidation of motor skills and the processing of emotionally charged experiences. Some researchers propose that dreaming during REM sleep may reflect the brain's attempt to make sense of recent emotional events by connecting them to unrelated memories stored previously.</p>
+          <p data-para="4"><span class="para-no">4.</span> These findings carry practical implications. Experiments have demonstrated that participants deprived of sleep after learning a task perform worse on tests of that task the following day compared with participants who slept normally, even when both groups receive identical instruction. This has led some educators and sleep researchers to argue that adequate sleep, rather than additional study time alone, may be one of the more effective tools for improving retention.</p>
+        </div>
+        <div class="q" data-correct="1" data-topic="Reading - Main Idea" data-section="reading">
+          <div class="qtag">Reading - Main Idea</div>
+          <div class="qtext">21. What is the main idea of the passage?</div>
+          <div class="opt" data-i="0">The anatomy of the human hippocampus</div>
+          <div class="opt" data-i="1">The role of sleep, particularly its stages, in memory consolidation</div>
+          <div class="opt" data-i="2">Differences between REM sleep and slow-wave sleep in animals</div>
+          <div class="opt" data-i="3">Techniques for treating sleep disorders</div>
+          <div class="explain">Seluruh bacaan berfokus pada bagaimana berbagai tahap tidur berperan dalam menguatkan memori (konsolidasi).</div>
+        </div>
+
+        <div class="q" data-correct="1" data-topic="Reading - Detail" data-section="reading">
+          <div class="qtag">Reading - Detail</div>
+          <div class="qtext">22. According to paragraph 1, newly acquired information is initially...</div>
+          <div class="opt" data-i="0">Permanently stored in the cortex</div>
+          <div class="opt" data-i="1">Fragile and easily disrupted</div>
+          <div class="opt" data-i="2">Unrelated to sleep</div>
+          <div class="opt" data-i="3">Processed only during REM sleep</div>
+          <div class="explain">Paragraf 1 menyatakan informasi baru awalnya berada dalam kondisi rapuh (fragile) sebelum dikonsolidasi saat tidur.</div>
+        </div>
+
+        <div class="q" data-correct="1" data-topic="Reading - Detail" data-section="reading">
+          <div class="qtag">Reading - Detail</div>
+          <div class="qtext">23. According to paragraph 2, what role does the hippocampus play during slow-wave sleep?</div>
+          <div class="opt" data-i="0">It prevents memories from consolidating</div>
+          <div class="opt" data-i="1">It reactivates patterns of neural firing from earlier waking experiences</div>
+          <div class="opt" data-i="2">It produces rapid eye movements</div>
+          <div class="opt" data-i="3">It stores memories permanently</div>
+          <div class="explain">Paragraf 2 menjelaskan hippocampus mengaktifkan kembali pola neural dari pengalaman saat terjaga, lalu mentransfernya ke korteks.</div>
+        </div>
+
+        <div class="q" data-correct="1" data-topic="Reading - Detail" data-section="reading">
+          <div class="qtag">Reading - Detail</div>
+          <div class="qtext">24. According to paragraph 3, REM sleep is more closely associated with...</div>
+          <div class="opt" data-i="0">Factual, declarative memory</div>
+          <div class="opt" data-i="1">Procedural and emotional memory</div>
+          <div class="opt" data-i="2">Short-term visual memory</div>
+          <div class="opt" data-i="3">Long-term planning skills</div>
+          <div class="explain">Paragraf 3 menyatakan REM sleep lebih terkait memori prosedural (keterampilan motorik) dan emosional.</div>
+        </div>
+
+        <div class="q" data-correct="1" data-topic="Reading - Vocabulary in Context" data-section="reading">
+          <div class="qtag">Reading - Vocabulary in Context</div>
+          <div class="qtext">25. The word &quot;consolidation&quot; in paragraph 1 is closest in meaning to...</div>
+          <div class="opt" data-i="0">Forgetting</div>
+          <div class="opt" data-i="1">Strengthening and stabilizing</div>
+          <div class="opt" data-i="2">Discovering</div>
+          <div class="opt" data-i="3">Interrupting</div>
+          <div class="explain">&quot;Consolidation&quot; berarti proses menguatkan dan menstabilkan sesuatu, dalam konteks ini memori.</div>
+        </div>
+
+        <div class="q" data-correct="1" data-topic="Reading - Vocabulary in Context" data-section="reading">
+          <div class="qtag">Reading - Vocabulary in Context</div>
+          <div class="qtext">26. The word &quot;deprived&quot; in paragraph 4 is closest in meaning to...</div>
+          <div class="opt" data-i="0">Provided with extra</div>
+          <div class="opt" data-i="1">Denied or kept from</div>
+          <div class="opt" data-i="2">Reminded of</div>
+          <div class="opt" data-i="3">Rewarded for</div>
+          <div class="explain">&quot;Deprived of sleep&quot; berarti kekurangan/tidak mendapatkan tidur yang cukup.</div>
+        </div>
+
+        <div class="q" data-correct="2" data-topic="Reading - Inference" data-section="reading">
+          <div class="qtag">Reading - Inference</div>
+          <div class="qtext">27. It can be inferred from paragraph 2 that memories eventually stored in the cortex...</div>
+          <div class="opt" data-i="0">Are less stable than when they were in the hippocampus</div>
+          <div class="opt" data-i="1">Can no longer be recalled</div>
+          <div class="opt" data-i="2">Have become more permanently integrated with existing knowledge</div>
+          <div class="opt" data-i="3">Are limited to emotional content only</div>
+          <div class="explain">Paragraf 2 menyebutkan memori yang dipindah ke korteks disimpan 'lebih permanen dan terintegrasi dengan pengetahuan yang sudah ada'.</div>
+        </div>
+
+        <div class="q" data-correct="1" data-topic="Reading - Inference" data-section="reading">
+          <div class="qtag">Reading - Inference</div>
+          <div class="qtext">28. It can be inferred from paragraph 4 that additional study time without adequate sleep...</div>
+          <div class="opt" data-i="0">Is always more effective than sleep for retention</div>
+          <div class="opt" data-i="1">May not be as effective for retention as getting sufficient sleep</div>
+          <div class="opt" data-i="2">Has no measurable effect on test performance</div>
+          <div class="opt" data-i="3">Works only for procedural tasks</div>
+          <div class="explain">Paragraf 4 menyiratkan tidur yang cukup mungkin lebih efektif untuk retensi dibanding hanya menambah waktu belajar.</div>
+        </div>
+
+        <div class="q" data-correct="1" data-topic="Reading - Reference" data-section="reading">
+          <div class="qtag">Reading - Reference</div>
+          <div class="qtext">29. The word &quot;these&quot; in paragraph 4, in the phrase &quot;These findings carry practical implications,&quot; refers to...</div>
+          <div class="opt" data-i="0">Educators' teaching methods</div>
+          <div class="opt" data-i="1">The research results described about sleep and memory</div>
+          <div class="opt" data-i="2">Sleep disorders</div>
+          <div class="opt" data-i="3">EEG recording techniques</div>
+          <div class="explain">&quot;These findings&quot; merujuk pada hasil-hasil penelitian tentang tidur dan memori yang dijelaskan di paragraf-paragraf sebelumnya.</div>
+        </div>
+
+        <div class="q" data-correct="3" data-topic="Reading - Negative Fact (EXCEPT)" data-section="reading">
+          <div class="qtag">Reading - Negative Fact (EXCEPT)</div>
+          <div class="qtext">30. According to the passage, all of the following are mentioned in connection with sleep and memory EXCEPT:</div>
+          <div class="opt" data-i="0">The hippocampus</div>
+          <div class="opt" data-i="1">EEG studies</div>
+          <div class="opt" data-i="2">Slow-wave sleep</div>
+          <div class="opt" data-i="3">Short-term caffeine consumption</div>
+          <div class="explain">Bacaan membahas hippocampus, studi EEG, dan slow-wave sleep; konsumsi kafein tidak disebutkan sama sekali.</div>
+        </div>
+
+
+        <div class="section-label" style="margin-top:4px;">Passage 4 of 5 &middot; 10 soal</div>
+        <h3 class="rc-title">The Rise of Cities in Ancient Mesopotamia</h3>
+        <div class="rc-passage">
+          <p data-para="1"><span class="para-no">1.</span> Roughly six thousand years ago, small farming villages in the fertile plains between the Tigris and Euphrates rivers began growing into a new kind of settlement: the city. Mesopotamia, often called the cradle of urban civilization, was home to some of the earliest cities in human history, including Uruk, which by 3200 BCE may have housed as many as forty thousand residents, an extraordinary population for its time.</p>
+          <p data-para="2"><span class="para-no">2.</span> Several factors converged to make this transformation possible. The rivers deposited nutrient-rich silt across the surrounding floodplain, and the development of irrigation canals allowed farmers to produce agricultural surpluses well beyond what a single family required. This surplus freed a portion of the population from farming altogether, enabling the emergence of specialized occupations such as priests, artisans, traders, and administrators, an economic diversification that villages had rarely supported.</p>
+          <p data-para="3"><span class="para-no">3.</span> Managing surplus grain, coordinating irrigation labor, and settling disputes among a growing population required new administrative tools. It was in this context that Mesopotamian scribes developed cuneiform, one of the earliest writing systems, initially used mainly for record-keeping, such as tracking grain shipments and tax obligations, rather than for literature or personal correspondence.</p>
+          <p data-para="4"><span class="para-no">4.</span> As cities expanded, they also became centers of religious and political authority. Massive temple complexes, known as ziggurats, dominated city skylines and served as both places of worship and hubs of economic redistribution, since temples often controlled significant stores of grain and land. Kingship gradually emerged from this religious framework, with rulers claiming divine sanction to justify their authority over increasingly large and complex urban populations.</p>
+        </div>
+        <div class="q" data-correct="1" data-topic="Reading - Main Idea" data-section="reading">
+          <div class="qtag">Reading - Main Idea</div>
+          <div class="qtext">31. What is the main idea of the passage?</div>
+          <div class="opt" data-i="0">The architecture of Mesopotamian temples</div>
+          <div class="opt" data-i="1">The origins and development of cities in ancient Mesopotamia</div>
+          <div class="opt" data-i="2">A comparison between Uruk and modern cities</div>
+          <div class="opt" data-i="3">The invention of irrigation technology in Egypt</div>
+          <div class="explain">Bacaan secara keseluruhan menjelaskan bagaimana dan mengapa kota-kota pertama muncul di Mesopotamia.</div>
+        </div>
+
+        <div class="q" data-correct="1" data-topic="Reading - Detail" data-section="reading">
+          <div class="qtag">Reading - Detail</div>
+          <div class="qtext">32. According to paragraph 1, Uruk may have had a population of...</div>
+          <div class="opt" data-i="0">Four thousand</div>
+          <div class="opt" data-i="1">Forty thousand</div>
+          <div class="opt" data-i="2">Four hundred thousand</div>
+          <div class="opt" data-i="3">Fourteen thousand</div>
+          <div class="explain">Paragraf 1 menyebutkan Uruk mungkin memiliki sekitar 40.000 penduduk pada 3200 SM.</div>
+        </div>
+
+        <div class="q" data-correct="1" data-topic="Reading - Detail" data-section="reading">
+          <div class="qtag">Reading - Detail</div>
+          <div class="qtext">33. According to paragraph 2, agricultural surplus allowed...</div>
+          <div class="opt" data-i="0">Farmers to abandon irrigation</div>
+          <div class="opt" data-i="1">Some residents to take up specialized, non-farming occupations</div>
+          <div class="opt" data-i="2">Cities to stop trading with villages</div>
+          <div class="opt" data-i="3">The population to decline</div>
+          <div class="explain">Paragraf 2 menyatakan surplus pangan membebaskan sebagian penduduk untuk menekuni pekerjaan khusus non-pertanian.</div>
+        </div>
+
+        <div class="q" data-correct="2" data-topic="Reading - Detail" data-section="reading">
+          <div class="qtag">Reading - Detail</div>
+          <div class="qtext">34. According to paragraph 3, cuneiform was initially used mainly for...</div>
+          <div class="opt" data-i="0">Religious literature</div>
+          <div class="opt" data-i="1">Personal letters</div>
+          <div class="opt" data-i="2">Record-keeping such as grain shipments and taxes</div>
+          <div class="opt" data-i="3">Royal poetry</div>
+          <div class="explain">Paragraf 3 menjelaskan cuneiform awalnya digunakan terutama untuk pencatatan administratif, bukan sastra.</div>
+        </div>
+
+        <div class="q" data-correct="0" data-topic="Reading - Vocabulary in Context" data-section="reading">
+          <div class="qtag">Reading - Vocabulary in Context</div>
+          <div class="qtext">35. The word &quot;converged&quot; in paragraph 2 is closest in meaning to...</div>
+          <div class="opt" data-i="0">Came together</div>
+          <div class="opt" data-i="1">Disappeared</div>
+          <div class="opt" data-i="2">Competed</div>
+          <div class="opt" data-i="3">Separated</div>
+          <div class="explain">&quot;Converged&quot; berarti berbagai faktor bertemu/bergabung untuk menghasilkan satu perubahan besar.</div>
+        </div>
+
+        <div class="q" data-correct="1" data-topic="Reading - Vocabulary in Context" data-section="reading">
+          <div class="qtag">Reading - Vocabulary in Context</div>
+          <div class="qtext">36. The word &quot;sanction&quot; in paragraph 4 is closest in meaning to...</div>
+          <div class="opt" data-i="0">Punishment</div>
+          <div class="opt" data-i="1">Approval or authorization</div>
+          <div class="opt" data-i="2">Criticism</div>
+          <div class="opt" data-i="3">Taxation</div>
+          <div class="explain">Dalam konteks 'divine sanction', kata ini berarti persetujuan/pengesahan dari otoritas yang lebih tinggi (dewa).</div>
+        </div>
+
+        <div class="q" data-correct="1" data-topic="Reading - Inference" data-section="reading">
+          <div class="qtag">Reading - Inference</div>
+          <div class="qtext">37. It can be inferred from paragraph 2 that in villages before this transformation...</div>
+          <div class="opt" data-i="0">Most people were already administrators or traders</div>
+          <div class="opt" data-i="1">Nearly everyone was likely involved in farming</div>
+          <div class="opt" data-i="2">Irrigation canals were unnecessary</div>
+          <div class="opt" data-i="3">Populations exceeded those of early cities</div>
+          <div class="explain">Karena diversifikasi pekerjaan disebut sebagai hal baru yang jarang terjadi di desa, dapat disimpulkan sebagian besar penduduk desa sebelumnya bertani.</div>
+        </div>
+
+        <div class="q" data-correct="1" data-topic="Reading - Inference" data-section="reading">
+          <div class="qtag">Reading - Inference</div>
+          <div class="qtext">38. It can be inferred from paragraph 4 that ziggurats had a function beyond religion because...</div>
+          <div class="opt" data-i="0">They were used exclusively for royal residences</div>
+          <div class="opt" data-i="1">They also served as centers of economic redistribution</div>
+          <div class="opt" data-i="2">They replaced the need for written records</div>
+          <div class="opt" data-i="3">They were built without any government involvement</div>
+          <div class="explain">Paragraf 4 menyebutkan ziggurat juga menjadi pusat redistribusi ekonomi karena menyimpan cadangan gandum dan tanah.</div>
+        </div>
+
+        <div class="q" data-correct="0" data-topic="Reading - Reference" data-section="reading">
+          <div class="qtag">Reading - Reference</div>
+          <div class="qtext">39. The word &quot;this&quot; in paragraph 3, in the phrase &quot;It was in this context that Mesopotamian scribes developed cuneiform,&quot; refers to...</div>
+          <div class="opt" data-i="0">The need to manage surplus grain, coordinate labor, and settle disputes</div>
+          <div class="opt" data-i="1">The construction of ziggurats</div>
+          <div class="opt" data-i="2">The rise of kingship</div>
+          <div class="opt" data-i="3">Trade with neighboring regions</div>
+          <div class="explain">&quot;This context&quot; merujuk pada kebutuhan administratif yang disebutkan di awal paragraf 3: mengelola gandum, tenaga kerja irigasi, dan perselisihan.</div>
+        </div>
+
+        <div class="q" data-correct="3" data-topic="Reading - Negative Fact (EXCEPT)" data-section="reading">
+          <div class="qtag">Reading - Negative Fact (EXCEPT)</div>
+          <div class="qtext">40. According to the passage, all of the following are mentioned as factors in the rise of Mesopotamian cities EXCEPT:</div>
+          <div class="opt" data-i="0">Irrigation and agricultural surplus</div>
+          <div class="opt" data-i="1">The development of writing</div>
+          <div class="opt" data-i="2">Religious and political authority</div>
+          <div class="opt" data-i="3">The invention of the wheel</div>
+          <div class="explain">Bacaan menyebut irigasi, tulisan, dan otoritas keagamaan/politik sebagai faktor; penemuan roda tidak disebutkan.</div>
+        </div>
+
+
+        <div class="section-label" style="margin-top:4px;">Passage 5 of 5 &middot; 10 soal</div>
+        <h3 class="rc-title">Bird Migration and Magnetic Orientation</h3>
+        <div class="rc-passage">
+          <p data-para="1"><span class="para-no">1.</span> Each year, billions of birds undertake journeys spanning thousands of kilometers between breeding and wintering grounds, often navigating with a precision that has puzzled scientists for decades. Some species, such as the Arctic tern, travel from pole to pole annually, while others cross open ocean for days without landmarks to guide them. Understanding how birds accomplish this feat of navigation has become one of the more compelling questions in animal behavior research.</p>
+          <p data-para="2"><span class="para-no">2.</span> Researchers have identified multiple cues that migratory birds appear to rely on, including the position of the sun, patterns of polarized light, and the arrangement of stars in the night sky. Young birds making their first migration, having never seen the route before, seem to inherit at least a partial genetic template for direction and distance, which is later refined through experience on subsequent journeys.</p>
+          <p data-para="3"><span class="para-no">3.</span> Perhaps the most extensively studied cue, however, is the Earth's magnetic field. Experiments conducted in specially designed cages have shown that birds can detect both the direction and the intensity of magnetic fields, using this information as an internal compass. One leading hypothesis proposes that light-sensitive proteins called cryptochromes, located in birds' eyes, allow them to perceive magnetic fields visually, effectively letting birds &quot;see&quot; magnetic north as a pattern overlaid on their normal vision.</p>
+          <p data-para="4"><span class="para-no">4.</span> Despite decades of research, no single explanation fully accounts for migratory navigation, and most scientists now agree that birds likely integrate several of these systems simultaneously, cross-checking one cue against another to correct for error. This redundancy may explain why migratory birds can still navigate successfully even when a single cue, such as visibility of the stars on a cloudy night, is temporarily unavailable.</p>
+        </div>
+        <div class="q" data-correct="1" data-topic="Reading - Main Idea" data-section="reading">
+          <div class="qtag">Reading - Main Idea</div>
+          <div class="qtext">41. What is the main idea of the passage?</div>
+          <div class="opt" data-i="0">The anatomy of the avian eye</div>
+          <div class="opt" data-i="1">How migratory birds are able to navigate long distances</div>
+          <div class="opt" data-i="2">The population decline of Arctic terns</div>
+          <div class="opt" data-i="3">Differences between diurnal and nocturnal bird species</div>
+          <div class="explain">Bacaan membahas berbagai mekanisme (matahari, bintang, medan magnet) yang digunakan burung migran untuk bernavigasi.</div>
+        </div>
+
+        <div class="q" data-correct="1" data-topic="Reading - Detail" data-section="reading">
+          <div class="qtag">Reading - Detail</div>
+          <div class="qtext">42. According to paragraph 1, which bird is mentioned as an example of long-distance migration?</div>
+          <div class="opt" data-i="0">The barn swallow</div>
+          <div class="opt" data-i="1">The Arctic tern</div>
+          <div class="opt" data-i="2">The peregrine falcon</div>
+          <div class="opt" data-i="3">The Canada goose</div>
+          <div class="explain">Paragraf 1 secara eksplisit menyebut Arctic tern yang bermigrasi dari kutub ke kutub setiap tahun.</div>
+        </div>
+
+        <div class="q" data-correct="1" data-topic="Reading - Detail" data-section="reading">
+          <div class="qtag">Reading - Detail</div>
+          <div class="qtext">43. According to paragraph 2, young birds on their first migration appear to rely partly on...</div>
+          <div class="opt" data-i="0">Instructions from adult birds flying alongside them</div>
+          <div class="opt" data-i="1">An inherited genetic template for direction and distance</div>
+          <div class="opt" data-i="2">Trial and error only</div>
+          <div class="opt" data-i="3">Previously memorized landmarks</div>
+          <div class="explain">Paragraf 2 menyatakan burung muda mewarisi semacam 'template' genetik untuk arah dan jarak.</div>
+        </div>
+
+        <div class="q" data-correct="2" data-topic="Reading - Detail" data-section="reading">
+          <div class="qtag">Reading - Detail</div>
+          <div class="qtext">44. According to paragraph 3, cryptochromes are located in birds'...</div>
+          <div class="opt" data-i="0">Inner ear</div>
+          <div class="opt" data-i="1">Feathers</div>
+          <div class="opt" data-i="2">Eyes</div>
+          <div class="opt" data-i="3">Beak</div>
+          <div class="explain">Paragraf 3 menyebutkan cryptochromes berada di mata (eyes) burung.</div>
+        </div>
+
+        <div class="q" data-correct="1" data-topic="Reading - Vocabulary in Context" data-section="reading">
+          <div class="qtag">Reading - Vocabulary in Context</div>
+          <div class="qtext">45. The word &quot;compelling&quot; in paragraph 1 is closest in meaning to...</div>
+          <div class="opt" data-i="0">Unimportant</div>
+          <div class="opt" data-i="1">Highly interesting or convincing</div>
+          <div class="opt" data-i="2">Confusing</div>
+          <div class="opt" data-i="3">Outdated</div>
+          <div class="explain">&quot;Compelling&quot; menggambarkan sesuatu yang sangat menarik perhatian/meyakinkan untuk diteliti.</div>
+        </div>
+
+        <div class="q" data-correct="1" data-topic="Reading - Vocabulary in Context" data-section="reading">
+          <div class="qtag">Reading - Vocabulary in Context</div>
+          <div class="qtext">46. The word &quot;redundancy&quot; in paragraph 4 is closest in meaning to...</div>
+          <div class="opt" data-i="0">A single point of failure</div>
+          <div class="opt" data-i="1">Having backup or overlapping systems</div>
+          <div class="opt" data-i="2">Unnecessary complexity that should be removed</div>
+          <div class="opt" data-i="3">A rare and unpredictable event</div>
+          <div class="explain">Dalam konteks ini, &quot;redundancy&quot; berarti adanya beberapa sistem yang saling menopang/cadangan, bukan sesuatu yang negatif.</div>
+        </div>
+
+        <div class="q" data-correct="1" data-topic="Reading - Inference" data-section="reading">
+          <div class="qtag">Reading - Inference</div>
+          <div class="qtext">47. It can be inferred from paragraph 2 that experience gained on later migrations...</div>
+          <div class="opt" data-i="0">Replaces the need for any genetic guidance</div>
+          <div class="opt" data-i="1">Helps birds refine navigation abilities beyond their inherited template</div>
+          <div class="opt" data-i="2">Is irrelevant to how well birds navigate</div>
+          <div class="opt" data-i="3">Only affects the timing of migration, not direction</div>
+          <div class="explain">Paragraf 2 menyatakan template genetik 'kemudian disempurnakan melalui pengalaman pada perjalanan berikutnya'.</div>
+        </div>
+
+        <div class="q" data-correct="1" data-topic="Reading - Inference" data-section="reading">
+          <div class="qtag">Reading - Inference</div>
+          <div class="qtext">48. It can be inferred from paragraph 4 that if a migratory bird loses access to one navigational cue...</div>
+          <div class="opt" data-i="0">It will likely become lost immediately</div>
+          <div class="opt" data-i="1">It may still navigate successfully using other cues</div>
+          <div class="opt" data-i="2">It will stop migrating that year</div>
+          <div class="opt" data-i="3">Its genetic template will be permanently altered</div>
+          <div class="explain">Paragraf 4 menjelaskan redundansi sistem navigasi memungkinkan burung tetap bernavigasi meski satu isyarat (mis. bintang) tidak tersedia.</div>
+        </div>
+
+        <div class="q" data-correct="0" data-topic="Reading - Reference" data-section="reading">
+          <div class="qtag">Reading - Reference</div>
+          <div class="qtext">49. The word &quot;this&quot; in paragraph 3, in the phrase &quot;using this information as an internal compass,&quot; refers to...</div>
+          <div class="opt" data-i="0">The direction and intensity of magnetic fields</div>
+          <div class="opt" data-i="1">The position of the sun</div>
+          <div class="opt" data-i="2">The arrangement of stars</div>
+          <div class="opt" data-i="3">The genetic template</div>
+          <div class="explain">&quot;This information&quot; merujuk pada arah dan intensitas medan magnet yang disebutkan tepat sebelumnya.</div>
+        </div>
+
+        <div class="q" data-correct="3" data-topic="Reading - Negative Fact (EXCEPT)" data-section="reading">
+          <div class="qtag">Reading - Negative Fact (EXCEPT)</div>
+          <div class="qtext">50. According to the passage, all of the following are mentioned as possible navigational cues for migratory birds EXCEPT:</div>
+          <div class="opt" data-i="0">Polarized light patterns</div>
+          <div class="opt" data-i="1">The Earth's magnetic field</div>
+          <div class="opt" data-i="2">The position of the sun</div>
+          <div class="opt" data-i="3">The sound of ocean currents</div>
+          <div class="explain">Bacaan menyebut cahaya terpolarisasi, medan magnet bumi, dan posisi matahari sebagai isyarat; suara arus laut tidak disebutkan.</div>
+        </div>
+
+        <button class="btn" id="reading-check">Check answers</button>
       </div>
 
       <div class="panel" id="panel-target">
@@ -1390,6 +2288,25 @@
         <button class="btn" id="generate-btn" style="display:none;margin-top:16px;">Ambil soal bonus hari ini</button>
         <div class="gen-status" id="generate-status"></div>
         <div class="footnote">Progress is saved on this device only, resets each new day. The bonus set is generated once per day and stays available on the "Bonus Set" tab once created.</div>
+      </div>
+
+      <div class="panel" id="panel-planner">
+        <div class="section-label">AI Study Planner</div>
+        <h2>Rencana Belajar Menuju Skor Target</h2>
+        <div class="hint">Masukkan skor target dan tanggal ujianmu. AI akan menyusun jadwal belajar harian berdasarkan performamu sejauh ini di app ini (estimasi skor per section &amp; topik yang paling sering salah).</div>
+        <div class="target-row">
+          <label style="font-size:13px;font-weight:700;color:var(--ink-soft);">Skor target:</label>
+          <input type="number" id="planner-target" min="310" max="677" value="550" />
+        </div>
+        <div class="target-row">
+          <label style="font-size:13px;font-weight:700;color:var(--ink-soft);">Tanggal ujian:</label>
+          <input type="date" id="planner-examdate" />
+        </div>
+        <button class="btn" id="planner-generate" style="margin-top:4px;">Buat rencana belajar</button>
+        <button class="btn ghost" id="planner-clear" style="margin-top:4px;display:none;">Hapus rencana</button>
+        <div class="gen-status" id="planner-status"></div>
+        <div id="planner-output" style="margin-top:18px;"></div>
+        <div class="footnote">Rencana dibuat oleh AI berdasarkan data performamu di app ini (bukan diagnosa resmi ETS). Sesuaikan sendiri kalau ada bentrok jadwal, dan buat ulang kapan saja setelah latihan lebih banyak supaya rencananya makin akurat.</div>
       </div>
 
       <div class="panel" id="panel-tutor">
@@ -1434,7 +2351,7 @@
         <div class="section-label">Score Recap</div>
         <h2>Estimated ITP Score</h2>
         <div id="recap-content">
-          <div style="font-size:13.5px;color:var(--ink-soft);">Complete at least one Structure/Written Expression and one Listening check to see an estimate.</div>
+          <div style="font-size:13.5px;color:var(--ink-soft);">Complete at least one check in Listening, Structure/Written Expression, or Reading to see an estimate.</div>
         </div>
 
         <div class="section-label" style="margin-top:28px;">Diagnostic</div>
@@ -1446,11 +2363,156 @@
           <div class="summary-card"><div class="k">Structure</div><div class="v" id="score-structure">&ndash;</div></div>
           <div class="summary-card"><div class="k">Written Expr.</div><div class="v" id="score-written">&ndash;</div></div>
           <div class="summary-card"><div class="k">Listening</div><div class="v" id="score-listening">&ndash;</div></div>
+          <div class="summary-card"><div class="k">Reading</div><div class="v" id="score-reading">&ndash;</div></div>
         </div>
         <div class="footnote">This drill covers subject-verb agreement, parallel structure, word form, articles, inversion, comparatives, relative clauses, gerunds/infinitives, conditionals, tense consistency, quantifiers, and passive voice &mdash; the highest-frequency ITP Structure traps. It doesn't cover every grammar point ETS tests, and this isn't an official ETS score.</div>
+
+        <div class="section-label" style="margin-top:28px;">Diagnostic</div>
+        <h2>Weak Reading Skills</h2>
+        <div id="reading-weak-summary" class="weak-list">
+          <div style="font-size:13.5px;color:var(--ink-soft);">Complete the Reading section first to see your breakdown by skill (main idea, detail, vocabulary, inference, reference, negative fact).</div>
+        </div>
+        <div class="footnote">Reading passages and questions here are written to be comparable in length, vocabulary level, and question style to official ETS TOEFL ITP passages, but they are original content, not taken from any real ETS test, and this isn't an official ETS score.</div>
+      </div>
+
+      <div class="panel" id="panel-mock">
+        <div class="section-label">Mock Test</div>
+        <h2>Simulasi Ujian Penuh</h2>
+        <div class="hint">
+          Meniru alur hari-H TOEFL ITP: Listening (35 menit) &rarr; Structure &amp; Written Expression (25 menit gabungan) &rarr; Reading (55 menit), berurutan, timer jalan otomatis dan tidak bisa dijeda, tidak bisa kembali ke bagian sebelumnya. Soal yang dipakai sama seperti bank latihan biasa (bukan soal baru), jadi kalau kamu sudah sering drilling topik tertentu, itu wajar terasa familiar.
+        </div>
+        <div class="footnote">Memulai mock test akan mereset tampilan jawaban di tab Listening, Structure, Written Expression, dan Reading (progres &amp; riwayat latihan yang sudah tersimpan sebelumnya tidak hilang). Pastikan kamu punya waktu &plusmn;115 menit tanpa gangguan sebelum mulai.</div>
+        <button class="btn" id="mock-start-btn" style="margin-top:14px;">Mulai Mock Test (&plusmn;115 menit)</button>
+        <div id="mock-result" style="display:none;"></div>
       </div>
     </div>
   `;
+
+  // ---------- Timer per section (opsional) ----------
+  // Structure & Written Expression berbagi satu timer 25 menit (sesuai ujian asli,
+  // di mana keduanya adalah satu section yang sama). Listening punya timer sendiri 35 menit.
+  const TIMER_GROUPS = {
+    listening: 35 * 60,
+    structure_written: 25 * 60,
+    reading: 55 * 60
+  };
+  const PANEL_TO_TIMER_GROUP = {
+    listening: 'listening',
+    structure: 'structure_written',
+    written: 'structure_written',
+    reading: 'reading'
+  };
+  const TIMER_ENABLED_KEY = 'toefl-timer-enabled';
+  const timerRemainingKey = (g) => 'toefl-timer-remaining:' + g;
+
+  let timerEnabled = localStorage.getItem(TIMER_ENABLED_KEY) === '1';
+  const timerState = {};
+  let timerInterval = null;
+  let timerActiveGroup = null;
+
+  Object.keys(TIMER_GROUPS).forEach(g => {
+    const saved = localStorage.getItem(timerRemainingKey(g));
+    const parsed = saved !== null ? parseInt(saved, 10) : NaN;
+    timerState[g] = Number.isFinite(parsed) ? parsed : TIMER_GROUPS[g];
+  });
+
+  function clockFmt(totalSeconds) {
+    const s = Math.max(0, totalSeconds);
+    const m = Math.floor(s / 60);
+    const sec = s % 60;
+    return String(m).padStart(2, '0') + ':' + String(sec).padStart(2, '0');
+  }
+
+  function renderTimerGroup(g) {
+    const remaining = timerState[g];
+    const expired = remaining <= 0;
+    const warning = !expired && remaining <= 120;
+    root.querySelectorAll('.timer-box[data-timer-group="' + g + '"]').forEach(box => {
+      const timeEl = box.querySelector('.timer-time');
+      if (timeEl) timeEl.textContent = clockFmt(remaining);
+      box.classList.toggle('timer-warning', warning);
+      box.classList.toggle('timer-expired', expired);
+    });
+    root.querySelectorAll('.timer-expired-banner[data-timer-group="' + g + '"]').forEach(banner => {
+      banner.style.display = expired ? 'block' : 'none';
+    });
+    Object.keys(PANEL_TO_TIMER_GROUP).forEach(panel => {
+      if (PANEL_TO_TIMER_GROUP[panel] !== g) return;
+      const panelEl = root.querySelector('#panel-' + panel);
+      if (panelEl) panelEl.classList.toggle('timer-locked', expired);
+    });
+  }
+
+  function stopTimerInterval() {
+    if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+    timerActiveGroup = null;
+  }
+
+  function startTimerForGroup(g) {
+    stopTimerInterval();
+    if (!timerEnabled) return;
+    if (timerState[g] <= 0) { renderTimerGroup(g); return; }
+    timerActiveGroup = g;
+    timerInterval = setInterval(() => {
+      timerState[g] = Math.max(0, timerState[g] - 1);
+      localStorage.setItem(timerRemainingKey(g), String(timerState[g]));
+      renderTimerGroup(g);
+      if (timerState[g] <= 0) stopTimerInterval();
+    }, 1000);
+  }
+
+  function updateActiveTimer() {
+    if (!timerEnabled) { stopTimerInterval(); return; }
+    const activePanel = root.querySelector('.panel.active');
+    if (!activePanel) { stopTimerInterval(); return; }
+    const panelId = activePanel.id.replace('panel-', '');
+    const group = PANEL_TO_TIMER_GROUP[panelId];
+    if (!group) { stopTimerInterval(); return; }
+    if (group !== timerActiveGroup) startTimerForGroup(group);
+  }
+
+  function resetTimerGroup(g) {
+    timerState[g] = TIMER_GROUPS[g];
+    localStorage.setItem(timerRemainingKey(g), String(timerState[g]));
+    renderTimerGroup(g);
+    updateActiveTimer();
+  }
+
+  function applyTimerVisibility() {
+    root.querySelectorAll('.timer-box').forEach(box => {
+      box.style.display = timerEnabled ? 'flex' : 'none';
+    });
+    if (!timerEnabled) {
+      root.querySelectorAll('.timer-expired-banner').forEach(b => b.style.display = 'none');
+      root.querySelectorAll('.panel').forEach(p => p.classList.remove('timer-locked'));
+    }
+  }
+
+  Object.keys(TIMER_GROUPS).forEach(g => renderTimerGroup(g));
+  applyTimerVisibility();
+
+  const timerToggleInput = root.querySelector('#timer-enable-toggle');
+  if (timerToggleInput) {
+    timerToggleInput.checked = timerEnabled;
+    timerToggleInput.addEventListener('change', () => {
+      timerEnabled = timerToggleInput.checked;
+      localStorage.setItem(TIMER_ENABLED_KEY, timerEnabled ? '1' : '0');
+      applyTimerVisibility();
+      if (timerEnabled) updateActiveTimer();
+      else stopTimerInterval();
+    });
+  }
+
+  root.querySelectorAll('.timer-reset-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const box = btn.closest('.timer-box');
+      const g = box && box.dataset.timerGroup;
+      if (g) resetTimerGroup(g);
+    });
+  });
+
+  updateActiveTimer();
 
   root.querySelectorAll('.tab').forEach(t => {
     t.addEventListener('click', () => {
@@ -1458,6 +2520,7 @@
       root.querySelectorAll('.panel').forEach(x => x.classList.remove('active'));
       t.classList.add('active');
       root.querySelector('#panel-' + t.dataset.tab).classList.add('active');
+      if (typeof updateActiveTimer === 'function') updateActiveTimer();
     });
   });
 
@@ -1530,6 +2593,68 @@
       q.querySelectorAll('.opt').forEach(o => o.style.background = '');
       opt.style.background = '#E9E4D3';
     });
+  });
+
+  const readingTopicStats = {}; // topic -> {correct, total}
+
+  function recordReadingTopic(topic, isCorrect) {
+    if (!topic) return;
+    if (!readingTopicStats[topic]) readingTopicStats[topic] = {correct: 0, total: 0};
+    readingTopicStats[topic].total++;
+    if (isCorrect) readingTopicStats[topic].correct++;
+  }
+
+  function renderReadingWeakSummary() {
+    const container = root.querySelector('#reading-weak-summary');
+    if (!container) return;
+    const topics = Object.keys(readingTopicStats);
+    if (topics.length === 0) return;
+    container.innerHTML = topics.map(topic => {
+      const s = readingTopicStats[topic];
+      const pct = Math.round((s.correct / s.total) * 100);
+      const low = pct < 60;
+      return `<div class="weak-item ${low ? 'low' : ''}">
+        <span>${topic}</span>
+        <div class="bar-bg"><div class="bar-fill" style="width:${pct}%"></div></div>
+        <span>${s.correct}/${s.total}</span>
+      </div>`;
+    }).join('');
+  }
+
+  root.querySelectorAll('#panel-reading .opt').forEach(opt => {
+    opt.addEventListener('click', () => {
+      if (opt.classList.contains('disabled')) return;
+      const q = opt.closest('.q');
+      q.dataset.selected = opt.dataset.i;
+      q.querySelectorAll('.opt').forEach(o => o.style.background = '');
+      opt.style.background = '#E9E4D3';
+    });
+  });
+
+  root.querySelector('#reading-check').addEventListener('click', () => {
+    const panel = root.querySelector('#panel-reading');
+    let correct = 0, total = 0;
+    panel.querySelectorAll('.q').forEach(q => {
+      total++;
+      const answer = parseInt(q.dataset.correct, 10);
+      const selected = q.dataset.selected;
+      const topic = q.dataset.topic;
+      const isCorrect = selected !== undefined && parseInt(selected,10) === answer;
+      if (isCorrect) correct++;
+      recordReadingTopic(topic, isCorrect);
+      q.querySelectorAll('.opt').forEach(o => {
+        o.classList.add('disabled');
+        const i = parseInt(o.dataset.i, 10);
+        if (i === answer) o.classList.add('correct');
+        else if (selected !== undefined && parseInt(selected,10) === i) o.classList.add('incorrect');
+      });
+      q.querySelector('.explain').classList.add('show');
+    });
+    root.querySelector('#score-reading').textContent = correct + ' / ' + total;
+    root.querySelector('#reading-check').disabled = true;
+    renderReadingWeakSummary();
+    addDailyCorrect(correct);
+    recordSectionScore('reading', correct, total);
   });
 
   root.querySelector('#listening-check').addEventListener('click', () => {
@@ -2125,6 +3250,119 @@ Return ONLY valid JSON, no markdown fences, no commentary, in exactly this shape
     };
   }
 
+  // ---------- AI Study Planner ----------
+  function getWeakTopicsFromLongman(limit) {
+    try {
+      const raw = localStorage.getItem('longman-weak-topics-v1');
+      const stats = raw ? JSON.parse(raw) : {};
+      return Object.keys(stats)
+        .map(t => ({ topic: t, count: stats[t] }))
+        .sort((a, b) => b.count - a.count)
+        .slice(0, limit || 6);
+    } catch (e) { return []; }
+  }
+
+  function getCurrentSectionEstimates() {
+    const agg = window.__toeflAgg || {};
+    return {
+      listening: estimateScaled(agg.listeningCorrect || 0, agg.listeningTotal || 0, 31, 68),
+      structureWritten: estimateScaled(agg.swCorrect || 0, agg.swTotal || 0, 31, 68),
+      reading: estimateScaled(agg.readingCorrect || 0, agg.readingTotal || 0, 31, 67)
+    };
+  }
+
+  function renderStudyPlan(record) {
+    const output = root.querySelector('#planner-output');
+    const clearBtn = root.querySelector('#planner-clear');
+    if (!record || !record.plan) { output.innerHTML = ''; clearBtn.style.display = 'none'; return; }
+    const plan = record.plan;
+    const esc = (s) => String(s == null ? '' : s).replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+    const summaryHtml = plan.summary ? `<div class="planner-summary">${esc(plan.summary)}</div>` : '';
+    const daysHtml = (plan.days || []).map(d => {
+      const tasksHtml = (d.tasks || []).map(t => `
+        <div class="task-row">
+          <span>${t.section ? '<b>' + esc(t.section) + ':</b> ' : ''}${esc(t.description)}</span>
+          <span class="task-min">${t.minutes ? esc(t.minutes) + ' mnt' : ''}</span>
+        </div>`).join('');
+      return `<div class="day-card">
+        <div class="day-head">Hari ${esc(d.day)}</div>
+        ${d.focus ? `<div class="day-focus">${esc(d.focus)}</div>` : ''}
+        ${tasksHtml}
+      </div>`;
+    }).join('');
+    output.innerHTML = summaryHtml + daysHtml;
+    clearBtn.style.display = 'inline-block';
+  }
+
+  async function generateStudyPlan() {
+    const btn = root.querySelector('#planner-generate');
+    const status = root.querySelector('#planner-status');
+    const targetInput = root.querySelector('#planner-target');
+    const dateInput = root.querySelector('#planner-examdate');
+
+    const targetScore = parseInt(targetInput.value, 10) || 550;
+    const examDateStr = dateInput.value;
+    if (!examDateStr) { status.textContent = 'Isi tanggal ujian dulu.'; return; }
+
+    const examDate = new Date(examDateStr + 'T00:00:00');
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    const daysLeft = Math.ceil((examDate - today) / 86400000);
+    if (daysLeft <= 0) { status.textContent = 'Tanggal ujian harus di masa depan.'; return; }
+
+    btn.disabled = true;
+    status.textContent = 'Menyusun rencana belajar...';
+
+    try {
+      const weakTopics = getWeakTopicsFromLongman(6);
+      const est = getCurrentSectionEstimates();
+      const weakSummaryText = weakTopics.length
+        ? weakTopics.map(w => `${w.topic} (${w.count}x salah)`).join(', ')
+        : 'belum ada data kesalahan tercatat di app ini';
+      const scoreSummaryText = [
+        est.listening !== null ? 'Listening ~' + est.listening : null,
+        est.structureWritten !== null ? 'Structure & Written ~' + est.structureWritten : null,
+        est.reading !== null ? 'Reading ~' + est.reading : null
+      ].filter(Boolean).join(', ') || 'belum ada data skor tercatat';
+
+      const system = 'You are a TOEFL ITP study planning assistant. Given a target score, days remaining, current estimated section scores, and weak topics, produce a realistic day-by-day study schedule. Respond ONLY with valid JSON, no markdown code fences, no commentary, matching exactly this schema: {"summary": string, "days": [{"day": number, "focus": string, "tasks": [{"section": string, "description": string, "minutes": number}]}]}. If daysLeft is large, do not output one entry per single day — instead output a representative weekly pattern of at most 14 day entries and say so in the summary. Each day should have 2-4 concrete tasks (e.g. "20 soal drill Subject-Verb Agreement di app", "1x Reading passage timed 55 menit"). Keep total daily time realistic (45-120 minutes). Prioritize the weakest topics early, and schedule a full Mock Test in the last few days before the exam. Write all text (summary, focus, description) in Indonesian.';
+
+      const prompt = `Target skor TOEFL ITP: ${targetScore}. Sisa waktu: ${daysLeft} hari (ujian tanggal ${examDateStr}). Estimasi skor saat ini per section: ${scoreSummaryText}. Topik yang paling sering salah di aplikasi latihan ini: ${weakSummaryText}. Susun jadwal belajar harian yang realistis untuk mencapai target ini.`;
+
+      const raw = await callAI({ system, prompt, maxTokens: 3000 });
+      const cleaned = raw.replace(/```json/gi, '').replace(/```/g, '').trim();
+      const plan = JSON.parse(cleaned);
+
+      const record = { targetScore, examDate: examDateStr, generatedAt: Date.now(), plan };
+      renderStudyPlan(record);
+      try { await storageSetWithRetry('toefl-study-plan', JSON.stringify(record), false); } catch (e) { console.warn('Could not persist study plan', e); }
+      status.textContent = '';
+    } catch (e) {
+      console.error(e);
+      status.textContent = 'Gagal membuat rencana: ' + (e && e.message ? e.message : e);
+    } finally {
+      btn.disabled = false;
+    }
+  }
+
+  async function initStudyPlanner() {
+    try {
+      const res = await window.storage.get('toefl-study-plan', false);
+      if (res && res.value) {
+        const record = JSON.parse(res.value);
+        root.querySelector('#planner-target').value = record.targetScore || 550;
+        root.querySelector('#planner-examdate').value = record.examDate || '';
+        renderStudyPlan(record);
+      }
+    } catch (e) { /* belum ada rencana tersimpan, tidak apa-apa */ }
+  }
+
+  root.querySelector('#planner-generate').addEventListener('click', generateStudyPlan);
+  root.querySelector('#planner-clear').addEventListener('click', async () => {
+    root.querySelector('#planner-output').innerHTML = '';
+    root.querySelector('#planner-clear').style.display = 'none';
+    try { await window.storage.delete('toefl-study-plan', false); } catch (e) { /* ignore */ }
+  });
+
   function generateBonusSet() {
     const btn    = root.querySelector('#generate-btn');
     const status = root.querySelector('#generate-status');
@@ -2149,7 +3387,58 @@ Return ONLY valid JSON, no markdown fences, no commentary, in exactly this shape
     }
   }
 
-    // ---------- Audio playback (browser text-to-speech, gender-matched) ----------
+    // ---------- Audio playback (edge-tts backend, gender-matched, with Web Speech fallback) ----------
+  // Point this at your deployed backend (see /tts-backend/server.py). Leave as-is for local dev.
+  const TTS_BACKEND_URL = 'http://localhost:8000';
+  let ttsBackendAvailable = null; // null = not checked yet, true/false once known
+  const ttsAudioCache = new Map(); // "voice|text" -> object URL, avoids re-fetching within a session
+
+  async function checkTtsBackend() {
+    if (ttsBackendAvailable !== null) return ttsBackendAvailable;
+    try {
+      const res = await fetch(TTS_BACKEND_URL + '/health', { method: 'GET', signal: AbortSignal.timeout(2000) });
+      ttsBackendAvailable = res.ok;
+    } catch (e) {
+      ttsBackendAvailable = false;
+    }
+    return ttsBackendAvailable;
+  }
+
+  async function fetchEdgeTtsAudio(text, voice) {
+    const key = voice + '|' + text;
+    if (ttsAudioCache.has(key)) return ttsAudioCache.get(key);
+    const url = TTS_BACKEND_URL + '/tts?voice=' + encodeURIComponent(voice) + '&text=' + encodeURIComponent(text);
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('TTS backend error: ' + res.status);
+    const blob = await res.blob();
+    const objectUrl = URL.createObjectURL(blob);
+    ttsAudioCache.set(key, objectUrl);
+    return objectUrl;
+  }
+
+  function speakerToEdgeVoice(speaker) {
+    const s = (speaker || '').toLowerCase();
+    if (s.includes('woman') || s.includes('female') || s.endsWith('-f')) return 'female';
+    if (s.includes('man') || s.includes('male') || s.endsWith('-m')) return 'male';
+    return 'female'; // unlabeled/narrator lines default to female, same as the Web Speech fallback below
+  }
+
+  // Plays segments sequentially through the edge-tts backend. Throws if the
+  // backend is unreachable mid-playback so the caller can fall back cleanly.
+  async function speakSegmentsViaBackend(segments, btn) {
+    for (let i = 0; i < segments.length; i++) {
+      const seg = segments[i];
+      const voice = speakerToEdgeVoice(seg.speaker);
+      const objectUrl = await fetchEdgeTtsAudio(seg.text, voice);
+      await new Promise((resolve, reject) => {
+        const audio = new Audio(objectUrl);
+        audio.onended = resolve;
+        audio.onerror = () => reject(new Error('Audio playback failed'));
+        audio.play().catch(reject);
+      });
+    }
+  }
+
   let cachedGenderVoices = null;
   const FEMALE_VOICE_HINTS = ['zira','samantha','victoria','karen','susan','moira','tessa','fiona','aria','jenny','emma','ava','allison','nicky','kate','serena','shelley','joanna','salli','kendra','kimberly','female','woman','girl'];
   const MALE_VOICE_HINTS = ['david','alex','daniel','fred','mark','guy','ryan','george','oliver','tom','arthur','matthew','joey','justin','male','man','boy'];
@@ -2188,12 +3477,9 @@ Return ONLY valid JSON, no markdown fences, no commentary, in exactly this shape
       chosen = voices.female; pitch = 1.08;
     } else if (s.includes('man') || s.includes('male') || s.endsWith('-m')) {
       chosen = voices.male; pitch = 0.92;
-    } else if (s.includes('professor') || s.includes('narrator')) {
-      // Professor/narrator: alternate — default ke male untuk variasi
-      chosen = voices.male; pitch = 0.96;
     } else {
-      // Unlabeled: default male (agar berbeda dari female professor)
-      chosen = voices.male; pitch = 1.0;
+      // Unlabeled/narrator lines: neutral default voice, neutral pitch.
+      chosen = voices.female; pitch = 1.0;
     }
     utterance.pitch = pitch;
     if (chosen) {
@@ -2227,14 +3513,27 @@ Return ONLY valid JSON, no markdown fences, no commentary, in exactly this shape
     return segments.length ? segments : null;
   }
 
-  function speakPassage(target, btn) {
+  function speakPassageViaWebSpeech(segments, btn) {
     if (!('speechSynthesis' in window)) {
       btn.textContent = 'Audio not supported in this browser';
       btn.disabled = true;
       return;
     }
     window.speechSynthesis.cancel();
+    segments.forEach((seg, idx) => {
+      const utterance = new SpeechSynthesisUtterance(seg.text);
+      utterance.lang = 'en-US';
+      utterance.rate = 0.95;
+      applyVoiceForSpeaker(utterance, seg.speaker);
+      if (idx === segments.length - 1) {
+        utterance.onend = () => resetAudioBtn(btn);
+        utterance.onerror = () => resetAudioBtn(btn);
+      }
+      window.speechSynthesis.speak(utterance);
+    });
+  }
 
+  async function speakPassage(target, btn) {
     // Preferred path: explicit <p data-speaker="man|woman|...">line</p> markup.
     let segments = Array.from(target.querySelectorAll('[data-speaker]')).map(p => ({
       speaker: p.dataset.speaker,
@@ -2254,17 +3553,19 @@ Return ONLY valid JSON, no markdown fences, no commentary, in exactly this shape
     btn.classList.add('playing');
     btn.textContent = '\u25B6 Playing...';
 
-    segments.forEach((seg, idx) => {
-      const utterance = new SpeechSynthesisUtterance(seg.text);
-      utterance.lang = 'en-US';
-      utterance.rate = 0.95;
-      applyVoiceForSpeaker(utterance, seg.speaker);
-      if (idx === segments.length - 1) {
-        utterance.onend = () => resetAudioBtn(btn);
-        utterance.onerror = () => resetAudioBtn(btn);
+    const backendUp = await checkTtsBackend();
+    if (backendUp) {
+      try {
+        await speakSegmentsViaBackend(segments, btn);
+        resetAudioBtn(btn);
+        return;
+      } catch (e) {
+        console.warn('edge-tts backend failed mid-playback, falling back to Web Speech API:', e);
+        ttsBackendAvailable = false; // stop retrying the backend for the rest of this session
       }
-      window.speechSynthesis.speak(utterance);
-    });
+    }
+    // No backend configured/reachable (or it just failed) — use the browser's built-in voices.
+    speakPassageViaWebSpeech(segments, btn);
   }
 
   function wireAudioButton(btn) {
@@ -2279,13 +3580,24 @@ Return ONLY valid JSON, no markdown fences, no commentary, in exactly this shape
   root.querySelectorAll('.audio-btn[data-target]').forEach(wireAudioButton);
 
   // ---------- Score recap + ITP estimate ----------
-  window.__toeflAgg = { listeningCorrect: 0, listeningTotal: 0, swCorrect: 0, swTotal: 0 };
+  window.__toeflAgg = { listeningCorrect: 0, listeningTotal: 0, swCorrect: 0, swTotal: 0, readingCorrect: 0, readingTotal: 0 };
   window.__toeflLog = [];
+
+  function normalizeAgg(agg) {
+    return {
+      listeningCorrect: agg.listeningCorrect || 0,
+      listeningTotal: agg.listeningTotal || 0,
+      swCorrect: agg.swCorrect || 0,
+      swTotal: agg.swTotal || 0,
+      readingCorrect: agg.readingCorrect || 0,
+      readingTotal: agg.readingTotal || 0
+    };
+  }
 
   async function loadRecapData() {
     try {
       const res = await window.storage.get('toefl-agg-scores', false);
-      if (res && res.value) window.__toeflAgg = JSON.parse(res.value);
+      if (res && res.value) window.__toeflAgg = normalizeAgg(JSON.parse(res.value));
     } catch (e) { /* no aggregate saved yet */ }
     try {
       const res = await window.storage.get('toefl-history-log', false);
@@ -2296,7 +3608,7 @@ Return ONLY valid JSON, no markdown fences, no commentary, in exactly this shape
 
   async function recordSectionScore(section, correct, total) {
     if (!total) return;
-    const key = (section === 'listening') ? 'listening' : 'sw';
+    const key = (section === 'listening') ? 'listening' : (section === 'reading') ? 'reading' : 'sw';
     window.__toeflAgg[key + 'Correct'] += correct;
     window.__toeflAgg[key + 'Total'] += total;
     window.__toeflLog.push({ date: todayStr(), section: section, correct: correct, total: total });
@@ -2328,26 +3640,37 @@ Return ONLY valid JSON, no markdown fences, no commentary, in exactly this shape
     const agg = window.__toeflAgg;
     const listeningScaled = estimateScaled(agg.listeningCorrect, agg.listeningTotal, 31, 68);
     const swScaled = estimateScaled(agg.swCorrect, agg.swTotal, 31, 68);
+    const readingScaled = estimateScaled(agg.readingCorrect, agg.readingTotal, 31, 67);
 
-    let scoreBlock = '<div style="font-size:13.5px;color:var(--ink-soft);">Complete at least one Structure/Written Expression and one Listening check to see an estimate.</div>';
-    if (listeningScaled !== null && swScaled !== null) {
-      const partialAvg = (listeningScaled + swScaled) / 2;
-      const partialTotal = Math.round(partialAvg * 10);
-      const cefr = cefrForTotal(partialTotal);
+    const parts = [];
+    if (listeningScaled !== null) parts.push({ label: 'Listening (est.)', value: listeningScaled });
+    if (swScaled !== null) parts.push({ label: 'Structure &amp; Written Expr. (est.)', value: swScaled });
+    if (readingScaled !== null) parts.push({ label: 'Reading (est.)', value: readingScaled });
+
+    let scoreBlock = '<div style="font-size:13.5px;color:var(--ink-soft);">Complete at least one check in Listening, Structure/Written Expression, or Reading to see an estimate.</div>';
+    if (parts.length > 0) {
+      const avg = parts.reduce((sum, p) => sum + p.value, 0) / parts.length;
+      const total = Math.round(avg * 10);
+      const cefr = cefrForTotal(total);
+      const cardsHtml = parts.map(p => `<div class="summary-card"><div class="k">${p.label}</div><div class="v">${p.value}</div></div>`).join('');
+      const totalLabel = parts.length === 3 ? 'Estimated total score' : `Rough total (${parts.length} of 3 sections)`;
+      const caveat = parts.length === 3
+        ? 'This is an unofficial, rough estimate using a simple linear conversion (ETS doesn\'t publish its exact raw-to-scaled "equating" tables, and they vary slightly per test). Reading passages here are original, ETS-style content, not real ETS test material, so treat this as a directional signal, not a predicted score.'
+        : 'This is an unofficial, rough estimate using a simple linear conversion, based only on the section(s) you\'ve completed so far. Complete all three sections for a fuller estimate.';
       scoreBlock = `
         <div class="summary-grid">
-          <div class="summary-card"><div class="k">Listening (est.)</div><div class="v">${listeningScaled}</div></div>
-          <div class="summary-card"><div class="k">Structure &amp; Written Expr. (est.)</div><div class="v">${swScaled}</div></div>
-          <div class="summary-card"><div class="k">Rough total (2 of 3 sections)</div><div class="v">${partialTotal}</div></div>
+          ${cardsHtml}
+          <div class="summary-card"><div class="k">${totalLabel}</div><div class="v">${total}</div></div>
         </div>
         <div class="cefr-tag" style="display:inline-block;margin-top:12px;font-family:'IBM Plex Mono',monospace;font-size:12px;border:1px solid var(--red);color:var(--red);padding:3px 10px;border-radius:12px;">~CEFR ${cefr} range</div>
-        <div class="footnote">This is an unofficial, rough estimate using a simple linear conversion (ETS doesn't publish its exact raw-to-scaled "equating" tables, and they vary slightly per test). It also excludes the Reading section, which isn't part of this drill, so treat this as a directional signal, not a predicted score.</div>`;
+        <div class="footnote">${caveat}</div>`;
     }
 
     let historyBlock = '';
     if (window.__toeflLog.length) {
+      const sectionLabels = { listening: 'Listening', structure_written: 'Structure &amp; Written Expr.', reading: 'Reading' };
       const rows = window.__toeflLog.slice().reverse().slice(0, 10).map(entry => {
-        const label = entry.section === 'listening' ? 'Listening' : 'Structure &amp; Written Expr.';
+        const label = sectionLabels[entry.section] || entry.section;
         const pct = Math.round((entry.correct / entry.total) * 100);
         return `<div class="weak-item"><span>${entry.date} &middot; ${label}</span><div class="bar-bg"><div class="bar-fill" style="width:${pct}%"></div></div><span>${entry.correct}/${entry.total}</span></div>`;
       }).join('');
@@ -2581,5 +3904,624 @@ Return ONLY valid JSON, no markdown fences, no commentary, in exactly this shape
 
 })();
 </script>
+<script>
+(function () {
+  'use strict';
+
+  // ---------- Peta topik app -> Skill "Longman Complete Course for the TOEFL Test" (Deborah Phillips) ----------
+  // section: L = Listening, S = Structure & Written Expression, R = Reading
+  var LONGMAN_MAP = {
+    // Listening — Functions & idioms
+    "Functional expressions — Agreement": {sec:"L", skill:"11", page:55, label:"Listen for expressions of agreement"},
+    "Listening - functional expression (agreement)": {sec:"L", skill:"11", page:55, label:"Listen for expressions of agreement"},
+    "Functional expressions — Uncertainty": {sec:"L", skill:"12", page:57, label:"Listen for expressions of uncertainty & suggestion"},
+    "Listening - functional expression (uncertainty)": {sec:"L", skill:"12", page:57, label:"Listen for expressions of uncertainty & suggestion"},
+    "Functional expressions — Suggestion": {sec:"L", skill:"12", page:57, label:"Listen for expressions of uncertainty & suggestion"},
+    "Listening - functional expression (suggestion)": {sec:"L", skill:"12", page:57, label:"Listen for expressions of uncertainty & suggestion"},
+    "Functional expressions — Surprise": {sec:"L", skill:"13", page:60, label:"Listen for emphatic expressions of surprise"},
+    "Listening - functional expression (surprise)": {sec:"L", skill:"13", page:60, label:"Listen for emphatic expressions of surprise"},
+    "Functional expressions — short answer": {sec:"L", skill:"11-13", page:55, label:"Functions (agreement/uncertainty/surprise)"},
+    "Listening - focus on last line": {sec:"L", skill:"1", page:29, label:"Focus on the last line"},
+    "Listening - synonym recognition": {sec:"L", skill:"2", page:31, label:"Choose answers with synonyms"},
+    "Listening - avoid similar sounds": {sec:"L", skill:"3", page:33, label:"Avoid similar sounds"},
+    "Listening - structures (multiple nouns)": {sec:"L", skill:"6", page:41, label:"Listen for who & what with multiple nouns"},
+    "Listening - structures (double negatives)": {sec:"L", skill:"8", page:47, label:"Listen for double negative expressions"},
+    "Listening - structures (negative comparatives)": {sec:"L", skill:"10", page:51, label:"Listen for negatives with comparatives"},
+    "Structures — Passive voice paraphrase": {sec:"L", skill:"5", page:39, label:"Listen for who & what in passives"},
+    "Listening - structures (passive paraphrase)": {sec:"L", skill:"5", page:39, label:"Listen for who & what in passives"},
+    "Structures — Negative expressions that mean agreement": {sec:"L", skill:"7", page:45, label:"Listen for negative expressions"},
+    "Listening - structures (negative expressions)": {sec:"L", skill:"7", page:45, label:"Listen for negative expressions"},
+    "Structures — Almost negatives": {sec:"L", skill:"9", page:49, label:"Listen for \"almost negative\" expressions"},
+    "Listening - structures (almost negatives)": {sec:"L", skill:"9", page:49, label:"Listen for \"almost negative\" expressions"},
+    "Structures — Wishes": {sec:"L", skill:"14", page:63, label:"Listen for wishes"},
+    "Listening - structures (wishes)": {sec:"L", skill:"14", page:63, label:"Listen for wishes"},
+    "Structures — Unreal-past conditionals": {sec:"L", skill:"15", page:66, label:"Listen for untrue conditions"},
+    "Listening - structures (conditionals)": {sec:"L", skill:"15", page:66, label:"Listen for untrue conditions"},
+    "Idiomatic expressions — Two-part verb": {sec:"L", skill:"16", page:70, label:"Listen for two-/three-part verbs"},
+    "Listening - idiomatic (two-part verb)": {sec:"L", skill:"16", page:70, label:"Listen for two-/three-part verbs"},
+    "Idiomatic expressions — Three-part verb": {sec:"L", skill:"16", page:70, label:"Listen for two-/three-part verbs"},
+    "Listening - idiomatic (three-part verb)": {sec:"L", skill:"16", page:70, label:"Listen for two-/three-part verbs"},
+    "Idiomatic expressions — Everyday idiom": {sec:"L", skill:"17", page:72, label:"Listen for idioms"},
+    "Listening - idiomatic (everyday idiom)": {sec:"L", skill:"17", page:72, label:"Listen for idioms"},
+    // Listening — long conversations/talks & academic
+    "Listening - main topic": {sec:"L", skill:"20/25", page:82, label:"Determine the topic"},
+    "Listening - main idea": {sec:"L", skill:"29/32", page:110, label:"Recognize the organization (academic)"},
+    "Listening - detail": {sec:"L", skill:"22/27", page:84, label:"Listen for answers in order"},
+    "Listening - next action": {sec:"L", skill:"21/26", page:83, label:"Draw conclusions about who/what/when/where"},
+    "Listening - suggestion/advice": {sec:"L", skill:"21/26", page:83, label:"Draw conclusions about who/what/when/where"},
+    "Listening - suggestion/attitude": {sec:"L", skill:"21/26", page:83, label:"Draw conclusions about who/what/when/where"},
+    "Listening - speaker attitude": {sec:"L", skill:"21/26", page:83, label:"Draw conclusions about who/what/when/where"},
+    "Listening - purpose of example": {sec:"L", skill:"30/33", page:118, label:"Listen for direct & indirect details (academic)"},
+
+    // Structure & Written Expression
+    "Sentence completeness (predicate)": {sec:"S", skill:"1", page:200, label:"Be sure the sentence has a subject and a verb"},
+    "Sentence completeness — participle as verb": {sec:"S", skill:"1", page:200, label:"Be sure the sentence has a subject and a verb"},
+    "Sentence completeness (participle as verb)": {sec:"S", skill:"1", page:200, label:"Be sure the sentence has a subject and a verb"},
+    "Objects of preposition + agreement": {sec:"S", skill:"2", page:201, label:"Be careful of objects of prepositions"},
+    "Appositives": {sec:"S", skill:"3", page:203, label:"Be careful of appositives"},
+    "Appositive + subject-verb agreement": {sec:"S", skill:"3", page:203, label:"Be careful of appositives"},
+    "Appositive + agreement": {sec:"S", skill:"3", page:203, label:"Be careful of appositives"},
+    "Present participle as adjective": {sec:"S", skill:"4", page:205, label:"Be careful of present participles"},
+    "Past participle as adjective": {sec:"S", skill:"5", page:206, label:"Be careful of past participles"},
+    "Past participle needs \"be\"": {sec:"S", skill:"31", page:270, label:"After be, use present or past participle"},
+    "Past participle as verb": {sec:"S", skill:"31", page:270, label:"After be, use present or past participle"},
+    "Connectors (coordinate)": {sec:"S", skill:"6", page:209, label:"Use coordinate connectors correctly"},
+    "Connectors (cause vs contrast)": {sec:"S", skill:"7", page:211, label:"Use adverb time & cause connectors correctly"},
+    "Connectors (redundant although/but)": {sec:"S", skill:"8", page:213, label:"Use other adverb connectors correctly"},
+    "Noun clause as subject": {sec:"S", skill:"9", page:217, label:"Use noun clause connectors correctly"},
+    "Noun clause as object": {sec:"S", skill:"9-10", page:217, label:"Use noun clause connector/subjects correctly"},
+    "Noun clause word order": {sec:"S", skill:"9-10", page:217, label:"Use noun clause connector/subjects correctly"},
+    "Noun/adjective clause completion": {sec:"S", skill:"9-12", page:217, label:"Noun & adjective clause connectors"},
+    "Adjective clause connector": {sec:"S", skill:"11", page:221, label:"Use adjective clause connectors correctly"},
+    "Adjective clause connector as subject": {sec:"S", skill:"12", page:222, label:"Use adjective clause connector/subjects correctly"},
+    "Adjective clause connector (people vs things)": {sec:"S", skill:"11", page:221, label:"Use adjective clause connectors correctly"},
+    "Relative clauses": {sec:"S", skill:"11", page:221, label:"Use adjective clause connectors correctly"},
+    "Relative clause connector": {sec:"S", skill:"11", page:221, label:"Use adjective clause connectors correctly"},
+    "Reduced adjective clause": {sec:"S", skill:"13", page:227, label:"Use reduced adjective clauses correctly"},
+    "Reduced adjective clause — dangling modifier": {sec:"S", skill:"13", page:227, label:"Use reduced adjective clauses correctly"},
+    "Reduced adverb clause": {sec:"S", skill:"14", page:230, label:"Use reduced adverb clauses correctly"},
+    "Reduced adverb clause — mismatched subject": {sec:"S", skill:"14", page:230, label:"Use reduced adverb clauses correctly"},
+    "Inversion after place expression": {sec:"S", skill:"16", page:236, label:"Invert subject & verb with place expressions"},
+    "Inversion after negative": {sec:"S", skill:"17", page:238, label:"Invert subject & verb with negatives"},
+    "Inversion after negative adverbial": {sec:"S", skill:"17", page:238, label:"Invert subject & verb with negatives"},
+    "Inversion after \"Only...\"": {sec:"S", skill:"17", page:238, label:"Invert subject & verb with negatives"},
+    "Inversion after Only": {sec:"S", skill:"17", page:238, label:"Invert subject & verb with negatives"},
+    "Inversion after conditional": {sec:"S", skill:"18", page:240, label:"Invert subject & verb with conditionals"},
+    "Conditionals": {sec:"S", skill:"18", page:240, label:"Invert subject & verb with conditionals"},
+    "Conditional Type 3": {sec:"S", skill:"36", page:278, label:"Use the correct tense with will/would"},
+    "Subject-verb agreement": {sec:"S", skill:"20-23", page:248, label:"Verb agreement (prepositional phrase, quantity, inversion, certain words)"},
+    "Subject-verb agreement correction": {sec:"S", skill:"20-23", page:248, label:"Verb agreement (prepositional phrase, quantity, inversion, certain words)"},
+    "Subject-verb agreement (quantity)": {sec:"S", skill:"21", page:249, label:"Make verbs agree after expressions of quantity"},
+    "Quantifiers": {sec:"S", skill:"21", page:249, label:"Make verbs agree after expressions of quantity"},
+    "Parallel structure": {sec:"S", skill:"24", page:256, label:"Use parallel structure with coordinate conjunctions"},
+    "Parallel structure (paired conjunctions)": {sec:"S", skill:"25", page:257, label:"Use parallel structure with paired conjunctions"},
+    "Parallel structure / agreement correction": {sec:"S", skill:"24-25", page:256, label:"Parallel structure with coordinate / paired conjunctions"},
+    "Comparatives": {sec:"S", skill:"27-28", page:262, label:"Form & use comparatives/superlatives correctly"},
+    "Double comparatives": {sec:"S", skill:"28", page:264, label:"Use comparatives & superlatives correctly"},
+    "Gerund/infinitive": {sec:"S", skill:"30-32", page:269, label:"Problems with the form of the verb"},
+    "Passive voice": {sec:"S", skill:"37", page:282, label:"Use the correct form of the passive"},
+    "Tense consistency": {sec:"S", skill:"33-36", page:274, label:"Problems with the use of the verb (tense)"},
+    "Articles": {sec:"S", skill:"52", page:314, label:"Use articles with singular nouns"},
+    "Articles with uncountable nouns": {sec:"S", skill:"52", page:314, label:"Use articles with singular nouns"},
+    "Word form": {sec:"S", skill:"46-48", page:301, label:"Use basic adjectives & adverbs correctly"},
+    "Word form (adverb)": {sec:"S", skill:"46", page:301, label:"Use basic adjectives & adverbs correctly"},
+    "Word form / fixed expression": {sec:"S", skill:"56", page:321, label:"Recognize incorrect prepositions"},
+
+    // Reading
+    "Reading - Main Idea": {sec:"R", skill:"1", page:368, label:"Answer main idea questions correctly"},
+    "Reading - Detail": {sec:"R", skill:"3", page:379, label:"Answer stated detail questions correctly"},
+    "Reading - Inference": {sec:"R", skill:"6", page:398, label:"Answer implied detail questions correctly"},
+    "Reading - Negative Fact (EXCEPT)": {sec:"R", skill:"4", page:385, label:"Find \"unstated\" details"},
+    "Reading - Reference": {sec:"R", skill:"5", page:388, label:"Find pronoun referents"},
+    "Reading - Vocabulary in Context": {sec:"R", skill:"10-11", page:419, label:"Use context to determine meanings of words"}
+  };
+
+  var SEC_NAME = {L:"Listening", S:"Structure & Written Expr.", R:"Reading"};
+  var STORAGE_KEY = "longman-weak-topics-v1";
+
+  function loadStats() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"); }
+    catch (e) { return {}; }
+  }
+  function saveStats(s) {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); } catch (e) {}
+  }
+  function recordMistake(topic) {
+    if (!topic) return;
+    var s = loadStats();
+    s[topic] = (s[topic] || 0) + 1;
+    saveStats(s);
+    updateFabBadge();
+  }
+
+  function findTopic(el) {
+    var node = el;
+    while (node && node !== document.body) {
+      if (node.dataset && node.dataset.topic) return node.dataset.topic;
+      node = node.parentElement;
+    }
+    return null;
+  }
+
+  // Pantau setiap kali opsi/segmen ditandai "incorrect" oleh app (dipakai app buat semua tipe soal)
+  function observeMistakes() {
+    var mo = new MutationObserver(function (mutations) {
+      mutations.forEach(function (m) {
+        if (m.type === "attributes" && m.attributeName === "class") {
+          var el = m.target;
+          if (el.classList && el.classList.contains("incorrect")) {
+            var topic = findTopic(el);
+            if (topic) recordMistake(topic);
+          }
+        }
+      });
+    });
+    mo.observe(document.body, { attributes: true, attributeFilter: ["class"], subtree: true });
+  }
+
+  // Tambahkan referensi skill Longman di setiap kotak .explain begitu ia tampil (class "show")
+  function injectReferences() {
+    var mo = new MutationObserver(function (mutations) {
+      mutations.forEach(function (m) {
+        if (m.type === "attributes" && m.attributeName === "class") {
+          var el = m.target;
+          if (el.classList && el.classList.contains("explain") && el.classList.contains("show") && !el.dataset.longmanDone) {
+            el.dataset.longmanDone = "1";
+            var topic = findTopic(el) || (el.previousElementSibling && el.previousElementSibling.dataset && el.previousElementSibling.dataset.topic);
+            var info = topic && LONGMAN_MAP[topic];
+            if (info) {
+              var ref = document.createElement("div");
+              ref.style.cssText = "margin-top:8px;padding-top:8px;border-top:1px dashed rgba(0,0,0,0.15);font-size:13px;opacity:0.85;";
+              ref.textContent = "📘 Referensi Longman: " + SEC_NAME[info.sec] + " — Skill " + info.skill + " (\"" + info.label + "\"), hlm. " + info.page;
+              el.appendChild(ref);
+            }
+          }
+        }
+      });
+    });
+    mo.observe(document.body, { attributes: true, attributeFilter: ["class"], subtree: true });
+  }
+
+  // ---------- Floating button + panel ringkasan kelemahan ----------
+  function updateFabBadge() {
+    var badge = document.getElementById("longman-fab-badge");
+    if (!badge) return;
+    var s = loadStats();
+    var total = Object.keys(s).reduce(function (n, k) { return n + s[k]; }, 0);
+    badge.textContent = total;
+    badge.style.display = total > 0 ? "flex" : "none";
+  }
+
+  function buildPanel() {
+    var overlay = document.createElement("div");
+    overlay.id = "longman-panel-overlay";
+    overlay.style.cssText = "position:fixed;inset:0;background:rgba(20,20,15,0.55);z-index:99998;display:none;align-items:center;justify-content:center;padding:16px;";
+
+    var panel = document.createElement("div");
+    panel.style.cssText = "background:#fdfaf3;color:#2b2b22;max-width:560px;width:100%;max-height:80vh;overflow:auto;border-radius:14px;padding:20px 22px;box-shadow:0 20px 60px rgba(0,0,0,0.35);font-family:inherit;";
+    panel.innerHTML =
+      '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">' +
+        '<h3 style="margin:0;font-size:18px;">📊 Ringkasan Kelemahan &amp; Rekomendasi Longman</h3>' +
+        '<button id="longman-panel-close" style="border:none;background:none;font-size:20px;cursor:pointer;line-height:1;">&times;</button>' +
+      '</div>' +
+      '<div id="longman-panel-body" style="font-size:14px;line-height:1.55;"></div>' +
+      '<div style="margin-top:14px;text-align:right;">' +
+        '<button id="longman-panel-reset" style="border:1px solid rgba(0,0,0,0.2);background:transparent;border-radius:8px;padding:6px 12px;font-size:12px;cursor:pointer;">Reset data kelemahan</button>' +
+      '</div>';
+
+    overlay.appendChild(panel);
+    document.body.appendChild(overlay);
+
+    overlay.addEventListener("click", function (e) { if (e.target === overlay) closePanel(); });
+    panel.querySelector("#longman-panel-close").addEventListener("click", closePanel);
+    panel.querySelector("#longman-panel-reset").addEventListener("click", function () {
+      if (confirm("Hapus semua data kelemahan yang tercatat di perangkat ini?")) {
+        saveStats({});
+        renderPanelBody();
+        updateFabBadge();
+      }
+    });
+
+    return overlay;
+  }
+
+  function renderPanelBody() {
+    var body = document.getElementById("longman-panel-body");
+    if (!body) return;
+    var s = loadStats();
+    var entries = Object.keys(s).map(function (k) { return { topic: k, count: s[k] }; });
+    entries.sort(function (a, b) { return b.count - a.count; });
+
+    if (entries.length === 0) {
+      body.innerHTML = '<p style="opacity:0.75;">Belum ada kesalahan tercatat. Kerjakan beberapa soal dulu — setiap kali kamu salah, sistem otomatis mencatat topiknya di sini, lengkap dengan rekomendasi skill Longman yang relevan untuk direview.</p>';
+      return;
+    }
+
+    var html = '<p style="opacity:0.75;margin-top:0;">Diurutkan dari topik yang paling sering salah. Baca skill Longman-nya malam ini, lalu drill ulang topik itu di app besok.</p><ol style="padding-left:18px;margin:0;">';
+    entries.forEach(function (e) {
+      var info = LONGMAN_MAP[e.topic];
+      html += '<li style="margin-bottom:10px;">' +
+        '<strong>' + e.topic + '</strong> — salah ' + e.count + '× ' +
+        (info
+          ? '<br><span style="opacity:0.8;">📘 ' + SEC_NAME[info.sec] + ', Skill ' + info.skill + ' ("' + info.label + '"), hlm. ' + info.page + '</span>'
+          : '<br><span style="opacity:0.6;">(belum ada referensi Longman spesifik untuk topik ini)</span>') +
+        '</li>';
+    });
+    html += '</ol>';
+    body.innerHTML = html;
+  }
+
+  function openPanel() {
+    var overlay = document.getElementById("longman-panel-overlay") || buildPanel();
+    renderPanelBody();
+    overlay.style.display = "flex";
+  }
+  function closePanel() {
+    var overlay = document.getElementById("longman-panel-overlay");
+    if (overlay) overlay.style.display = "none";
+  }
+
+  function buildFab() {
+    var fab = document.createElement("button");
+    fab.id = "longman-fab";
+    fab.title = "Ringkasan kelemahan & rekomendasi Longman";
+    fab.style.cssText = "position:fixed;right:18px;bottom:18px;z-index:99997;width:52px;height:52px;border-radius:50%;border:none;background:#3f5d43;color:#fdfaf3;font-size:22px;cursor:pointer;box-shadow:0 8px 20px rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:center;";
+    fab.textContent = "📘";
+
+    var badge = document.createElement("span");
+    badge.id = "longman-fab-badge";
+    badge.style.cssText = "position:absolute;top:-4px;right:-4px;background:#b3452f;color:#fff;font-size:11px;min-width:18px;height:18px;border-radius:9px;display:none;align-items:center;justify-content:center;padding:0 4px;";
+    fab.appendChild(badge);
+
+    fab.addEventListener("click", openPanel);
+    document.body.appendChild(fab);
+    updateFabBadge();
+  }
+
+  function init() {
+    observeMistakes();
+    injectReferences();
+    buildFab();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+</script>
+
+<style>
+  #itp-root.mock-hide-tabs .tabs { display: none !important; }
+  #mock-overlay-bar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 99999;
+    background: #1F3B27; color: #F5F1E4; padding: 10px 16px;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    flex-wrap: wrap; font-family: inherit; box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+  }
+  #mock-overlay-bar .mock-left { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  #mock-overlay-bar #mock-timer-readout { font-family: 'IBM Plex Mono', monospace; font-size: 14px; }
+  #mock-overlay-bar button { cursor: pointer; border-radius: 8px; padding: 8px 14px; font-weight: 700; font-family: inherit; font-size: 13px; }
+  #mock-advance-btn { background: #2F9E52; color: #fff; border: none; }
+  #mock-cancel-btn { background: transparent; color: #F5F1E4; border: 1px solid rgba(245,241,228,0.5); }
+  @media (max-width: 600px) {
+    #mock-overlay-bar { flex-direction: column; align-items: stretch; text-align: center; padding: 10px 12px; gap: 8px; }
+    #mock-overlay-bar .mock-left { justify-content: center; flex-direction: column; gap: 4px; }
+    #mock-overlay-bar #mock-stage-label { font-size: 13px; }
+    #mock-overlay-bar div[style*="display:flex"] { justify-content: center; }
+    #mock-overlay-bar button { flex: 1 1 auto; padding: 12px 10px; font-size: 13px; }
+  }
+</style>
+<script>
+(function () {
+  'use strict';
+
+  var STAGES = [
+    { key: 'listening', tabs: ['listening'], timerGroup: 'listening', checkBtns: ['listening-check'], label: 'Listening' },
+    { key: 'sw', tabs: ['structure', 'written'], timerGroup: 'structure_written', checkBtns: ['structure-check'], label: 'Structure & Written Expression', isWritten: true },
+    { key: 'reading', tabs: ['reading'], timerGroup: 'reading', checkBtns: ['reading-check'], label: 'Reading' }
+  ];
+
+  var state = { active: false, stageIndex: -1, baseline: null, results: {}, pollInterval: null };
+
+  function root() { return document.getElementById('itp-root'); }
+  function byId(id) { return document.getElementById(id); }
+
+  function resetSectionPanel(panelId) {
+    var panel = byId('panel-' + panelId);
+    if (!panel) return;
+    panel.querySelectorAll('.q').forEach(function (q) {
+      delete q.dataset.selected;
+      q.querySelectorAll('.opt').forEach(function (o) {
+        o.classList.remove('disabled', 'correct', 'incorrect');
+        o.style.background = '';
+      });
+      var explain = q.querySelector('.explain');
+      if (explain) explain.classList.remove('show');
+    });
+    panel.querySelectorAll('.we-sentence').forEach(function (s) {
+      delete s.dataset.done;
+      s.querySelectorAll('.seg').forEach(function (seg) {
+        seg.classList.remove('disabled', 'correct', 'incorrect');
+      });
+    });
+    delete panel.dataset.scored;
+    var btnMap = { listening: 'listening-check', structure: 'structure-check', written: 'written-check', reading: 'reading-check' };
+    var btn = byId(btnMap[panelId]);
+    if (btn) { btn.disabled = false; btn.style.display = ''; }
+    var scoreMap = { listening: 'score-listening', structure: 'score-structure', written: 'score-written', reading: 'score-reading' };
+    var scoreEl = byId(scoreMap[panelId]);
+    if (scoreEl) scoreEl.textContent = '\u2013';
+  }
+
+  function resetAllSections() {
+    ['listening', 'structure', 'written', 'reading'].forEach(resetSectionPanel);
+  }
+
+  function forceFinishWritten() {
+    document.querySelectorAll('#panel-written .we-sentence').forEach(function (s) {
+      if (!s.dataset.done) {
+        var seg = s.querySelector('.seg');
+        if (seg) seg.click();
+      }
+    });
+  }
+
+  function forceClickCheck(id) {
+    var b = byId(id);
+    if (b && !b.disabled) b.click();
+  }
+
+  function clickTab(name) {
+    var t = root() && root().querySelector('.tab[data-tab="' + name + '"]');
+    if (t) t.click();
+  }
+
+  function enableTimerForced() {
+    var cb = byId('timer-enable-toggle');
+    if (cb && !cb.checked) {
+      cb.checked = true;
+      cb.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+  }
+
+  function resetTimerGroupUI(group) {
+    document.querySelectorAll('#itp-root .timer-box[data-timer-group="' + group + '"] .timer-reset-btn').forEach(function (btn) {
+      btn.click();
+    });
+  }
+
+  function readTimerText(group) {
+    var box = document.querySelector('#itp-root .timer-box[data-timer-group="' + group + '"]');
+    var t = box && box.querySelector('.timer-time');
+    return t ? t.textContent.trim() : null;
+  }
+
+  function snapshotAgg() {
+    try { return JSON.parse(JSON.stringify(window.__toeflAgg || {})); }
+    catch (e) { return {}; }
+  }
+
+  function diffKey(before, after, key) {
+    var b = before || {}, a = after || {};
+    return {
+      correct: (a[key + 'Correct'] || 0) - (b[key + 'Correct'] || 0),
+      total: (a[key + 'Total'] || 0) - (b[key + 'Total'] || 0)
+    };
+  }
+
+  function estimateScaled(correct, total, min, max) {
+    if (!total) return null;
+    return Math.round(min + (correct / total) * (max - min));
+  }
+
+  function cefrForTotal(total) {
+    if (total >= 543) return 'B2';
+    if (total >= 433) return 'B1';
+    if (total >= 343) return 'A2';
+    return 'A1';
+  }
+
+  function buildOverlay() {
+    var bar = byId('mock-overlay-bar');
+    if (bar) return bar;
+    bar = document.createElement('div');
+    bar.id = 'mock-overlay-bar';
+    bar.innerHTML =
+      '<div class="mock-left"><strong id="mock-stage-label">Mock Test</strong>' +
+      '<span id="mock-timer-readout"></span></div>' +
+      '<div style="display:flex;gap:8px;flex-wrap:wrap;">' +
+      '<button type="button" id="mock-advance-btn">Selesaikan &amp; lanjut &rarr;</button>' +
+      '<button type="button" id="mock-cancel-btn">Batalkan</button>' +
+      '</div>';
+    document.body.appendChild(bar);
+    byId('mock-advance-btn').addEventListener('click', function () { advanceStage(false); });
+    byId('mock-cancel-btn').addEventListener('click', cancelMock);
+    return bar;
+  }
+
+  function removeOverlay() {
+    var b = byId('mock-overlay-bar');
+    if (b) b.remove();
+  }
+
+  function updateTimerReadout() {
+    var stage = STAGES[state.stageIndex];
+    if (!stage) return;
+    var t = readTimerText(stage.timerGroup);
+    var el = byId('mock-timer-readout');
+    if (el) el.textContent = t ? ('\u23F1 ' + t) : '';
+  }
+
+  function goToStage(idx) {
+    state.stageIndex = idx;
+    var stage = STAGES[idx];
+    clickTab(stage.tabs[0]);
+    if (stage.tabs[1]) {
+      var p2 = byId('panel-' + stage.tabs[1]);
+      if (p2) p2.classList.add('active');
+    }
+    var label = byId('mock-stage-label');
+    if (label) label.textContent = (idx + 1) + '/' + STAGES.length + ' \u00b7 ' + stage.label;
+    updateTimerReadout();
+    syncBodyPadding();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function syncBodyPadding() {
+    var bar = byId('mock-overlay-bar');
+    if (!bar) { document.body.style.paddingTop = ''; return; }
+    document.body.style.paddingTop = (bar.getBoundingClientRect().height + 10) + 'px';
+  }
+
+  function pollTimer() {
+    if (!state.active) return;
+    updateTimerReadout();
+    var stage = STAGES[state.stageIndex];
+    if (!stage) return;
+    var t = readTimerText(stage.timerGroup);
+    if (t === '00:00') advanceStage(true);
+  }
+
+  function advanceStage(isAuto) {
+    if (!state.active) return;
+    var stage = STAGES[state.stageIndex];
+    if (!stage) return;
+    var proceed = isAuto || confirm('Selesaikan bagian "' + stage.label + '" sekarang dan lanjut ke bagian berikutnya? Soal yang belum dijawab akan dihitung salah, seperti di ujian asli.');
+    if (!proceed) return;
+
+    if (stage.isWritten) {
+      forceFinishWritten();
+      forceClickCheck('structure-check');
+    } else {
+      stage.checkBtns.forEach(forceClickCheck);
+    }
+
+    setTimeout(function () {
+      var after = snapshotAgg();
+      state.results[stage.key] = diffKey(state.baseline, after, stage.key);
+      if (state.stageIndex + 1 < STAGES.length) {
+        goToStage(state.stageIndex + 1);
+      } else {
+        finishMock();
+      }
+    }, 60);
+  }
+
+  function cancelMock() {
+    if (!confirm('Batalkan mock test? Bagian yang sudah kamu kerjakan tetap tersimpan di riwayat latihan biasa.')) return;
+    endMockUI();
+    state.active = false;
+  }
+
+  function endMockUI() {
+    if (state.pollInterval) { clearInterval(state.pollInterval); state.pollInterval = null; }
+    window.removeEventListener('resize', syncBodyPadding);
+    window.removeEventListener('orientationchange', syncBodyPadding);
+    removeOverlay();
+    var r = root();
+    if (r) r.classList.remove('mock-hide-tabs');
+    document.body.style.paddingTop = '';
+  }
+
+  function cardHtml(label, res, scaled) {
+    var pct = res.total ? Math.round((res.correct / res.total) * 100) : 0;
+    return '<div class="summary-card"><div class="k">' + label + '</div><div class="v">' +
+      res.correct + '/' + res.total + ' (' + pct + '%)' +
+      (scaled !== null ? ' &middot; est. ' + scaled : '') + '</div></div>';
+  }
+
+  function finishMock() {
+    endMockUI();
+    state.active = false;
+    clickTab('mock');
+    renderMockResult();
+  }
+
+  function renderMockResult() {
+    var wrap = byId('mock-result');
+    if (!wrap) return;
+    var r = state.results;
+    var listening = r.listening || { correct: 0, total: 0 };
+    var sw = r.sw || { correct: 0, total: 0 };
+    var reading = r.reading || { correct: 0, total: 0 };
+    var lScaled = estimateScaled(listening.correct, listening.total, 31, 68);
+    var sScaled = estimateScaled(sw.correct, sw.total, 31, 68);
+    var rScaled = estimateScaled(reading.correct, reading.total, 31, 67);
+    var parts = [lScaled, sScaled, rScaled].filter(function (v) { return v !== null; });
+
+    var html = '<div class="section-label" style="margin-top:22px;">Hasil Mock Test</div>';
+    html += '<div class="summary-grid">';
+    html += cardHtml('Listening', listening, lScaled);
+    html += cardHtml('Structure &amp; Written Expr.', sw, sScaled);
+    html += cardHtml('Reading', reading, rScaled);
+    html += '</div>';
+
+    if (parts.length === 3) {
+      var avg = parts.reduce(function (a, b) { return a + b; }, 0) / parts.length;
+      var total = Math.round(avg * 10);
+      var cefr = cefrForTotal(total);
+      html += '<div class="summary-grid" style="margin-top:10px;"><div class="summary-card"><div class="k">Estimasi skor total</div><div class="v">' + total + '</div></div></div>';
+      html += '<div class="cefr-tag" style="display:inline-block;margin-top:12px;font-family:\'IBM Plex Mono\',monospace;font-size:12px;border:1px solid var(--red);color:var(--red);padding:3px 10px;border-radius:12px;">~CEFR ' + cefr + ' range</div>';
+    } else {
+      html += '<div style="font-size:13.5px;color:var(--ink-soft);margin-top:8px;">Mock test dibatalkan sebelum semua bagian selesai, jadi estimasi total belum bisa dihitung.</div>';
+    }
+
+    html += '<div class="footnote" style="margin-top:14px;">Estimasi tidak resmi memakai konversi linier sederhana (ETS tidak mempublikasikan tabel equating aslinya). Soal di sini adalah materi latihan buatan sendiri bergaya ETS, bukan soal ETS asli &mdash; anggap ini sinyal arah, bukan skor prediksi pasti.</div>';
+    html += '<button class="btn ghost" id="mock-retake-btn" style="margin-top:16px;">Ulangi Mock Test</button>';
+
+    wrap.style.display = 'block';
+    wrap.innerHTML = html;
+    var startBtn = byId('mock-start-btn');
+    if (startBtn) startBtn.style.display = 'none';
+    var retakeBtn = byId('mock-retake-btn');
+    if (retakeBtn) {
+      retakeBtn.addEventListener('click', function () {
+        wrap.style.display = 'none';
+        if (startBtn) startBtn.style.display = 'inline-block';
+        startMock();
+      });
+    }
+  }
+
+  function startMock() {
+    if (state.active) return;
+    var ok = confirm('Mock test akan mereset tampilan jawaban di Listening, Structure, Written Expression, dan Reading (riwayat latihan sebelumnya tetap aman). Timer berjalan otomatis dan kamu tidak bisa pindah tab sampai selesai. Siapkan waktu \u00b1115 menit tanpa gangguan. Mulai sekarang?');
+    if (!ok) return;
+
+    resetAllSections();
+    enableTimerForced();
+    STAGES.forEach(function (s) { resetTimerGroupUI(s.timerGroup); });
+
+    state.active = true;
+    state.stageIndex = -1;
+    state.baseline = snapshotAgg();
+    state.results = {};
+
+    var r = root();
+    if (r) r.classList.add('mock-hide-tabs');
+    buildOverlay();
+    syncBodyPadding();
+    window.addEventListener('resize', syncBodyPadding);
+    window.addEventListener('orientationchange', syncBodyPadding);
+
+    goToStage(0);
+    state.pollInterval = setInterval(pollTimer, 1000);
+  }
+
+  function init() {
+    var startBtn = byId('mock-start-btn');
+    if (startBtn) startBtn.addEventListener('click', startMock);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
+
 </body>
 </html>
