@@ -1,0 +1,19 @@
+name: Keep TTS backend awake
+
+# Pings the Render /health endpoint every 10 minutes so the free-tier
+# service doesn't idle-sleep (Render sleeps after ~15 min of no traffic).
+# This costs nothing on GitHub's side (public repos get free Actions minutes)
+# and Render doesn't charge for these pings either since it's still the free plan.
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'   # every 10 minutes
+  workflow_dispatch:          # lets you also trigger it manually from the Actions tab
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping backend health endpoint
+        run: |
+          curl -sf https://nurai-tts-backend.onrender.com/health || echo "Ping failed (backend may be cold-starting)"
